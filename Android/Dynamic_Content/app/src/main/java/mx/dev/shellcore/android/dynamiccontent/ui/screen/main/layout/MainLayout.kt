@@ -19,10 +19,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import mx.dev.shellcore.android.dynamiccontent.R
 import mx.dev.shellcore.android.dynamiccontent.ui.screen.main.vm.MainViewModel
 
 @Composable
@@ -88,7 +90,7 @@ private fun NameCaptureLayout(
         TextField(
             modifier = Modifier.weight(1f),
             keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-            placeholder = { Text("Enter a name") },
+            placeholder = { Text(stringResource(R.string.main_name_placeholder)) },
             value = nameCapture,
             onValueChange = {
                 onValueCaptured(it)
@@ -101,7 +103,7 @@ private fun NameCaptureLayout(
                 addName()
             }
         ) {
-            Text(text = "Add")
+            Text(text = stringResource(R.string.main_add_btn))
         }
     }
 }
@@ -122,7 +124,7 @@ private fun NameListLayout(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             nameList.forEach { name ->
-                Text(text = "Hello $name!")
+                Text(text = stringResource(R.string.main_hello, name))
             }
         }
     }
