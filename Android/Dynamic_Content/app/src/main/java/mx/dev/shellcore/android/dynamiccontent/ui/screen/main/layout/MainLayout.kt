@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -18,20 +19,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import mx.dev.shellcore.android.dynamiccontent.ui.screen.main.vm.MainViewModel
 
 @Composable
 fun MainLayout() {
-    val vm = MainViewModel()
-    val nameList = vm.nameList.collectAsState().value
+    val vm: MainViewModel = viewModel()
+
     val nameCapture = vm.nameCapture.collectAsState().value
+    val nameList = vm.nameList.collectAsState().value
 
     MainLayoutContainer(
         nameCapture = nameCapture,
         nameList = nameList,
-        onValueCaptured = { vm.onNameCaptureChange(it) },
+        onValueCaptured = {
+            vm.onNameCaptureChange(it)
+        },
         addName = { vm.onAddName() }
     )
 }
@@ -81,6 +87,7 @@ private fun NameCaptureLayout(
     ) {
         TextField(
             modifier = Modifier.weight(1f),
+            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
             placeholder = { Text("Enter a name") },
             value = nameCapture,
             onValueChange = {
