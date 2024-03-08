@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Compose Dynamic Content</string>
+    <string name="main_name_placeholder">Enter a name</string>
+    <string name="main_add_btn">Add</string>
+    <string name="main_hello">Hello %1$s!</string>
+</resources>
