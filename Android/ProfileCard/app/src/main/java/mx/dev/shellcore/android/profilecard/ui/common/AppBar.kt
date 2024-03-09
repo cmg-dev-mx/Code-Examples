@@ -40,8 +40,8 @@ fun AppBar(
         navigationIcon = {
             Icon(
                 modifier = Modifier
-                    .padding(12.dp)
-                    .clickable { onIconClick() },
+                    .clickable { onIconClick() }
+                    .padding(12.dp),
                 imageVector = icon,
                 contentDescription = null
             )

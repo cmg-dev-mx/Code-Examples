@@ -24,26 +24,37 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import mx.dev.shellcore.android.profilecard.core.model.UserProfile
 import mx.dev.shellcore.android.profilecard.ui.common.AppBar
+import mx.dev.shellcore.android.profilecard.ui.screen.users.vm.UsersViewModel
 
 @Composable
 fun UsersLayout(navController: NavController? = null) {
-    val users = arrayListOf<UserProfile>()
+
+    val vm: UsersViewModel = hiltViewModel()
+    val users = vm.users.collectAsState().value
+
+    LaunchedEffect(key1 = null) {
+        vm.loadUsers()
+    }
+
     UsersLayoutContainer(users)
 }
 
 @Composable
 private fun UsersLayoutContainer(
-    users: ArrayList<UserProfile> = arrayListOf(),
+    users: List<UserProfile> = arrayListOf(),
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -55,6 +66,8 @@ private fun UsersLayoutContainer(
             modifier = Modifier
                 .padding(parentPaddingValues)
                 .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(users) { user ->
                 ProfileCard(user = user, onProfileClick = { /* TODO Not yet implemented */ })
