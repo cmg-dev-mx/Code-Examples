@@ -9,27 +9,31 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import mx.dev.shellcore.android.profilecard.core.model.UserProfile
 import mx.dev.shellcore.android.profilecard.ui.common.AppBar
 import mx.dev.shellcore.android.profilecard.ui.common.ProfileContent
 import mx.dev.shellcore.android.profilecard.ui.common.ProfilePicture
+import mx.dev.shellcore.android.profilecard.ui.screen.user.vm.UserDetailViewModel
 
 @Composable
 fun UserDetailLayout(
     userId: Int,
     navController: NavController? = null
 ) {
-    val user = UserProfile(
-        id = 1,
-        name = "Michaela Runnings",
-        status = true,
-        "https://images.unsplash.com/photo-1485290334039-a3c69043e517?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-    )
+    val vm: UserDetailViewModel = hiltViewModel()
+    val user = vm.user.collectAsState().value
+
+    LaunchedEffect(key1 = null) {
+        vm.getUserById(userId)
+    }
 
     UserContainer(
         user = user,
