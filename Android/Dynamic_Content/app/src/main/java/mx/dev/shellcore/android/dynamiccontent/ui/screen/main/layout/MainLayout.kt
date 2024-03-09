@@ -23,13 +23,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import mx.dev.shellcore.android.dynamiccontent.R
 import mx.dev.shellcore.android.dynamiccontent.ui.screen.main.vm.MainViewModel
 
 @Composable
 fun MainLayout() {
-    val vm: MainViewModel = viewModel()
+    val vm: MainViewModel = hiltViewModel()
 
     val nameCapture = vm.nameCapture.collectAsState().value
     val nameList = vm.nameList.collectAsState().value
