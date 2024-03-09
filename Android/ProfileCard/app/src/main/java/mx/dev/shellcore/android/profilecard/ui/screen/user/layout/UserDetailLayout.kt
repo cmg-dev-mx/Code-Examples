@@ -20,7 +20,10 @@ import mx.dev.shellcore.android.profilecard.ui.common.ProfileContent
 import mx.dev.shellcore.android.profilecard.ui.common.ProfilePicture
 
 @Composable
-fun UserDetailLayout(navController: NavController? = null) {
+fun UserDetailLayout(
+    userId: Int,
+    navController: NavController? = null
+) {
     val user = UserProfile(
         id = 1,
         name = "Michaela Runnings",
@@ -30,7 +33,7 @@ fun UserDetailLayout(navController: NavController? = null) {
 
     UserContainer(
         user = user,
-        onBackClick = { /* TODO Not yet implemented */ }
+        onBackClick = { navController?.popBackStack() }
     )
 }
 
