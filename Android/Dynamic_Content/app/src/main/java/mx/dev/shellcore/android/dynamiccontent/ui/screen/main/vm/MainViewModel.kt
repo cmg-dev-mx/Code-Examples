@@ -1,10 +1,13 @@
 package mx.dev.shellcore.android.dynamiccontent.ui.screen.main.vm
 
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
-class MainViewModel: ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(): ViewModel() {
 
     private val _nameList = MutableStateFlow(arrayListOf<String>())
     val nameList = _nameList.asStateFlow()
