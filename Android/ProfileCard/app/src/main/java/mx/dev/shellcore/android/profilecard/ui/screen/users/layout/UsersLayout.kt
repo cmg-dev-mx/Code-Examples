@@ -30,18 +30,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import mx.dev.shellcore.android.profilecard.core.model.UserProfile
 import mx.dev.shellcore.android.profilecard.ui.common.AppBar
 
 @Composable
-fun MainLayout() {
+fun UsersLayout(navController: NavController? = null) {
     val users = arrayListOf<UserProfile>()
-    MainLayoutContainer(users)
+    UsersLayoutContainer(users)
 }
 
 @Composable
-private fun MainLayoutContainer(
+private fun UsersLayoutContainer(
     users: ArrayList<UserProfile> = arrayListOf(),
 ) {
     Scaffold(
