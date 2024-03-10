@@ -36,7 +36,7 @@ import mx.dev.shellcore.android.meals.core.model.MealCategory
 @Composable
 fun MealCategoriesLayout(navController: NavController? = null) {
 
-    val mealCategories = listOf<MealCategory>(
+    val mealCategories = listOf(
         MealCategory(
             1,
             "Beef",
