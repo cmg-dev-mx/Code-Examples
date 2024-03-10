@@ -23,26 +23,28 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import mx.dev.shellcore.android.meals.R
 import mx.dev.shellcore.android.meals.core.model.MealCategory
+import mx.dev.shellcore.android.meals.ui.screen.mealcategories.vm.MealCategoriesViewModel
 
 @Composable
-fun MealCategoriesLayout(navController: NavController? = null) {
+fun MealCategoriesLayout() {
 
-    val mealCategories = listOf(
-        MealCategory(
-            1,
-            "Beef",
-            "https://www.themealdb.com/images/category/beef.png"
-        ),
-    )
+    val vm: MealCategoriesViewModel = hiltViewModel()
+    val mealCategories = vm.mealCategories.collectAsState().value
+
+    LaunchedEffect(key1 = null) {
+        vm.getMealCategories()
+    }
 
     MealCategoriesLayoutContainer(mealCategories) {}
 }
@@ -90,7 +92,8 @@ private fun MealCategoriesLayoutContainer(
             modifier = Modifier
                 .padding(parentPadding)
                 .fillMaxSize(),
-            contentPadding = PaddingValues(16.dp)
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(mealCategories) { mealCategory ->
                 MealCategoryItem(

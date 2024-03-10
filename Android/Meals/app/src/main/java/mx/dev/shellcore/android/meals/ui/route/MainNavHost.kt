@@ -11,6 +11,6 @@ fun MainNavHost() {
         navController = navController,
         startDestination = MealsGraph.MealsCategoriesGraph.route
     ) {
-        mainGraph(navController = navController)
+        mainGraph()
     }
 }
