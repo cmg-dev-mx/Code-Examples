@@ -41,5 +41,4 @@ hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-com
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 hiltPlugin = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 

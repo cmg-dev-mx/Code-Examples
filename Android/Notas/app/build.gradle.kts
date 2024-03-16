@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    alias(libs.plugins.ksp)
+    kotlin("kapt")
     alias(libs.plugins.hiltPlugin)
 }
 
@@ -63,10 +63,10 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.compose.navigation)
     implementation(libs.room)
-    ksp(libs.room.compiler)
+    kapt(libs.room.compiler)
     implementation(libs.room.ktx)
     implementation(libs.hilt)
-    ksp(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
