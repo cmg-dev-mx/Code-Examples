@@ -35,7 +35,7 @@ private fun ListLayoutPreview() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListLayoutContainer() {
+private fun ListLayoutContainer() {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
