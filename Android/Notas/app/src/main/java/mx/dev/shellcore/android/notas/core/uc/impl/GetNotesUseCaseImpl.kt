@@ -1,0 +1,17 @@
+package mx.dev.shellcore.android.notas.core.uc.impl
+
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import mx.dev.shellcore.android.notas.core.model.Note
+import mx.dev.shellcore.android.notas.core.model.request.RequestState
+import mx.dev.shellcore.android.notas.core.uc.base.GetNotesUseCase
+import javax.inject.Inject
+
+class GetNotesUseCaseImpl @Inject constructor() : GetNotesUseCase {
+
+    override suspend fun getNotes(): Flow<RequestState<List<Note>>> {
+        return flow {
+            emit(RequestState.Idle)
+        }
+    }
+}
