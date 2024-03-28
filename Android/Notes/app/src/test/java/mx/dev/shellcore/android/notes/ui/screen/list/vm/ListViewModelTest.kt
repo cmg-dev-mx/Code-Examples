@@ -9,7 +9,7 @@ import kotlinx.coroutines.test.runTest
 import mx.dev.shellcore.android.notes.BaseUnitTest
 import mx.dev.shellcore.android.notes.core.model.Note
 import mx.dev.shellcore.android.notes.core.state.RequestState
-import mx.dev.shellcore.android.notes.core.uc.GetNoteListUseCase
+import mx.dev.shellcore.android.notes.core.uc.base.GetNoteListUseCase
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
