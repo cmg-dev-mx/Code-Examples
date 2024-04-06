@@ -5,6 +5,5 @@ import org.junit.Rule
 open class BaseUnitTest {
 
     @get:Rule
-    var coroutineScope = MainCoroutineScopeRule()
-
+    val coroutineScope = MainCoroutineScopeRule()
 }
