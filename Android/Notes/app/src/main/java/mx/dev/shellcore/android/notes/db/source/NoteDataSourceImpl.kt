@@ -4,8 +4,9 @@ import mx.dev.shellcore.android.notes.core.model.Note
 import mx.dev.shellcore.android.notes.db.dao.NoteDao
 import mx.dev.shellcore.android.notes.db.mapper.NoteMapper
 import mx.dev.shellcore.android.notes.repostitory.impl.NoteDataSource
+import javax.inject.Inject
 
-class NoteDataSourceImpl(
+class NoteDataSourceImpl @Inject constructor(
     private val dao: NoteDao,
     private val mapper: NoteMapper
 ) : NoteDataSource {

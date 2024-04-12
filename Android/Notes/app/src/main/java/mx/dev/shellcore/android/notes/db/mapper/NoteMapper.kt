@@ -2,8 +2,9 @@ package mx.dev.shellcore.android.notes.db.mapper
 
 import mx.dev.shellcore.android.notes.core.model.Note
 import mx.dev.shellcore.android.notes.db.model.NoteDO
+import javax.inject.Inject
 
-class NoteMapper {
+class NoteMapper @Inject constructor() {
     fun toModelList(daoResponse: List<NoteDO>): List<Note> {
         return daoResponse.map { noteDO ->
             Note(

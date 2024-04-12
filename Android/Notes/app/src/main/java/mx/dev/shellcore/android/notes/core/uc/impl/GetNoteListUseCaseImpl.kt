@@ -5,8 +5,9 @@ import mx.dev.shellcore.android.notes.core.model.Note
 import mx.dev.shellcore.android.notes.core.repository.base.NoteRepository
 import mx.dev.shellcore.android.notes.core.state.RequestState
 import mx.dev.shellcore.android.notes.core.uc.base.GetNoteListUseCase
+import javax.inject.Inject
 
-class GetNoteListUseCaseImpl(
+class GetNoteListUseCaseImpl @Inject constructor(
     private val repository: NoteRepository
 ) : GetNoteListUseCase {
 

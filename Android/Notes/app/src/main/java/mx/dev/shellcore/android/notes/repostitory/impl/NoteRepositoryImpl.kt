@@ -5,8 +5,9 @@ import kotlinx.coroutines.flow.flow
 import mx.dev.shellcore.android.notes.core.model.Note
 import mx.dev.shellcore.android.notes.core.repository.base.NoteRepository
 import mx.dev.shellcore.android.notes.core.state.RequestState
+import javax.inject.Inject
 
-class NoteRepositoryImpl(
+class NoteRepositoryImpl @Inject constructor(
     private val source: NoteDataSource
 ) : NoteRepository {
 
