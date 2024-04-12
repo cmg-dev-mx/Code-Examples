@@ -1,6 +1,7 @@
 package mx.dev.shellcore.android.notes.ui.screen.list.layout
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import mx.dev.shellcore.android.notes.BaseLayoutTest
 import mx.dev.shellcore.android.notes.core.model.Note
@@ -23,7 +24,7 @@ class ListLayoutKtTest : BaseLayoutTest() {
     }
 
     @Test
-    fun text_002_displayEmptyListMessage() {
+    fun test_002_displayEmptyListMessage() {
         composeTestRule.setContent {
             NotesTheme {
                 ListLayoutContent(RequestState.Success(emptyList()))
@@ -34,7 +35,7 @@ class ListLayoutKtTest : BaseLayoutTest() {
     }
 
     @Test
-    fun text_003_displayList() {
+    fun test_003_displayList() {
         val customDate = Calendar.getInstance().apply {
             set(2024, 7, 14)
         }.timeInMillis
@@ -56,5 +57,16 @@ class ListLayoutKtTest : BaseLayoutTest() {
 
         composeTestRule.onNodeWithText("Title").assertIsDisplayed()
         composeTestRule.onNodeWithText("Aug 14").assertIsDisplayed()
+    }
+
+    @Test
+    fun test_004_displayAddButton() {
+        composeTestRule.setContent {
+            NotesTheme {
+                ListLayoutContent(RequestState.Success(emptyList()))
+            }
+        }
+
+        composeTestRule.onNodeWithTag("AddBtn").assertIsDisplayed()
     }
 }
