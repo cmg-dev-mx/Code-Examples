@@ -28,9 +28,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import mx.dev.shellcore.android.notes.R
 import mx.dev.shellcore.android.notes.core.model.Note
 import mx.dev.shellcore.android.notes.core.state.RequestState
+import mx.dev.shellcore.android.notes.ui.route.NotesBaseRoute
 import mx.dev.shellcore.android.notes.ui.screen.list.vm.ListViewModel
 import mx.dev.shellcore.android.notes.ui.theme.NotesTheme
 import mx.dev.shellcore.android.notes.ui.utils.DisplayResult
@@ -50,21 +52,24 @@ private fun ListLayoutPreview() {
         )
     )
     NotesTheme {
-        ListLayoutContent(noteState)
+        ListLayoutContent(noteState = noteState)
     }
 }
 
 
 @Composable
-fun ListLayout() {
+fun ListLayout(navController: NavController? = null) {
     val vm: ListViewModel = hiltViewModel()
     val noteState = vm.noteState.collectAsState().value
-    ListLayoutContent(noteState)
+    ListLayoutContent(navController, noteState)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListLayoutContent(noteState: RequestState<List<Note>>) {
+fun ListLayoutContent(
+    navController: NavController? = null,
+    noteState: RequestState<List<Note>>
+) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -82,7 +87,9 @@ fun ListLayoutContent(noteState: RequestState<List<Note>>) {
         floatingActionButton = {
             FloatingActionButton(
                 modifier = Modifier.testTag("AddBtn"),
-                onClick = { /*TODO*/ }
+                onClick = {
+                    navController?.navigate(NotesBaseRoute.DetailRoute.route)
+                }
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,

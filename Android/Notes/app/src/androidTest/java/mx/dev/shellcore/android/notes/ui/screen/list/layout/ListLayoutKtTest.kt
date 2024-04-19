@@ -16,7 +16,7 @@ class ListLayoutKtTest : BaseLayoutTest() {
     fun test_001_displayScreenTitle() {
         composeTestRule.setContent {
             NotesTheme {
-                ListLayoutContent(RequestState.Success(emptyList()))
+                ListLayoutContent(noteState = RequestState.Success(emptyList()))
             }
         }
 
@@ -27,7 +27,7 @@ class ListLayoutKtTest : BaseLayoutTest() {
     fun test_002_displayEmptyListMessage() {
         composeTestRule.setContent {
             NotesTheme {
-                ListLayoutContent(RequestState.Success(emptyList()))
+                ListLayoutContent(noteState = RequestState.Success(emptyList()))
             }
         }
 
@@ -51,7 +51,7 @@ class ListLayoutKtTest : BaseLayoutTest() {
 
         composeTestRule.setContent {
             NotesTheme {
-                ListLayoutContent(RequestState.Success(notes))
+                ListLayoutContent(noteState = RequestState.Success(notes))
             }
         }
 
@@ -63,7 +63,7 @@ class ListLayoutKtTest : BaseLayoutTest() {
     fun test_004_displayAddButton() {
         composeTestRule.setContent {
             NotesTheme {
-                ListLayoutContent(RequestState.Success(emptyList()))
+                ListLayoutContent(noteState = RequestState.Success(emptyList()))
             }
         }
 
