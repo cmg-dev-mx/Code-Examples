@@ -21,6 +21,11 @@ class NoteRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveNote(note: Note): Flow<RequestState<Boolean>> {
-        TODO("Not yet implemented")
+        return try {
+            val response = source.save(note)
+            flow { emit(RequestState.Success(response)) }
+        } catch (e: Exception) {
+            flow { emit(RequestState.Error(e)) }
+        }
     }
 }
