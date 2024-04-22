@@ -15,4 +15,13 @@ class NoteMapper @Inject constructor() {
             )
         }
     }
+
+    fun toDataObject(note: Note): NoteDO {
+        return NoteDO(
+            id = note.id,
+            title = note.title,
+            content = note.content,
+            date = note.date
+        )
+    }
 }

@@ -15,7 +15,12 @@ class NoteDataSourceImpl @Inject constructor(
         return dao.queryAll().let { mapper.toModelList(it) }
     }
 
-    override fun save(note: Note): Boolean {
-        TODO("Not yet implemented")
+    override suspend fun save(note: Note): Boolean {
+        return try {
+            dao.insert(mapper.toDataObject(note))
+            true
+        } catch (e: Exception) {
+            throw e
+        }
     }
 }
