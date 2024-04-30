@@ -16,6 +16,9 @@ class DetailViewModel @Inject constructor(
     private val useCase: SaveNoteUseCase
 ) : ViewModel() {
 
+    private val _note = MutableStateFlow(Note())
+    val note = _note.asStateFlow()
+
     private val _noteSavedState = MutableStateFlow<RequestState<Boolean>>(RequestState.Idle)
     val noteSavedState = _noteSavedState.asStateFlow()
 
@@ -25,5 +28,21 @@ class DetailViewModel @Inject constructor(
                 _noteSavedState.value = it
             }
         }
+    }
+
+    fun setNoteTitle(title: String) {
+        _note.value = _note.value.copy(title = title)
+    }
+
+    fun setNoteContent(content: String) {
+        _note.value = _note.value.copy(content = content)
+    }
+
+    fun setNoteDate(date: Long) {
+        _note.value = _note.value.copy(date = date)
+    }
+
+    fun updateNoteSavedState(value: Boolean) {
+        _noteSavedState.value = RequestState.Success(value)
     }
 }

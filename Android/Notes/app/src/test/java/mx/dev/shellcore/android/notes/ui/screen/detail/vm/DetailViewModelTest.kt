@@ -53,6 +53,46 @@ class DetailViewModelTest : BaseUnitTest() {
         }
     }
 
+    @Test
+    fun updateNoteTitle() = runTest {
+        val vm = mockSuccessfulCase()
+        val title = "Title"
+        vm.setNoteTitle(title)
+        vm.note.first().let {
+            assertEquals(title, it.title)
+        }
+    }
+
+    @Test
+    fun updateNoteContent() = runTest {
+        val vm = mockSuccessfulCase()
+        val content = "Content"
+        vm.setNoteContent(content)
+        vm.note.first().let {
+            assertEquals(content, it.content)
+        }
+    }
+
+    @Test
+    fun updateNoteDate() = runTest {
+        val vm = mockSuccessfulCase()
+        val date = 123456789L
+        vm.setNoteDate(date)
+        vm.note.first().let {
+            assertEquals(date, it.date)
+        }
+    }
+
+    @Test
+    fun updateNoteSavedState() = runTest {
+        val vm = mockSuccessfulCase()
+        val value = true
+        vm.updateNoteSavedState(value)
+        vm.noteSavedState.first().let {
+            assertTrue(it.getSuccessData() ?: false)
+        }
+    }
+
     private suspend fun mockSuccessfulCase(): DetailViewModel {
         `when`(useCase.saveNote(note)).thenReturn(flow {
             delay(1)

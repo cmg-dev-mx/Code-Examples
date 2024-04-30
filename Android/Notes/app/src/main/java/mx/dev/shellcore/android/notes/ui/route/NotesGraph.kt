@@ -17,6 +17,6 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
         startDestination = NotesBaseRoute.ListRoute.route
     ) {
         composable(NotesBaseRoute.ListRoute.route) { ListLayout(navController = navController) }
-        composable(NotesBaseRoute.DetailRoute.route) { DetailLayout() }
+        composable(NotesBaseRoute.DetailRoute.route) { DetailLayout(navController = navController) }
     }
 }

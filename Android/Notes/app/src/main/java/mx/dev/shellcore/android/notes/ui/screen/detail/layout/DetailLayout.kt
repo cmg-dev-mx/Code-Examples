@@ -20,6 +20,8 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,8 +32,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import mx.dev.shellcore.android.notes.R
+import mx.dev.shellcore.android.notes.core.model.Note
+import mx.dev.shellcore.android.notes.ui.screen.detail.vm.DetailViewModel
 import mx.dev.shellcore.android.notes.ui.theme.NotesTheme
+import java.util.Calendar
 
 @Preview
 @Composable
@@ -42,16 +49,42 @@ private fun DetailLayoutPreview() {
 }
 
 @Composable
-fun DetailLayout() {
-    DetailLayoutContent()
+fun DetailLayout(
+    navController: NavController? = null
+) {
+
+    val vm: DetailViewModel = hiltViewModel()
+    val note = vm.note.collectAsState().value
+    val saveSuccess = vm.noteSavedState.collectAsState().value
+
+    if (saveSuccess.getSuccessData() == true) {
+        LaunchedEffect(key1 = null) {
+            vm.updateNoteSavedState(false)
+            navController?.popBackStack()
+        }
+    }
+
+    DetailLayoutContent(
+        note = note,
+        onTitleChange = { vm.setNoteTitle(it) },
+        onContentChange = { vm.setNoteContent(it) },
+        onClickBtnSave = {
+            vm.setNoteDate(Calendar.getInstance().timeInMillis)
+            vm.saveNote(note)
+        },
+        onClickBtnBack = { navController?.popBackStack() }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailLayoutContent() {
-
-    var title by remember { mutableStateOf("") }
-    var content by remember { mutableStateOf("") }
+fun DetailLayoutContent(
+    note: Note = Note(),
+    onTitleChange: (String) -> Unit = {},
+    onContentChange: (String) -> Unit = {},
+    onClickBtnSave: () -> Unit = {},
+    onClickBtnBack: () -> Unit = {}
+) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -66,7 +99,7 @@ fun DetailLayoutContent() {
                     Text(text = "Detalle de Nota")
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { onClickBtnBack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Go back",
@@ -94,10 +127,8 @@ fun DetailLayoutContent() {
                 placeholder = {
                     Text(text = stringResource(R.string.title_placeholder))
                 },
-                value = title,
-                onValueChange = {
-                    title = it
-                }
+                value = note.title,
+                onValueChange = { onTitleChange(it) }
             )
 
             Spacer(
@@ -117,10 +148,8 @@ fun DetailLayoutContent() {
                 placeholder = {
                     Text(text = stringResource(R.string.content_placeholder))
                 },
-                value = content,
-                onValueChange = {
-                    content = it
-                }
+                value = note.content,
+                onValueChange = { onContentChange(it) }
             )
 
             Spacer(
@@ -131,7 +160,7 @@ fun DetailLayoutContent() {
 
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { /*TODO*/ }
+                onClick = { onClickBtnSave() }
             ) {
                 Text(text = stringResource(R.string.save))
             }
