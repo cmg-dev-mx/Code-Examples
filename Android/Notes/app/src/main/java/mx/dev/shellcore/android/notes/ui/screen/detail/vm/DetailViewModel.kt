@@ -13,13 +13,13 @@ class DetailViewModel(
     private val useCase: SaveNoteUseCase
 ) : ViewModel() {
 
-    private val _noteState = MutableStateFlow<RequestState<Boolean>>(RequestState.Idle)
-    val noteState = _noteState.asStateFlow()
+    private val _noteSavedState = MutableStateFlow<RequestState<Boolean>>(RequestState.Idle)
+    val noteSavedState = _noteSavedState.asStateFlow()
 
     fun saveNote(note: Note) {
         viewModelScope.launch {
             useCase.saveNote(note).collect {
-                _noteState.value = it
+                _noteSavedState.value = it
             }
         }
     }

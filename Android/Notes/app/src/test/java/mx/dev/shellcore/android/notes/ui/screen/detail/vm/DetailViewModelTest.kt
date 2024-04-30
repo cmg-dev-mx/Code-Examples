@@ -35,7 +35,7 @@ class DetailViewModelTest : BaseUnitTest() {
     fun getSuccessInSaveNote() = runTest {
         val vm = mockSuccessfulCase()
         vm.saveNote(note)
-        vm.noteState.drop(1).first().let {
+        vm.noteSavedState.drop(1).first().let {
             assertTrue(it.getSuccessData() ?: false)
         }
     }
@@ -48,7 +48,7 @@ class DetailViewModelTest : BaseUnitTest() {
             emit(RequestState.Error(errorExpected))
         })
         vm.saveNote(note)
-        vm.noteState.drop(1).first().let {
+        vm.noteSavedState.drop(1).first().let {
             assertEquals(errorExpected, it.getErrorException())
         }
     }
