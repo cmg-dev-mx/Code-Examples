@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import mx.dev.shellcore.android.notes.core.model.Note
 import mx.dev.shellcore.android.notes.core.state.RequestState
+import mx.dev.shellcore.android.notes.core.uc.base.DeleteNoteUseCase
 import mx.dev.shellcore.android.notes.core.uc.base.GetNoteUseCase
 import mx.dev.shellcore.android.notes.core.uc.base.SaveNoteUseCase
 import javax.inject.Inject
@@ -15,7 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val saveNoteUseCase: SaveNoteUseCase,
-    private val getNoteUseCase: GetNoteUseCase
+    private val getNoteUseCase: GetNoteUseCase,
+    private val deleteNoteUseCase: DeleteNoteUseCase
 ) : ViewModel() {
 
     private val _note = MutableStateFlow(Note())
@@ -59,6 +61,14 @@ class DetailViewModel @Inject constructor(
                 if (it is RequestState.Success) {
                     _note.value = it.data
                 }
+            }
+        }
+    }
+
+    fun deleteNoteById(id: Int) {
+        viewModelScope.launch {
+            deleteNoteUseCase.deleteNoteById(id).collect {
+                _noteSavedState.value = it
             }
         }
     }

@@ -10,6 +10,7 @@ import kotlinx.coroutines.test.runTest
 import mx.dev.shellcore.android.notes.BaseUnitTest
 import mx.dev.shellcore.android.notes.core.model.Note
 import mx.dev.shellcore.android.notes.core.state.RequestState
+import mx.dev.shellcore.android.notes.core.uc.base.DeleteNoteUseCase
 import mx.dev.shellcore.android.notes.core.uc.base.GetNoteUseCase
 import mx.dev.shellcore.android.notes.core.uc.base.SaveNoteUseCase
 import org.junit.Test
@@ -23,6 +24,7 @@ class DetailViewModelTest : BaseUnitTest() {
 
     private val saveNoteUseCase: SaveNoteUseCase = mock()
     private val getNoteUseCase: GetNoteUseCase = mock()
+    private val deleteNoteUseCase: DeleteNoteUseCase = mock()
 
     private val note: Note = mock()
     private val errorExpected = RuntimeException("Something went wrong!")
@@ -128,6 +130,38 @@ class DetailViewModelTest : BaseUnitTest() {
         }
     }
 
+    @Test
+    fun callDeleteNoteFromUseCase() = runTest {
+        val vm = mockSuccessfulCase()
+        val id = 1
+        vm.deleteNoteById(id)
+        verify(deleteNoteUseCase, times(1)).deleteNoteById(id)
+    }
+
+    @Test
+    fun getSuccessInDeleteNote() = runTest {
+        val vm = mockSuccessfulCase()
+        val id = 1
+        vm.deleteNoteById(id)
+        vm.noteSavedState.drop(1).first().let {
+            assertTrue(it.getSuccessData() ?: false)
+        }
+    }
+
+    @Test
+    fun propagateErrorFromDeleteNote() = runTest {
+        val vm = mockSuccessfulCase()
+        val id = 1
+        `when`(deleteNoteUseCase.deleteNoteById(id)).thenReturn(flow {
+            delay(1)
+            emit(RequestState.Error(errorExpected))
+        })
+        vm.deleteNoteById(id)
+        vm.noteSavedState.drop(1).first().let {
+            assertEquals(errorExpected, it.getErrorException())
+        }
+    }
+
     private suspend fun mockSuccessfulCase(): DetailViewModel {
         `when`(saveNoteUseCase.saveNote(note)).thenReturn(flow {
             delay(1)
@@ -137,6 +171,10 @@ class DetailViewModelTest : BaseUnitTest() {
             delay(1)
             emit(RequestState.Success(note))
         })
-        return DetailViewModel(saveNoteUseCase, getNoteUseCase)
+        `when`(deleteNoteUseCase.deleteNoteById(1)).thenReturn(flow {
+            delay(1)
+            emit(RequestState.Success(true))
+        })
+        return DetailViewModel(saveNoteUseCase, getNoteUseCase, deleteNoteUseCase)
     }
 }
