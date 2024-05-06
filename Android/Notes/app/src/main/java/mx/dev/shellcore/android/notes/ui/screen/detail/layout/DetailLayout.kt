@@ -51,7 +51,7 @@ fun DetailLayout(
     val saveSuccess = vm.noteSavedState.collectAsState().value
 
     if (id != 0) {
-        vm.getNoteById(id)
+        LaunchedEffect(key1 = null) { vm.getNoteById(id) }
     }
 
     if (saveSuccess.getSuccessData() == true) {

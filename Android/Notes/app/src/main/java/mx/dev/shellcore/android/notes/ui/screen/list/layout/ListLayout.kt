@@ -1,5 +1,6 @@
 package mx.dev.shellcore.android.notes.ui.screen.list.layout
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -121,7 +122,15 @@ fun ListLayoutContent(
                     items(items = it) { note ->
                         NoteItem(
                             modifier = Modifier.fillMaxWidth(),
-                            note = note
+                            note = note,
+                            onItemClick = {
+                                navController?.navigate(
+                                    NotesBaseRoute.DetailRoute.route.replace(
+                                        "{id}",
+                                        note.id.toString()
+                                    )
+                                )
+                            }
                         )
                     }
                 }
@@ -133,9 +142,12 @@ fun ListLayoutContent(
 @Composable
 fun NoteItem(
     modifier: Modifier = Modifier,
-    note: Note
+    note: Note,
+    onItemClick: (Note) -> Unit = {}
 ) {
-    Card(modifier = modifier) {
+    Card(modifier = modifier.clickable {
+        onItemClick(note)
+    }) {
         Column(
             modifier = modifier
                 .fillMaxWidth()

@@ -17,7 +17,10 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
         startDestination = NotesBaseRoute.ListRoute.route
     ) {
         composable(NotesBaseRoute.ListRoute.route) { ListLayout(navController = navController) }
-        composable(NotesBaseRoute.DetailRoute.route) { navBackStackEntry ->
+        composable(
+            NotesBaseRoute.DetailRoute.route,
+            arguments = NotesBaseRoute.DetailRoute.arguments
+        ) { navBackStackEntry ->
             val id = navBackStackEntry.arguments?.getInt("id") ?: 0
             DetailLayout(navController = navController, id = id)
         }
