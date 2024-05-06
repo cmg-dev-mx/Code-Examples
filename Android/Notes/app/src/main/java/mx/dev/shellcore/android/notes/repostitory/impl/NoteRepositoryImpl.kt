@@ -30,6 +30,11 @@ class NoteRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getNoteById(id: Int): Flow<RequestState<Note>> {
-        TODO("Not yet implemented")
+        return try {
+            val response = source.getNoteById(id)
+            flow { emit(RequestState.Success(response)) }
+        } catch (e: Exception) {
+            flow { emit(RequestState.Error(e)) }
+        }
     }
 }

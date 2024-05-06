@@ -18,6 +18,7 @@ class NoteRepositoryImplTest : BaseUnitTest() {
     private val expected: List<Note> = mock()
     private val exceptionExpected = RuntimeException("Something went wrong")
     private val note: Note = mock()
+    private val id = 1
 
     @Test
     fun callGetListFromSource() = runTest {
@@ -64,9 +65,32 @@ class NoteRepositoryImplTest : BaseUnitTest() {
         assertEquals(exceptionExpected, actual)
     }
 
+    @Test
+    fun callGetNoteFromSource() = runTest {
+        val repository = mockSuccessfulCase()
+        repository.getNoteById(id)
+        verify(source, times(1)).getNoteById(id)
+    }
+
+    @Test
+    fun getNoteByIdFromSource() = runTest {
+        val repository = mockSuccessfulCase()
+        val actual = repository.getNoteById(id).first().getSuccessData()
+        assertEquals(note, actual)
+    }
+
+    @Test
+    fun getErrorFromGetNoteById() = runTest {
+        val repository = mockSuccessfulCase()
+        `when`(source.getNoteById(id)).thenThrow(exceptionExpected)
+        val actual = repository.getNoteById(id).first().getErrorException()
+        assertEquals(exceptionExpected, actual)
+    }
+
     private suspend fun mockSuccessfulCase(): NoteRepositoryImpl {
         `when`(source.getList()).thenReturn(expected)
         `when`(source.save(note)).thenReturn(true)
+        `when`(source.getNoteById(id)).thenReturn(note)
         return NoteRepositoryImpl(source)
     }
 }

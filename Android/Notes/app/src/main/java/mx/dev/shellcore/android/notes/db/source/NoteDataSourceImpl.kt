@@ -23,4 +23,8 @@ class NoteDataSourceImpl @Inject constructor(
             throw e
         }
     }
+
+    override suspend fun getNoteById(id: Int): Note {
+        TODO("Not yet implemented")
+    }
 }
