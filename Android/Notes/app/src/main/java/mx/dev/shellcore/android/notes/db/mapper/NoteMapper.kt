@@ -5,8 +5,8 @@ import mx.dev.shellcore.android.notes.db.model.NoteDO
 import javax.inject.Inject
 
 class NoteMapper @Inject constructor() {
-    fun toModelList(daoResponse: List<NoteDO>): List<Note> {
-        return daoResponse.map { noteDO ->
+    fun toModelList(noteDOList: List<NoteDO>): List<Note> {
+        return noteDOList.map { noteDO ->
             Note(
                 id = noteDO.id,
                 title = noteDO.title ?: "",
@@ -22,6 +22,15 @@ class NoteMapper @Inject constructor() {
             title = note.title,
             content = note.content,
             date = note.date
+        )
+    }
+
+    fun toModel(noteDO: NoteDO): Note {
+        return Note(
+            id = noteDO.id,
+            title = noteDO.title ?: "",
+            content = noteDO.content ?: "",
+            date = noteDO.date
         )
     }
 }

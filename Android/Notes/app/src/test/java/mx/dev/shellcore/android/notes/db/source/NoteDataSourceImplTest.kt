@@ -22,6 +22,7 @@ class NoteDataSourceImplTest : BaseUnitTest() {
     private val exceptionExpected = RuntimeException("Something went wrong")
     private val note: Note = mock()
     private val noteDO: NoteDO = mock()
+    private val id = 1
 
     @Test
     fun callNotesFromDao() = runTest {
@@ -73,10 +74,35 @@ class NoteDataSourceImplTest : BaseUnitTest() {
         assertEquals(exceptionExpected, result.exceptionOrNull())
     }
 
+    @Test
+    fun callGetNoteByIdFromDao() = runTest {
+        val source = mockSuccessfulCase()
+        source.getNoteById(id)
+        verify(dao, times(1)).queryById(id)
+    }
+
+    @Test
+    fun getNoteByIdFromDao() = runTest {
+        val source = mockSuccessfulCase()
+        source.getNoteById(id)
+        val result = kotlin.runCatching { source.getNoteById(id) }
+        assertEquals(note, result.getOrNull())
+    }
+
+    @Test
+    fun propagateErrorsFromGetNoteById() = runTest {
+        val source = mockSuccessfulCase()
+        `when`(dao.queryById(id)).thenThrow(exceptionExpected)
+        val result = kotlin.runCatching { source.getNoteById(id) }
+        assertEquals(exceptionExpected, result.exceptionOrNull())
+    }
+
     private suspend fun mockSuccessfulCase(): NoteDataSourceImpl {
         `when`(dao.queryAll()).thenReturn(daoResponse)
         `when`(mapper.toModelList(daoResponse)).thenReturn(expected)
+        `when`(mapper.toModel(noteDO)).thenReturn(note)
         `when`(mapper.toDataObject(note)).thenReturn(noteDO)
+        `when`(dao.queryById(id)).thenReturn(noteDO)
         return NoteDataSourceImpl(dao, mapper)
     }
 }

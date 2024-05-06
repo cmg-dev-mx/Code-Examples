@@ -25,6 +25,10 @@ class NoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getNoteById(id: Int): Note {
-        TODO("Not yet implemented")
+        return try {
+            dao.queryById(id).let { mapper.toModel(it) }
+        } catch (e: Exception) {
+            throw e
+        }
     }
 }
