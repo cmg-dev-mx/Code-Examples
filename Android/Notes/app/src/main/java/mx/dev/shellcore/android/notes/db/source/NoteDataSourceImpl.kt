@@ -33,6 +33,11 @@ class NoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun deleteNoteById(id: Int): Boolean {
-        TODO("Not yet implemented")
+        return try {
+            dao.deleteById(id)
+            true
+        } catch (e: Exception) {
+            throw e
+        }
     }
 }

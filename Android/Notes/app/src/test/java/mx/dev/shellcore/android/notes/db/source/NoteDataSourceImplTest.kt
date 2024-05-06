@@ -97,6 +97,29 @@ class NoteDataSourceImplTest : BaseUnitTest() {
         assertEquals(exceptionExpected, result.exceptionOrNull())
     }
 
+    @Test
+    fun callDeleteNoteByIdFromDao() = runTest {
+        val source = mockSuccessfulCase()
+        source.deleteNoteById(id)
+        verify(dao, times(1)).deleteById(id)
+    }
+
+    @Test
+    fun deleteNoteByIdFromDao() = runTest {
+        val source = mockSuccessfulCase()
+        source.deleteNoteById(id)
+        val result = kotlin.runCatching { source.deleteNoteById(id) }
+        assertEquals(true, result.getOrNull())
+    }
+
+    @Test
+    fun propagateErrorsFromDeleteNoteById() = runTest {
+        val source = mockSuccessfulCase()
+        `when`(dao.deleteById(id)).thenThrow(exceptionExpected)
+        val result = kotlin.runCatching { source.deleteNoteById(id) }
+        assertEquals(exceptionExpected, result.exceptionOrNull())
+    }
+
     private suspend fun mockSuccessfulCase(): NoteDataSourceImpl {
         `when`(dao.queryAll()).thenReturn(daoResponse)
         `when`(mapper.toModelList(daoResponse)).thenReturn(expected)
