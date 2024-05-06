@@ -28,4 +28,8 @@ class NoteRepositoryImpl @Inject constructor(
             flow { emit(RequestState.Error(e)) }
         }
     }
+
+    override suspend fun getNoteById(id: Int): Flow<RequestState<Note>> {
+        TODO("Not yet implemented")
+    }
 }

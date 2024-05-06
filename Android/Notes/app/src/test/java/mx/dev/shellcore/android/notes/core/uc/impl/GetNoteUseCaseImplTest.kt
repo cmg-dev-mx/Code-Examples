@@ -1,6 +1,5 @@
 package mx.dev.shellcore.android.notes.core.uc.impl
 
-import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
@@ -8,44 +7,47 @@ import mx.dev.shellcore.android.notes.BaseUnitTest
 import mx.dev.shellcore.android.notes.core.model.Note
 import mx.dev.shellcore.android.notes.core.repository.base.NoteRepository
 import mx.dev.shellcore.android.notes.core.state.RequestState
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 
-class GetNoteListUseCaseImplTest : BaseUnitTest() {
+class GetNoteUseCaseImplTest : BaseUnitTest() {
 
     private val repository: NoteRepository = mock()
-    private val expected: List<Note> = mock()
+
+    private val id = 1
+    private val expected: Note = mock()
     private val errorExpected = RuntimeException("Something went wrong.")
 
     @Test
-    fun callGetListFromRepository() = runTest {
+    fun callGetNoteFromRepository() = runTest {
         val uc = mockSuccessfulCase()
-        uc.getList()
-        verify(repository, times(1)).getList()
+        uc.getNoteById(id)
+        verify(repository, times(1)).getNoteById(id)
     }
 
     @Test
-    fun getListFromRepository() = runTest {
+    fun getNoteByIdSuccess() = runTest {
         val uc = mockSuccessfulCase()
-        assertEquals(expected, uc.getList().first().getSuccessData())
+        assertEquals(expected, uc.getNoteById(id).first().getSuccessData())
     }
 
     @Test
     fun propagateErrorFromRepository() = runTest {
-        `when`(repository.getList()).thenReturn(flow {
+        val uc = mockSuccessfulCase()
+        `when`(repository.getNoteById(id)).thenReturn(flow {
             emit(RequestState.Error(errorExpected))
         })
-        val uc = GetNoteListUseCaseImpl(repository)
-        assertEquals(errorExpected, uc.getList().first().getErrorException())
+        assertEquals(errorExpected, uc.getNoteById(id).first().getErrorException())
     }
 
-    private suspend fun mockSuccessfulCase(): GetNoteListUseCaseImpl {
-        `when`(repository.getList()).thenReturn(flow {
+    private suspend fun mockSuccessfulCase(): GetNoteUseCaseImpl {
+        `when`(repository.getNoteById(id)).thenReturn(flow {
             emit(RequestState.Success(expected))
         })
-        return GetNoteListUseCaseImpl(repository)
+        return GetNoteUseCaseImpl(repository)
     }
 }
