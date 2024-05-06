@@ -39,6 +39,11 @@ class NoteRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteNoteById(id: Int): Flow<RequestState<Boolean>> {
-        TODO("Not yet implemented")
+        return try {
+            val response = source.deleteNoteById(id)
+            flow { emit(RequestState.Success(response)) }
+        } catch (e: Exception) {
+            flow { emit(RequestState.Error(e)) }
+        }
     }
 }

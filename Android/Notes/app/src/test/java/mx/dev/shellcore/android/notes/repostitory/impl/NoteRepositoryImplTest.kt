@@ -87,10 +87,33 @@ class NoteRepositoryImplTest : BaseUnitTest() {
         assertEquals(exceptionExpected, actual)
     }
 
+    @Test
+    fun callDeleteNoteFromSource() = runTest {
+        val repository = mockSuccessfulCase()
+        repository.deleteNoteById(id)
+        verify(source, times(1)).deleteNoteById(id)
+    }
+
+    @Test
+    fun getSuccessFromDeleteNoteById() = runTest {
+        val repository = mockSuccessfulCase()
+        val actual = repository.deleteNoteById(id).first().getSuccessData()
+        assertEquals(true, actual)
+    }
+
+    @Test
+    fun getErrorFromDeleteNoteById() = runTest {
+        val repository = mockSuccessfulCase()
+        `when`(source.deleteNoteById(id)).thenThrow(exceptionExpected)
+        val actual = repository.deleteNoteById(id).first().getErrorException()
+        assertEquals(exceptionExpected, actual)
+    }
+
     private suspend fun mockSuccessfulCase(): NoteRepositoryImpl {
         `when`(source.getList()).thenReturn(expected)
         `when`(source.save(note)).thenReturn(true)
         `when`(source.getNoteById(id)).thenReturn(note)
+        `when`(source.deleteNoteById(id)).thenReturn(true)
         return NoteRepositoryImpl(source)
     }
 }
