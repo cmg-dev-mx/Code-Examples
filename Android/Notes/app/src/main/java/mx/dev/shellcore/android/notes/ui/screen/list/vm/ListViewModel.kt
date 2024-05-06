@@ -19,7 +19,7 @@ class ListViewModel @Inject constructor(
     private val _noteState = MutableStateFlow<RequestState<List<Note>>>(RequestState.Idle)
     val noteState = _noteState.asStateFlow()
 
-    init {
+    fun getNotes() {
         viewModelScope.launch {
             _noteState.value = RequestState.Loading
             useCase.getList().collect {

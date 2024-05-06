@@ -25,13 +25,15 @@ class ListViewModelTest : BaseUnitTest() {
 
     @Test
     fun callGetListFromUseCase() = runTest {
-        mockSuccessfulCase()
+        val vm = mockSuccessfulCase()
+        vm.getNotes()
         verify(useCase, times(1)).getList()
     }
 
     @Test
     fun getLoadingStateBeforeUseCaseCall() = runTest {
         val vm = mockSuccessfulCase()
+        vm.getNotes()
         vm.noteState.first().let {
             assert(it is RequestState.Loading)
         }
@@ -40,6 +42,7 @@ class ListViewModelTest : BaseUnitTest() {
     @Test
     fun getNoteListFlowFromUseCase() = runTest {
         val vm = mockSuccessfulCase()
+        vm.getNotes()
         vm.noteState.drop(1).first().let {
             assertEquals(expectedList, it.getSuccessData())
         }
@@ -53,6 +56,7 @@ class ListViewModelTest : BaseUnitTest() {
         })
 
         val vm = ListViewModel(useCase)
+        vm.getNotes()
         vm.noteState.drop(1).first().let {
             assertEquals(errorExpected, it.getErrorException())
         }

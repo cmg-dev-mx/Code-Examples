@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,6 +63,11 @@ private fun ListLayoutPreview() {
 fun ListLayout(navController: NavController? = null) {
     val vm: ListViewModel = hiltViewModel()
     val noteState = vm.noteState.collectAsState().value
+
+    LaunchedEffect(key1 = null) {
+        vm.getNotes()
+    }
+
     ListLayoutContent(navController, noteState)
 }
 
