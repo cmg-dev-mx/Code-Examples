@@ -10,6 +10,7 @@ import kotlinx.coroutines.test.runTest
 import mx.dev.shellcore.android.notes.BaseUnitTest
 import mx.dev.shellcore.android.notes.core.model.Note
 import mx.dev.shellcore.android.notes.core.state.RequestState
+import mx.dev.shellcore.android.notes.core.uc.base.GetNoteUseCase
 import mx.dev.shellcore.android.notes.core.uc.base.SaveNoteUseCase
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -19,7 +20,8 @@ import org.mockito.Mockito.`when`
 
 class DetailViewModelTest : BaseUnitTest() {
 
-    private val useCase: SaveNoteUseCase = mock()
+    private val saveNoteUseCase: SaveNoteUseCase = mock()
+    private val getNoteUseCase: GetNoteUseCase = mock()
 
     private val note: Note = mock()
     private val errorExpected = RuntimeException("Something went wrong!")
@@ -28,7 +30,7 @@ class DetailViewModelTest : BaseUnitTest() {
     fun callSaveNoteFromUseCase() = runTest {
         val vm = mockSuccessfulCase()
         vm.saveNote(note)
-        verify(useCase, times(1)).saveNote(note)
+        verify(saveNoteUseCase, times(1)).saveNote(note)
     }
 
     @Test
@@ -43,7 +45,7 @@ class DetailViewModelTest : BaseUnitTest() {
     @Test
     fun propagateErrorFromUseCase() = runTest {
         val vm = mockSuccessfulCase()
-        `when`(useCase.saveNote(note)).thenReturn(flow {
+        `when`(saveNoteUseCase.saveNote(note)).thenReturn(flow {
             delay(1)
             emit(RequestState.Error(errorExpected))
         })
@@ -93,11 +95,47 @@ class DetailViewModelTest : BaseUnitTest() {
         }
     }
 
+    @Test
+    fun callGetNoteByIdFromUseCase() = runTest {
+        val vm = mockSuccessfulCase()
+        val id = 1
+        vm.getNoteById(id)
+        verify(getNoteUseCase, times(1)).getNoteById(id)
+    }
+
+    @Test
+    fun getNoteById() = runTest {
+        val vm = mockSuccessfulCase()
+        val id = 1
+        vm.getNoteById(id)
+        vm.note.drop(1).first().let {
+            assertEquals(note, it)
+        }
+    }
+
+    @Test
+    fun propagateErrorFromGetNoteById() = runTest {
+        val vm = mockSuccessfulCase()
+        val id = 1
+        `when`(getNoteUseCase.getNoteById(id)).thenReturn(flow {
+            delay(1)
+            emit(RequestState.Error(errorExpected))
+        })
+        vm.getNoteById(id)
+        vm.noteLoadedState.drop(1).first().let {
+            assertEquals(errorExpected, it.getErrorException())
+        }
+    }
+
     private suspend fun mockSuccessfulCase(): DetailViewModel {
-        `when`(useCase.saveNote(note)).thenReturn(flow {
+        `when`(saveNoteUseCase.saveNote(note)).thenReturn(flow {
             delay(1)
             emit(RequestState.Success(true))
         })
-        return DetailViewModel(useCase)
+        `when`(getNoteUseCase.getNoteById(1)).thenReturn(flow {
+            delay(1)
+            emit(RequestState.Success(note))
+        })
+        return DetailViewModel(saveNoteUseCase, getNoteUseCase)
     }
 }
