@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -68,7 +70,8 @@ fun DetailLayout(
         onClickBtnSave = {
             vm.saveNote(note, Calendar.getInstance().timeInMillis)
         },
-        onClickBtnBack = { navController?.popBackStack() }
+        onClickBtnBack = { navController?.popBackStack() },
+        onClickBtnDelete = { vm.deleteNoteById(note.id) }
     )
 }
 
@@ -79,7 +82,8 @@ fun DetailLayoutContent(
     onTitleChange: (String) -> Unit = {},
     onContentChange: (String) -> Unit = {},
     onClickBtnSave: () -> Unit = {},
-    onClickBtnBack: () -> Unit = {}
+    onClickBtnBack: () -> Unit = {},
+    onClickBtnDelete: () -> Unit = {}
 ) {
 
     Scaffold(
@@ -99,6 +103,15 @@ fun DetailLayoutContent(
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Go back",
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { onClickBtnDelete() }) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete note",
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }

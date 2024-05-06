@@ -95,7 +95,7 @@ fun ListLayoutContent(
             FloatingActionButton(
                 modifier = Modifier.testTag("AddBtn"),
                 onClick = {
-                    navController?.navigate(NotesBaseRoute.DetailRoute.route)
+                    navController?.navigate(NotesBaseRoute.DetailRoute.route.replace("{id}", "0"))
                 }
             ) {
                 Icon(
