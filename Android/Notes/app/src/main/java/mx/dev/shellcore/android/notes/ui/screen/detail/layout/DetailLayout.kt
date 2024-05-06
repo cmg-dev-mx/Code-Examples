@@ -66,8 +66,7 @@ fun DetailLayout(
         onTitleChange = { vm.setNoteTitle(it) },
         onContentChange = { vm.setNoteContent(it) },
         onClickBtnSave = {
-            vm.setNoteDate(Calendar.getInstance().timeInMillis)
-            vm.saveNote(note)
+            vm.saveNote(note, Calendar.getInstance().timeInMillis)
         },
         onClickBtnBack = { navController?.popBackStack() }
     )

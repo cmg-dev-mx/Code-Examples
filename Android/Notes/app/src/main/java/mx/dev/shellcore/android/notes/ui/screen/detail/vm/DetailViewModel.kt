@@ -27,8 +27,9 @@ class DetailViewModel @Inject constructor(
     private val _noteSavedState = MutableStateFlow<RequestState<Boolean>>(RequestState.Idle)
     val noteSavedState = _noteSavedState.asStateFlow()
 
-    fun saveNote(note: Note) {
+    fun saveNote(note: Note, timeInMillis: Long) {
         viewModelScope.launch {
+            note.date = timeInMillis
             saveNoteUseCase.saveNote(note).collect {
                 _noteSavedState.value = it
             }

@@ -17,6 +17,7 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
+import java.util.Calendar
 
 class DetailViewModelTest : BaseUnitTest() {
 
@@ -29,14 +30,14 @@ class DetailViewModelTest : BaseUnitTest() {
     @Test
     fun callSaveNoteFromUseCase() = runTest {
         val vm = mockSuccessfulCase()
-        vm.saveNote(note)
+        vm.saveNote(note, Calendar.getInstance().timeInMillis)
         verify(saveNoteUseCase, times(1)).saveNote(note)
     }
 
     @Test
     fun getSuccessInSaveNote() = runTest {
         val vm = mockSuccessfulCase()
-        vm.saveNote(note)
+        vm.saveNote(note, Calendar.getInstance().timeInMillis)
         vm.noteSavedState.drop(1).first().let {
             assertTrue(it.getSuccessData() ?: false)
         }
@@ -49,7 +50,7 @@ class DetailViewModelTest : BaseUnitTest() {
             delay(1)
             emit(RequestState.Error(errorExpected))
         })
-        vm.saveNote(note)
+        vm.saveNote(note, Calendar.getInstance().timeInMillis)
         vm.noteSavedState.drop(1).first().let {
             assertEquals(errorExpected, it.getErrorException())
         }
