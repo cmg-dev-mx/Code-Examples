@@ -8,4 +8,5 @@ interface NoteRepository {
     suspend fun getList(): Flow<RequestState<List<Note>>>
     suspend fun saveNote(note: Note): Flow<RequestState<Boolean>>
     suspend fun getNoteById(id: Int): Flow<RequestState<Note>>
+    suspend fun deleteNoteById(id: Int): Flow<RequestState<Boolean>>
 }
