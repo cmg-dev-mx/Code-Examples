@@ -12,7 +12,7 @@ import mx.dev.shellcore.android.recyclerviewdemo.databinding.ItemCommonBinding
 import mx.dev.shellcore.android.recyclerviewdemo.databinding.ItemPermissionBinding
 
 class ItemAdapter(
-    private val items: ArrayList<ItemCommon>,
+    private val items: List<ItemCommon>,
     private val onItemClicked: (ItemCommon) -> Unit = {}
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
