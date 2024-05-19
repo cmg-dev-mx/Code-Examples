@@ -22,7 +22,9 @@ class ListViewModel @Inject constructor(
     fun getPokemonList() {
         viewModelScope.launch {
             _list.value = RequestState.Loading
-            _list.value = repository.getPokemonList()
+            repository.getPokemonList().collect {
+                _list.value = it
+            }
         }
     }
 }
