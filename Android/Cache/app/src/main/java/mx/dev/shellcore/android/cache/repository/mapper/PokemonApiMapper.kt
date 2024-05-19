@@ -3,7 +3,7 @@ package mx.dev.shellcore.android.cache.repository.mapper
 import mx.dev.shellcore.android.cache.core.model.Pokemon
 import mx.dev.shellcore.android.cache.web.model.Result
 
-object PokemonMapper : Function1<List<Result>, List<Pokemon>> {
+object PokemonApiMapper : Function1<List<Result>, List<Pokemon>> {
 
     override fun invoke(p1: List<Result>) =
         p1.map {
