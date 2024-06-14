@@ -4,6 +4,7 @@ plugins {
     kotlin("kapt")
     alias(libs.plugins.daggerHilt)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
