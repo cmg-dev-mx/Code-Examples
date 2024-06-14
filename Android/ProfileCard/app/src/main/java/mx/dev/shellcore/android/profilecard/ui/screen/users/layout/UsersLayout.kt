@@ -29,7 +29,7 @@ import mx.dev.shellcore.android.profilecard.core.model.UserProfile
 import mx.dev.shellcore.android.profilecard.ui.common.AppBar
 import mx.dev.shellcore.android.profilecard.ui.common.ProfileContent
 import mx.dev.shellcore.android.profilecard.ui.common.ProfilePicture
-import mx.dev.shellcore.android.profilecard.ui.route.ProfileCardBaseRoute
+import mx.dev.shellcore.android.profilecard.ui.route.UserDetailScreen
 import mx.dev.shellcore.android.profilecard.ui.screen.users.vm.UsersViewModel
 
 @Composable
@@ -45,12 +45,7 @@ fun UsersLayout(navController: NavController? = null) {
     UsersLayoutContainer(
         users = users,
         onProfileClick = {
-            navController?.navigate(
-                route = ProfileCardBaseRoute.UserDetail.route.replace(
-                    "{id}",
-                    it.id.toString()
-                )
-            )
+            navController?.navigate(UserDetailScreen(it.id))
         }
     )
 }
