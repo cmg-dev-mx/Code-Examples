@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     kotlin("kapt")
     alias(libs.plugins.daggerHilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -64,6 +65,7 @@ dependencies {
 
     // navigation compose
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
 
     // hilt
     implementation(libs.dagger.hilt.android)
