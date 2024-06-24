@@ -41,10 +41,11 @@
 		46CE4BAD9227EF1D0F380416 /* libPods-MyFirstApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyFirstApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4864EDFA7CA1694834DB9874 /* Pods-MyFirstApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyFirstApp.release.xcconfig"; path = "Target Support Files/Pods-MyFirstApp/Pods-MyFirstApp.release.xcconfig"; sourceTree = "<group>"; };
 		51ACECC5FE9C3FFEF29B6AB7 /* libPods-MyFirstApp-MyFirstAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyFirstApp-MyFirstAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7F296E9B724A2AC3D80A3024 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = MyFirstApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		7F296E9B724A2AC3D80A3024 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = MyFirstApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = MyFirstApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A76724B7F207B38930A9F03E /* Pods-MyFirstApp-MyFirstAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyFirstApp-MyFirstAppTests.debug.xcconfig"; path = "Target Support Files/Pods-MyFirstApp-MyFirstAppTests/Pods-MyFirstApp-MyFirstAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B10CB258473462FF7D8B78E5 /* Pods-MyFirstApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyFirstApp.debug.xcconfig"; path = "Target Support Files/Pods-MyFirstApp/Pods-MyFirstApp.debug.xcconfig"; sourceTree = "<group>"; };
+		D761CF082C2A2AD00036F1F0 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		DADF696D84961D47193E38CB /* Pods-MyFirstApp-MyFirstAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyFirstApp-MyFirstAppTests.release.xcconfig"; path = "Target Support Files/Pods-MyFirstApp-MyFirstAppTests/Pods-MyFirstApp-MyFirstAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -121,6 +122,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				D761CF072C2A2AB00036F1F0 /* Fonts */,
 				13B07FAE1A68108700A75B9A /* MyFirstApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* MyFirstAppTests */,
@@ -151,6 +153,14 @@
 				DADF696D84961D47193E38CB /* Pods-MyFirstApp-MyFirstAppTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		D761CF072C2A2AB00036F1F0 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				D761CF082C2A2AD00036F1F0 /* MaterialIcons.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
