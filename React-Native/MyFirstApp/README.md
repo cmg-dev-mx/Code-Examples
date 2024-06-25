@@ -87,3 +87,36 @@ Al haber inicializado el proyecto, aceptando la instalación de pods para poder 
 3. $ npm install
 4. $ cd ios && pod install && cd ..
 5. $ npm start
+
+Otra forma de solucionar el problema es ejecutar el siguiente comando:
+
+1. $ npx pod-install
+
+# Librerías utilizadas
+
+## React Native Paper
+
+React Native Paper es una librería que proporciona componentes de Material Design para React Native. Se utiliza para darle un aspecto más agradable a la aplicación.
+
+Link: [https://reactnativepaper.com/](https://reactnativepaper.com/)
+
+Instalación:
+
+```bash
+npm install react-native-paper
+npm install react-native-safe-area-context
+```
+
+## React native vector icons
+
+React Native Vector Icons es una librería que proporciona iconos de diferentes fuentes para React Native. Se utiliza para agregar iconos a la aplicación.
+
+Link: [https://github.com/oblador/react-native-vector-icons?tab=readme-ov-file](https://github.com/oblador/react-native-vector-icons?tab=readme-ov-file)
+
+Instalación:
+
+```bash
+npm install --save react-native-vector-icons
+```
+
+Nota: Hay que seguir los pasos en la documentación para instalar los iconos en Android e iOS.
