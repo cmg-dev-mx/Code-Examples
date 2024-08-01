@@ -4,44 +4,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import mx.dev.shellcore.android.simplenotifications.source.notification.SimpleNotificationManager
+import mx.dev.shellcore.android.simplenotifications.ui.screen.main.layout.MainLayout
 import mx.dev.shellcore.android.simplenotifications.ui.theme.SimpleNotificationsTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        SimpleNotificationManager.initNotificationManager(
+            getSystemService(NOTIFICATION_SERVICE) as android.app.NotificationManager
+        )
+        SimpleNotificationManager.createNotificationChannel("DemoChannel", "This is  a demo")
+
         setContent {
             SimpleNotificationsTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                MainLayout()
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SimpleNotificationsTheme {
-        Greeting("Android")
     }
 }
