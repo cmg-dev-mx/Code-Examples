@@ -5,16 +5,18 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import androidx.core.app.NotificationCompat
+import androidx.core.app.RemoteInput
 import androidx.core.app.TaskStackBuilder
+import androidx.core.net.toUri
 import mx.dev.shellcore.android.simplenotifications.MainActivity
 
 
 object SimpleNotificationManager {
 
-    private val namespace = "mx.dev.shellcore.android.simplenotifications"
-    val CHANNEL_ID = "$namespace.channelId"
+    private const val NAMESPACE = "mx.dev.shellcore.android.simplenotifications"
+    private const val CHANNEL_ID = "$NAMESPACE.channelId"
+    const val KEY_REPLY = "key_reply"
 
     private var notificationManager: NotificationManager? = null
 
@@ -37,26 +39,10 @@ object SimpleNotificationManager {
         message: String,
         icon: Int = android.R.drawable.ic_dialog_info,
         priority: Int = NotificationCompat.PRIORITY_DEFAULT,
-        uri: String,
-        actionString: String? = null
-
+        uri: String? = null,
+        navigateWithButton: Boolean = false,
+        requireReply: Boolean = false
     ) {
-        val intent = Intent(
-            Intent.ACTION_VIEW,
-            Uri.parse(uri),
-            context,
-            MainActivity::class.java
-        )
-
-
-        val pendingIntent = TaskStackBuilder.create(context).run {
-            addNextIntentWithParentStack(intent)
-            getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE)
-        }
-
-        val action = if (actionString != null) {
-            NotificationCompat.Action.Builder(0, actionString, pendingIntent).build()
-        } else null
 
         val notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle(title)
@@ -64,10 +50,44 @@ object SimpleNotificationManager {
             .setSmallIcon(icon)
             .setPriority(priority)
 
-        if (action != null) {
-            notificationBuilder.addAction(action)
-        } else {
-            notificationBuilder.setContentIntent(pendingIntent)
+        uri?.let {
+
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                uri.toUri(),
+                context,
+                MainActivity::class.java
+            )
+
+            val pendingIntent = TaskStackBuilder.create(context).run {
+                addNextIntentWithParentStack(intent)
+                getPendingIntent(0, PendingIntent.FLAG_MUTABLE)
+            }
+
+            val navigateWithAction = if (navigateWithButton) {
+                NotificationCompat.Action.Builder(0, "Go to screen", pendingIntent).build()
+            } else null
+
+            val replyAction = if (requireReply) {
+                val remoteInput = RemoteInput.Builder(KEY_REPLY).run {
+                    setLabel("Write your name")
+                    build()
+                }
+
+                NotificationCompat.Action.Builder(
+                    0,
+                    "REPLY",
+                    pendingIntent
+                ).addRemoteInput(remoteInput)
+                    .build()
+
+            } else null
+
+            when {
+                navigateWithButton -> notificationBuilder.addAction(navigateWithAction)
+                requireReply -> notificationBuilder.addAction(replyAction)
+                else -> notificationBuilder.setContentIntent(pendingIntent)
+            }
         }
 
         val notification = notificationBuilder.build()

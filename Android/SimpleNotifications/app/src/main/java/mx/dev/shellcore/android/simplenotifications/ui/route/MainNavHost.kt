@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import kotlinx.serialization.Serializable
+import mx.dev.shellcore.android.simplenotifications.ui.screen.fourth.layout.FourthLayout
 import mx.dev.shellcore.android.simplenotifications.ui.screen.main.layout.MainLayout
 import mx.dev.shellcore.android.simplenotifications.ui.screen.second.layout.SecondLayout
 import mx.dev.shellcore.android.simplenotifications.ui.screen.third.layout.ThirdLayout
@@ -30,6 +31,11 @@ fun MainNavHost() {
         ) {
             ThirdLayout()
         }
+        composable<FourthScreen>(
+            deepLinks = listOf(navDeepLink { uriPattern = "$uri/fourth" })
+        ) {
+            FourthLayout()
+        }
     }
 }
 
@@ -41,3 +47,6 @@ object SecondScreen
 
 @Serializable
 object ThirdScreen
+
+@Serializable
+object FourthScreen
