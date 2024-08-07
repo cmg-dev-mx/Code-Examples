@@ -5,8 +5,10 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.core.app.NotificationCompat
-import mx.dev.shellcore.android.simplenotifications.SecondActivity
+import androidx.core.app.TaskStackBuilder
+import mx.dev.shellcore.android.simplenotifications.MainActivity
 
 
 object SimpleNotificationManager {
@@ -34,15 +36,21 @@ object SimpleNotificationManager {
         title: String,
         message: String,
         icon: Int = android.R.drawable.ic_dialog_info,
-        priority: Int = NotificationCompat.PRIORITY_DEFAULT
+        priority: Int = NotificationCompat.PRIORITY_DEFAULT,
+        uri: String
     ) {
-        val tapResultIntent = Intent(context, SecondActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(
+
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse(uri),
             context,
-            0,
-            tapResultIntent,
-            PendingIntent.FLAG_IMMUTABLE
+            MainActivity::class.java
         )
+
+        val pendingIntent = TaskStackBuilder.create(context).run {
+            addNextIntentWithParentStack(intent)
+            getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE)
+        }
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle(title)

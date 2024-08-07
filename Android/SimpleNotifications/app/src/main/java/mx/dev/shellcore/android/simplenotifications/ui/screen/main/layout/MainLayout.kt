@@ -76,6 +76,7 @@ private fun Context.displayNotification() {
         context = this,
         title = "Simple Notification",
         message = "This is a simple notification",
-        priority = NotificationCompat.PRIORITY_HIGH
+        priority = NotificationCompat.PRIORITY_HIGH,
+        uri = "https://shellcore.mx/second"
     )
 }

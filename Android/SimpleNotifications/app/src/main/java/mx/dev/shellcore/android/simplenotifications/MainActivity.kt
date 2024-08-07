@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import mx.dev.shellcore.android.simplenotifications.source.notification.SimpleNotificationManager
-import mx.dev.shellcore.android.simplenotifications.ui.screen.main.layout.MainLayout
+import mx.dev.shellcore.android.simplenotifications.ui.route.MainNavHost
 import mx.dev.shellcore.android.simplenotifications.ui.theme.SimpleNotificationsTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             SimpleNotificationsTheme {
-                MainLayout()
+                MainNavHost()
             }
         }
     }
