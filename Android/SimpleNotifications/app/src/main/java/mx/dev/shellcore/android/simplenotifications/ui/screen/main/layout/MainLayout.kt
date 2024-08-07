@@ -67,16 +67,39 @@ fun MainLayout() {
             ) {
                 Text(text = "Trigger notification")
             }
+
+            Button(
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.onSecondary
+                ),
+                onClick = { context.displayNotificationWithAction() }
+            ) {
+                Text(text = "Trigger notification with action")
+            }
         }
     }
 }
 
 private fun Context.displayNotification() {
+
     SimpleNotificationManager.createNotification(
         context = this,
         title = "Simple Notification",
         message = "This is a simple notification",
         priority = NotificationCompat.PRIORITY_HIGH,
         uri = "https://shellcore.mx/second"
+    )
+}
+
+private fun Context.displayNotificationWithAction() {
+
+    SimpleNotificationManager.createNotification(
+        context = this,
+        title = "Simple Notification",
+        message = "This is a simple notification",
+        priority = NotificationCompat.PRIORITY_HIGH,
+        uri = "https://shellcore.mx/third",
+        actionString = "Third",
     )
 }

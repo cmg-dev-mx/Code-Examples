@@ -37,9 +37,10 @@ object SimpleNotificationManager {
         message: String,
         icon: Int = android.R.drawable.ic_dialog_info,
         priority: Int = NotificationCompat.PRIORITY_DEFAULT,
-        uri: String
-    ) {
+        uri: String,
+        actionString: String? = null
 
+    ) {
         val intent = Intent(
             Intent.ACTION_VIEW,
             Uri.parse(uri),
@@ -47,18 +48,29 @@ object SimpleNotificationManager {
             MainActivity::class.java
         )
 
+
         val pendingIntent = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(intent)
             getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE)
         }
 
-        val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+        val action = if (actionString != null) {
+            NotificationCompat.Action.Builder(0, actionString, pendingIntent).build()
+        } else null
+
+        val notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle(title)
             .setContentText(message)
             .setSmallIcon(icon)
             .setPriority(priority)
-            .setContentIntent(pendingIntent)
-            .build()
+
+        if (action != null) {
+            notificationBuilder.addAction(action)
+        } else {
+            notificationBuilder.setContentIntent(pendingIntent)
+        }
+
+        val notification = notificationBuilder.build()
 
         notificationManager?.notify(1, notification)
     }
