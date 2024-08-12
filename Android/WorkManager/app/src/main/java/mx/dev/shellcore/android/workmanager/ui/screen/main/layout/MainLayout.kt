@@ -27,14 +27,18 @@ import androidx.work.Data
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import mx.dev.shellcore.android.workmanager.MainActivity
 import mx.dev.shellcore.android.workmanager.ui.theme.WorkManagerTheme
 import mx.dev.shellcore.android.workmanager.worker.CompressWorker
 import mx.dev.shellcore.android.workmanager.worker.DownloadWorker
 import mx.dev.shellcore.android.workmanager.worker.FilterWorker
+import mx.dev.shellcore.android.workmanager.worker.RepeatWorker
 import mx.dev.shellcore.android.workmanager.worker.UploadWorker
 import mx.dev.shellcore.android.workmanager.worker.UploadWorker.Companion.KEY_DATA
+import java.util.concurrent.TimeUnit
 
 @Preview
 @Composable
@@ -48,6 +52,7 @@ private fun MainLayoutPreview() {
 @Composable
 fun MainLayout() {
     val context = LocalContext.current
+    val applicationContext = context.applicationContext
 
     var textState by remember { mutableStateOf("No state yet") }
 
@@ -81,6 +86,14 @@ fun MainLayout() {
                 }
             ) {
                 Text(text = "Upload")
+            }
+
+            Button(
+                onClick = {
+                    setPeriodicWorkRequest(context = applicationContext)
+                }
+            ) {
+                Text(text = "Periodic")
             }
 
             Text(
@@ -136,4 +149,14 @@ private fun setOneTimeWorkRequest(context: Context, stateListener: (String) -> U
                 stateListener(result ?: "No data")
             }
         }
+}
+
+private fun setPeriodicWorkRequest(context: Context) {
+    val periodicRequest = PeriodicWorkRequestBuilder<RepeatWorker>(
+        PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS,
+        TimeUnit.MILLISECONDS
+    ).build()
+
+    WorkManager.getInstance(context)
+        .enqueue(periodicRequest)
 }
