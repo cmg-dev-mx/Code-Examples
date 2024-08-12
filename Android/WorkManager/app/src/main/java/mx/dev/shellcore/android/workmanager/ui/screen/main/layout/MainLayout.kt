@@ -23,12 +23,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.work.Constraints
+import androidx.work.Data
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import mx.dev.shellcore.android.workmanager.MainActivity
 import mx.dev.shellcore.android.workmanager.ui.theme.WorkManagerTheme
 import mx.dev.shellcore.android.workmanager.worker.UploadWorker
+import mx.dev.shellcore.android.workmanager.worker.UploadWorker.Companion.KEY_DATA
 
 @Preview
 @Composable
@@ -86,6 +88,10 @@ fun MainLayout() {
 
 private fun setOneTimeWorkRequest(context: Context, stateListener: (String) -> Unit) {
 
+    val data = Data.Builder()
+        .putString(KEY_DATA, "This is the content to upload")
+        .build()
+
     val workerConstraints = Constraints.Builder()
         .setRequiresCharging(true)
         .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -93,6 +99,7 @@ private fun setOneTimeWorkRequest(context: Context, stateListener: (String) -> U
 
     val uploadRequest = OneTimeWorkRequestBuilder<UploadWorker>()
         .setConstraints(workerConstraints)
+        .setInputData(data)
         .build()
 
     val workManager = WorkManager.getInstance(context)
@@ -100,5 +107,10 @@ private fun setOneTimeWorkRequest(context: Context, stateListener: (String) -> U
     workManager.getWorkInfoByIdLiveData(uploadRequest.id)
         .observe(context as MainActivity) { workInfo ->
             stateListener(workInfo.state.name)
+
+            if (workInfo.state.isFinished) {
+                val result = workInfo.outputData.getString(UploadWorker.KEY_RESULT)
+                stateListener(result ?: "No data")
+            }
         }
 }
