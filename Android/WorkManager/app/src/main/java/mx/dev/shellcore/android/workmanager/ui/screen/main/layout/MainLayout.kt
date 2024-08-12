@@ -22,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.work.Constraints
+import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import mx.dev.shellcore.android.workmanager.MainActivity
@@ -83,13 +85,18 @@ fun MainLayout() {
 }
 
 private fun setOneTimeWorkRequest(context: Context, stateListener: (String) -> Unit) {
-    val workManager = WorkManager.getInstance(context)
 
-    val uploadRequest = OneTimeWorkRequestBuilder<UploadWorker>()
+    val workerConstraints = Constraints.Builder()
+        .setRequiresCharging(true)
+        .setRequiredNetworkType(NetworkType.CONNECTED)
         .build()
 
-    workManager.enqueue(uploadRequest)
+    val uploadRequest = OneTimeWorkRequestBuilder<UploadWorker>()
+        .setConstraints(workerConstraints)
+        .build()
 
+    val workManager = WorkManager.getInstance(context)
+    workManager.enqueue(uploadRequest)
     workManager.getWorkInfoByIdLiveData(uploadRequest.id)
         .observe(context as MainActivity) { workInfo ->
             stateListener(workInfo.state.name)
