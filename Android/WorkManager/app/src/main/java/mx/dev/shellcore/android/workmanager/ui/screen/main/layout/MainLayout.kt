@@ -25,10 +25,14 @@ import androidx.compose.ui.unit.dp
 import androidx.work.Constraints
 import androidx.work.Data
 import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import mx.dev.shellcore.android.workmanager.MainActivity
 import mx.dev.shellcore.android.workmanager.ui.theme.WorkManagerTheme
+import mx.dev.shellcore.android.workmanager.worker.CompressWorker
+import mx.dev.shellcore.android.workmanager.worker.DownloadWorker
+import mx.dev.shellcore.android.workmanager.worker.FilterWorker
 import mx.dev.shellcore.android.workmanager.worker.UploadWorker
 import mx.dev.shellcore.android.workmanager.worker.UploadWorker.Companion.KEY_DATA
 
@@ -102,8 +106,27 @@ private fun setOneTimeWorkRequest(context: Context, stateListener: (String) -> U
         .setInputData(data)
         .build()
 
+    val filterRequest = OneTimeWorkRequestBuilder<FilterWorker>()
+        .build()
+
+    val compressRequest = OneTimeWorkRequestBuilder<CompressWorker>()
+        .build()
+
+    val downloadRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
+        .build()
+
+    val parallelWork = mutableListOf<OneTimeWorkRequest>() // Parallel work
+
+    parallelWork.add(downloadRequest)
+    parallelWork.add(filterRequest)
+
     val workManager = WorkManager.getInstance(context)
-    workManager.enqueue(uploadRequest)
+
+    workManager.beginWith(parallelWork) // Chain work
+        .then(compressRequest)
+        .then(uploadRequest)
+        .enqueue()
+
     workManager.getWorkInfoByIdLiveData(uploadRequest.id)
         .observe(context as MainActivity) { workInfo ->
             stateListener(workInfo.state.name)
