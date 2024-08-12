@@ -25,3 +25,5 @@ Ejercicios de ejemplo en el desarrollo de aplicaciones, algoritmos, y diseño de
 - (Compose) [HCaptcha](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/HCaptcha)
 - (XML) [Recycler View multiple layouts](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/RecyclerViewDemo)
 - (Compose) [Cache](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/Cache)
+- (Compose) [Notifications](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/SimpleNotifications)
+- (Compose) [Work Manager](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/WorkManager)
