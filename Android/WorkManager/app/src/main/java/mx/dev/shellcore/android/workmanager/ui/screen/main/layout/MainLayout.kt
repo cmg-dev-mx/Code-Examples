@@ -1,6 +1,7 @@
 package mx.dev.shellcore.android.workmanager.ui.screen.main.layout
 
 import android.content.Context
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,12 +14,17 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import mx.dev.shellcore.android.workmanager.MainActivity
 import mx.dev.shellcore.android.workmanager.ui.theme.WorkManagerTheme
 import mx.dev.shellcore.android.workmanager.worker.UploadWorker
 
@@ -34,6 +40,9 @@ private fun MainLayoutPreview() {
 @Composable
 fun MainLayout() {
     val context = LocalContext.current
+
+    var textState by remember { mutableStateOf("No state yet") }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -53,23 +62,36 @@ fun MainLayout() {
             modifier = Modifier
                 .padding(parentPadding)
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Button(
                 onClick = {
-                    setOneTimeWorkRequest(context = context)
+                    setOneTimeWorkRequest(context = context) {
+                        textState = it
+                    }
                 }
             ) {
                 Text(text = "Upload")
             }
+
+            Text(
+                text = textState
+            )
         }
     }
 }
 
-private fun setOneTimeWorkRequest(context: Context) {
+private fun setOneTimeWorkRequest(context: Context, stateListener: (String) -> Unit) {
+    val workManager = WorkManager.getInstance(context)
+
     val uploadRequest = OneTimeWorkRequestBuilder<UploadWorker>()
         .build()
 
-    WorkManager.getInstance(context)
-        .enqueue(uploadRequest)
+    workManager.enqueue(uploadRequest)
+
+    workManager.getWorkInfoByIdLiveData(uploadRequest.id)
+        .observe(context as MainActivity) { workInfo ->
+            stateListener(workInfo.state.name)
+        }
 }
