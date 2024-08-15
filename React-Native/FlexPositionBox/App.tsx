@@ -1,11 +1,13 @@
 import React from 'react';
 import {SafeAreaView} from 'react-native';
 import {MainScreen} from './src/presentation/screen/MainScreen';
+import {BoxObjectModelScreen} from './src/presentation/screen/BoxObjectModelScreen';
 
 export const App = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
-      <MainScreen />
+      {/* <MainScreen /> */}
+      <BoxObjectModelScreen />
     </SafeAreaView>
   );
 };
