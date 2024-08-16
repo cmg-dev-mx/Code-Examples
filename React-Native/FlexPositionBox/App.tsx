@@ -4,6 +4,7 @@ import {MainScreen} from './src/presentation/screen/MainScreen';
 import {BoxObjectModelScreen} from './src/presentation/screen/BoxObjectModelScreen';
 import {DimensionScreen} from './src/presentation/screen/DimensionScreen';
 import {PositionScreen} from './src/presentation/screen/PositionScreen';
+import {FlexScreen} from './src/presentation/screen/FlexScreen';
 
 export const App = () => {
   return (
@@ -11,7 +12,8 @@ export const App = () => {
       {/* <MainScreen /> */}
       {/* <BoxObjectModelScreen /> */}
       {/* <DimensionScreen /> */}
-      <PositionScreen />
+      {/* <PositionScreen /> */}
+      <FlexScreen />
     </SafeAreaView>
   );
 };
