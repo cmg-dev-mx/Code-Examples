@@ -29,3 +29,4 @@ Ejercicios de ejemplo en el desarrollo de aplicaciones, algoritmos, y diseño de
 - (Compose) [Work Manager](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/WorkManager)
 - (Compose) [Timer](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/BroadcastTimer)
 - (Compose) [Snackbar](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/ComposeSnackbar)
+- (Compose) [Handled Events](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/HandledEvents) (MVI)
