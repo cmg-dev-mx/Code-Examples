@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
   },
   orangeBox: {
     backgroundColor: '#F0A23B',
+    flex: 1,
   },
   blueBox: {
     backgroundColor: '#28C4D9',
