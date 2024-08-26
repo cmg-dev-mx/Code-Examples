@@ -92,6 +92,7 @@ $ npm run ios
 $ npm install react-native-paper
 $ npm install react-native-safe-area-context
 $ npx pod-install
+$ npm i --save-dev @types/react-native-vector-icons
 ```
 
 ### React Navive Vector Icons
@@ -119,12 +120,6 @@ apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 >     iconFontNames: [ 'MaterialIcons.ttf' ]
 > ]
 > ```
-
-3. Ejecutar el siguiente comando para sincronizar los iconos con la aplicación.
-
-```sh
-$ npm i --save-dev @types/react-native-vector-icons
-```
 
 #### Configuración de la librería en iOS
 
