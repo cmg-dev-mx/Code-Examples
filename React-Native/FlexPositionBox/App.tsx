@@ -6,6 +6,7 @@ import {DimensionScreen} from './src/presentation/screen/DimensionScreen';
 import {PositionScreen} from './src/presentation/screen/PositionScreen';
 import {FlexScreen} from './src/presentation/screen/FlexScreen';
 import {FlexDirectionScreen} from './src/presentation/screen/FlexDirectionScreen';
+import {HomeworkScreen} from './src/presentation/screen/HomeworkScreen';
 
 export const App = () => {
   return (
@@ -15,7 +16,8 @@ export const App = () => {
       {/* <DimensionScreen /> */}
       {/* <PositionScreen /> */}
       {/* <FlexScreen /> */}
-      <FlexDirectionScreen />
+      {/* <FlexDirectionScreen /> */}
+      <HomeworkScreen />
     </SafeAreaView>
   );
 };
