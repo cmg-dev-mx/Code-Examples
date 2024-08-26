@@ -15,24 +15,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#28425B',
+    flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
   },
   box: {
     width: 100,
-    height: 100,
     borderWidth: 10,
     borderColor: 'white',
   },
   purpleBox: {
     backgroundColor: '#5856D6',
-    alignSelf: 'flex-end',
   },
   orangeBox: {
     backgroundColor: '#F0A23B',
   },
   blueBox: {
     backgroundColor: '#28C4D9',
-    alignSelf: 'flex-start',
   },
 });
