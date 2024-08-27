@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, Pressable} from 'react-native';
-import {colors, styles} from '../../config/app-theme';
+import {colors, styles} from '../../config/theme/app-theme';
 import {CalculatorButton} from '../components/CalculatorButton';
 
 export const CalculatorScreen = () => {
