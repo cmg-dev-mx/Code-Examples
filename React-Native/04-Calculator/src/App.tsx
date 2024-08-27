@@ -1,10 +1,11 @@
 import React from 'react';
 import {StatusBar, View} from 'react-native';
 import {CalculatorScreen} from './presentation/screens/CalculatorScreen';
+import {styles} from './config/app-theme';
 
 function App() {
   return (
-    <View>
+    <View style={styles.background}>
       <StatusBar barStyle={'light-content'} backgroundColor={'#444444'} />
       <CalculatorScreen />
     </View>
