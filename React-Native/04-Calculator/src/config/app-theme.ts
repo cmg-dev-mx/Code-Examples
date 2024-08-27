@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.darkGray,
     borderRadius: 100,
     justifyContent: 'center',
-    marginHorizontal: 10,
+    marginHorizontal: 5,
   },
   buttonText: {
     textAlign: 'center',
