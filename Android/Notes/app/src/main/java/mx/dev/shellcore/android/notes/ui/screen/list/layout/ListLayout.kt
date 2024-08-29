@@ -34,7 +34,7 @@ import androidx.navigation.NavController
 import mx.dev.shellcore.android.notes.R
 import mx.dev.shellcore.android.notes.core.model.Note
 import mx.dev.shellcore.android.notes.core.state.RequestState
-import mx.dev.shellcore.android.notes.ui.route.NotesBaseRoute
+import mx.dev.shellcore.android.notes.ui.route.DetailScreen
 import mx.dev.shellcore.android.notes.ui.screen.list.vm.ListViewModel
 import mx.dev.shellcore.android.notes.ui.theme.NotesTheme
 import mx.dev.shellcore.android.notes.ui.utils.DisplayResult
@@ -95,7 +95,7 @@ fun ListLayoutContent(
             FloatingActionButton(
                 modifier = Modifier.testTag("AddBtn"),
                 onClick = {
-                    navController?.navigate(NotesBaseRoute.DetailRoute.route.replace("{id}", "0"))
+                    navController?.navigate(DetailScreen(id = 0))
                 }
             ) {
                 Icon(
@@ -130,12 +130,7 @@ fun ListLayoutContent(
                             modifier = Modifier.fillMaxWidth(),
                             note = note,
                             onItemClick = {
-                                navController?.navigate(
-                                    NotesBaseRoute.DetailRoute.route.replace(
-                                        "{id}",
-                                        note.id.toString()
-                                    )
-                                )
+                                navController?.navigate(DetailScreen(note.id))
                             }
                         )
                     }
