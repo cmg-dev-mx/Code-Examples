@@ -1,7 +1,17 @@
-import {useState} from 'react';
+import {useRef, useState} from 'react';
+
+enum Operator {
+  sum,
+  substract,
+  multiply,
+  divide,
+}
 
 export const useCalculator = () => {
   const [number, setNumber] = useState('0');
+  const [prevNumber, setPrevNumber] = useState('0');
+
+  const lastOperation = useRef<Operator>();
 
   const buildNumber = (textNumber: string) => {
     if (number.includes('.') && textNumber === '.') return;
@@ -22,8 +32,60 @@ export const useCalculator = () => {
     }
   };
 
+  const setLastNumber = () => {
+    if (number.endsWith('.')) {
+      setPrevNumber(number.slice(0, -1));
+    } else {
+      setPrevNumber(number);
+    }
+    setNumber('0');
+  };
+
+  const divideOperation = () => {
+    setLastNumber();
+    lastOperation.current = Operator.divide;
+  };
+
+  const multiplyOperation = () => {
+    setLastNumber();
+    lastOperation.current = Operator.multiply;
+  };
+
+  const sumOperation = () => {
+    setLastNumber();
+    lastOperation.current = Operator.sum;
+  };
+
+  const substractOperation = () => {
+    setLastNumber();
+    lastOperation.current = Operator.substract;
+  };
+
+  const calculate = () => {
+    const num1 = Number(number);
+    const num2 = Number(prevNumber);
+
+    switch (lastOperation.current) {
+      case Operator.sum:
+        setNumber(`${num1 + num2}`);
+        break;
+      case Operator.substract:
+        setNumber(`${num2 - num1}`);
+        break;
+      case Operator.multiply:
+        setNumber(`${num1 * num2}`);
+        break;
+      case Operator.divide:
+        setNumber(`${num2 / num1}`);
+        break;
+    }
+
+    setPrevNumber('0');
+  };
+
   const clean = () => {
     setNumber('0');
+    setPrevNumber('0');
   };
 
   const deleteOperation = () => {
@@ -45,11 +107,17 @@ export const useCalculator = () => {
   return {
     // Properties
     number,
+    prevNumber,
 
     // Methods
     buildNumber,
     clean,
     deleteOperation,
     togglePositiveNegative,
+    divideOperation,
+    multiplyOperation,
+    sumOperation,
+    substractOperation,
+    calculate,
   };
 };
