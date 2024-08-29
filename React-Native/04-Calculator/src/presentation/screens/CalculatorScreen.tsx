@@ -26,9 +26,16 @@ export const CalculatorScreen = () => {
         <Text style={styles.mainResult} adjustsFontSizeToFit numberOfLines={1}>
           {formule}
         </Text>
-        <Text style={styles.subResult} adjustsFontSizeToFit numberOfLines={1}>
-          {(prevNumber !== '0' && prevNumber) || ''}
-        </Text>
+        {formule === prevNumber ? (
+          <Text
+            style={styles.subResult}
+            adjustsFontSizeToFit
+            numberOfLines={1}></Text>
+        ) : (
+          <Text style={styles.subResult} adjustsFontSizeToFit numberOfLines={1}>
+            {prevNumber}
+          </Text>
+        )}
       </View>
 
       <View style={styles.row}>

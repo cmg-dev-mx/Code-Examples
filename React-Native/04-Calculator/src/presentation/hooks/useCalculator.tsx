@@ -24,6 +24,11 @@ export const useCalculator = () => {
     }
   }, [number]);
 
+  useEffect(() => {
+    const subResult = calculateSubResult();
+    setPrevNumber(`${subResult}`);
+  }, [formule]);
+
   const buildNumber = (textNumber: string) => {
     if (number.includes('.') && textNumber === '.') return;
     if (number.startsWith('0') || number.startsWith('-0')) {
@@ -44,6 +49,8 @@ export const useCalculator = () => {
   };
 
   const setLastNumber = () => {
+    calculate();
+
     if (number.endsWith('.')) {
       setPrevNumber(number.slice(0, -1));
     } else {
