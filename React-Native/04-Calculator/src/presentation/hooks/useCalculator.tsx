@@ -22,11 +22,34 @@ export const useCalculator = () => {
     }
   };
 
+  const clean = () => {
+    setNumber('0');
+  };
+
+  const deleteOperation = () => {
+    if (number.length === 1 || (number.length === 2 && number.includes('-'))) {
+      setNumber('0');
+    } else {
+      setNumber(number.slice(0, -1));
+    }
+  };
+
+  const togglePositiveNegative = () => {
+    if (number.includes('-')) {
+      setNumber(number.replace('-', ''));
+    } else {
+      setNumber('-' + number);
+    }
+  };
+
   return {
     // Properties
     number,
 
     // Methods
     buildNumber,
+    clean,
+    deleteOperation,
+    togglePositiveNegative,
   };
 };
