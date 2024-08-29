@@ -6,6 +6,7 @@ import {useCalculator} from '../hooks/useCalculator';
 
 export const CalculatorScreen = () => {
   const {
+    formule,
     number,
     prevNumber,
     buildNumber,
@@ -23,7 +24,7 @@ export const CalculatorScreen = () => {
     <View style={styles.calculatorContainer}>
       <View style={{paddingHorizontal: 30, paddingBottom: 20}}>
         <Text style={styles.mainResult} adjustsFontSizeToFit numberOfLines={1}>
-          {number}
+          {formule}
         </Text>
         <Text style={styles.subResult} adjustsFontSizeToFit numberOfLines={1}>
           {(prevNumber !== '0' && prevNumber) || ''}
