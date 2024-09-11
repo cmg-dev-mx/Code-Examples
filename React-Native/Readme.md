@@ -143,3 +143,52 @@ apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 ```sh
 $ npx pod-install
 ```
+
+### React navigation
+
+- [Documentación](https://reactnavigation.org/docs/getting-started): Librería de navegación para React Native.
+
+1. Ejecutar las siguientes líneas de comando para instalar la librería.
+
+```sh
+$ npm install @react-navigation/native
+$ npm install react-native-screens react-native-safe-area-context
+```
+
+2. Realizar la configuración de la librería en Android e iOS.
+3. Envolver la aplicación con el componente `NavigationContainer` en el archivo `App.js`.
+
+```jsx
+import "react-native-gesture-handler";
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+
+export default function App() {
+  return (
+    <NavigationContainer>{/* Resto de la aplicación */}</NavigationContainer>
+  );
+}
+```
+
+#### Configuración de la librería en Android
+
+1. Abrir el archivo `MainActivity.kt` del proyecto.
+2. Agregar las siguientes líneas en el archivo.
+
+```kotlin
+import android.os.Bundle
+
+class MainActivity: ReactActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(null)
+    }
+}
+```
+
+#### Configuración de la librería en iOS
+
+1. Ejecutar el siguiente comando para sincronizar los iconos con la aplicación.
+
+```sh
+$ npx pod-install
+```
