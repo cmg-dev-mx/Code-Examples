@@ -192,3 +192,26 @@ class MainActivity: ReactActivity() {
 ```sh
 $ npx pod-install
 ```
+
+#### Sublibrería: Stack Navigator
+
+- [Documentación](https://reactnavigation.org/docs/stack-navigator): Librería de navegación en pila para React Native.
+
+1. Ejecutar las siguientes líneas de comando para instalar la librería.
+
+```sh
+$ npm install @react-navigation/stack
+$ npm install react-native-gesture-handler
+```
+
+2. Agregar el componente `createStackNavigator` en el archivo `App.js`.
+
+```jsx
+import 'react-native-gesture-handler';
+```
+
+3. Opcionalmente, se puede instalar la siguiente ilbrería en caso de que se requiere usar las animaciones con estílo UIKit para el encabezado.
+
+```sh
+$ npm install @react-native-masked-view/masked-view
+```
