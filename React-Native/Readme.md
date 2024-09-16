@@ -204,14 +204,72 @@ $ npm install @react-navigation/stack
 $ npm install react-native-gesture-handler
 ```
 
-2. Agregar el componente `createStackNavigator` en el archivo `App.js`.
+2. Crear los siguientes archivos para importar la librería de forma condicional.
 
-```jsx
+```js
+// gesture-handler.native.js
 import 'react-native-gesture-handler';
 ```
 
-3. Opcionalmente, se puede instalar la siguiente ilbrería en caso de que se requiere usar las animaciones con estílo UIKit para el encabezado.
+```js
+// gesture-handler.js
+// Don't import react-native-gesture-handler on web
+```
+
+3. Agregar el componente `createStackNavigator` en el archivo `App.js`.
+
+```jsx
+import './gesture-handler';
+```
+
+4. Opcionalmente, se puede instalar la siguiente librería en caso de que se requiere usar las animaciones con estílo UIKit para el encabezado.
 
 ```sh
 $ npm install @react-native-masked-view/masked-view
+```
+
+#### Sublibrería: Navigation Drawer
+
+- [Documentación](https://reactnavigation.org/docs/drawer-navigator): Librería de navegación con cajón para React Native.
+- [Documentación React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/): Librería de animaciones para React Native.
+
+1. Ejecutar las siguientes líneas de comando para instalar la librería.
+
+```sh
+$ npm install @react-navigation/drawer
+$ npm install react-native-gesture-handler react-native-reanimated
+```
+
+2. Crear los siguientes archivos para importar la librería de forma condicional.
+
+```js
+// gesture-handler.native.js
+import 'react-native-gesture-handler';
+```
+
+```js
+// gesture-handler.js
+// Don't import react-native-gesture-handler on web
+```
+
+3. Agregar el componente `createStackNavigator` en el archivo `App.js`.
+
+```jsx
+import './gesture-handler';
+```
+
+4. En el archivo babel.config.js, agregar la siguiente configuración.
+
+```js
+module.exports = {
+  presets: ['module:metro-react-native-babel-preset'],
+  plugins: ['react-native-reanimated/plugin'],
+};
+```
+
+Nota: Si da problemas al ejecutar la aplicación, ejecuta el siguiente comando.
+
+```sh
+$ npm pod-install
+$ npm react-native start --reset-cache
 ```
