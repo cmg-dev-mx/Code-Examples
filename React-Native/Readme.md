@@ -270,6 +270,6 @@ module.exports = {
 Nota: Si da problemas al ejecutar la aplicación, ejecuta el siguiente comando.
 
 ```sh
-$ npm pod-install
-$ npm react-native start --reset-cache
+$ npx pod-install
+$ npx react-native start --reset-cache
 ```
