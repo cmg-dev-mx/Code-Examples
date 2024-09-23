@@ -208,7 +208,7 @@ $ npm install react-native-gesture-handler
 
 ```js
 // gesture-handler.native.js
-import 'react-native-gesture-handler';
+import "react-native-gesture-handler";
 ```
 
 ```js
@@ -219,7 +219,7 @@ import 'react-native-gesture-handler';
 3. Agregar el componente `createStackNavigator` en el archivo `App.js`.
 
 ```jsx
-import './gesture-handler';
+import "./gesture-handler";
 ```
 
 4. Opcionalmente, se puede instalar la siguiente librería en caso de que se requiere usar las animaciones con estílo UIKit para el encabezado.
@@ -244,7 +244,7 @@ $ npm install react-native-gesture-handler react-native-reanimated
 
 ```js
 // gesture-handler.native.js
-import 'react-native-gesture-handler';
+import "react-native-gesture-handler";
 ```
 
 ```js
@@ -255,15 +255,15 @@ import 'react-native-gesture-handler';
 3. Agregar el componente `createStackNavigator` en el archivo `App.js`.
 
 ```jsx
-import './gesture-handler';
+import "./gesture-handler";
 ```
 
 4. En el archivo babel.config.js, agregar la siguiente configuración.
 
 ```js
 module.exports = {
-  presets: ['module:metro-react-native-babel-preset'],
-  plugins: ['react-native-reanimated/plugin'],
+  presets: ["module:metro-react-native-babel-preset"],
+  plugins: ["react-native-reanimated/plugin"],
 };
 ```
 
@@ -272,4 +272,14 @@ Nota: Si da problemas al ejecutar la aplicación, ejecuta el siguiente comando.
 ```sh
 $ npx pod-install
 $ npx react-native start --reset-cache
+```
+
+#### Sublibrería: Bottom Tab Navigator
+
+- [Documentación](https://reactnavigation.org/docs/bottom-tab-navigator): Librería de navegación con pestañas inferiores para React Native.
+
+1. Ejecutar las siguientes líneas de comando para instalar la librería.
+
+```sh
+$ npm install @react-navigation/bottom-tabs
 ```
