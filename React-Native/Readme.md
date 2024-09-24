@@ -123,12 +123,13 @@ apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 #### Configuración de la librería en iOS
 
-1. Abrir el proyecto de iOS con XCode (MyFirstApp.xcodeproj).
-2. Crear un grupo llamado `Fonts` en la raíz del proyecto.
-3. Desde la carpeta `node_modules/react-native-vector-icons/Fonts`, arrastrar los archivos de fuente requeridas .ttf a la carpeta Fonts en XCode.
-4. En el diálogo desplegado, seleccionar la opción "Copy items if needed" y "Create folder references" y dar click en "Finish".
-5. Cerrar XCode.
-6. Abrir el archivo `Info.plist` de la carpeta ios/MyFirstApp y agregar las siguientes líneas en el archivo, dentro de la etiqueta `<dict>`.
+1. Ejecutar el siguiente comando para sincronizar los iconos con la aplicación.
+
+```sh
+$ npx pod-install
+```
+
+2. Abrir el archivo `Info.plist` de la carpeta ios/MyFirstApp y agregar las siguientes líneas en el archivo, dentro de la etiqueta `<dict>`.
 
 ```xml
 <key>UIAppFonts</key>
@@ -136,12 +137,6 @@ apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
     <!-- Agregar las fuentes requeridas -->
     <string>MaterialIcons.ttf</string>
 </array>
-```
-
-7. Ejecutar el siguiente comando para sincronizar los iconos con la aplicación.
-
-```sh
-$ npx pod-install
 ```
 
 ### React navigation
