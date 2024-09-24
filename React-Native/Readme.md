@@ -283,3 +283,21 @@ $ npx react-native start --reset-cache
 ```sh
 $ npm install @react-navigation/bottom-tabs
 ```
+
+#### Sublibrería: Material Top Tab Navigator
+
+- [Documentación](https://reactnavigation.org/docs/material-top-tab-navigator): Librería de navegación con pestañas superiores para React Native.
+
+1. Ejecutar las siguientes líneas de comando para instalar la librería.
+
+```sh
+$ npm install @react-navigation/material-top-tabs react-native-tab-view
+$ npm install react-native-pager-view
+```
+
+2. En caso de que se esté ejecutando en iOS, ejecutar el siguiente comando.
+
+```sh
+$ npx pod-install
+```
+
