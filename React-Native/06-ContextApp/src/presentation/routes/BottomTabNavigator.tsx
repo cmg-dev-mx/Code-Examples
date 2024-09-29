@@ -2,7 +2,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
 import {HomeScreen} from '../screens/home/HomeScreen';
 import {ProfileScreen} from '../screens/profile/ProfileScreen';
-import {SettingsScreen} from '../screens/settings/SettingsScreen';
+import {CounterScreen} from '../screens/counter/CounterScreen';
 import {Text} from 'react-native';
 
 const Tab = createBottomTabNavigator();
@@ -27,11 +27,11 @@ export const BottomTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
+        name="Counter"
+        component={CounterScreen}
         options={{
-          tabBarLabel: 'Settings',
-          tabBarIcon: ({color, size}) => <Text>⚙️</Text>,
+          tabBarLabel: 'Counter',
+          tabBarIcon: ({color, size}) => <Text>🔢</Text>,
         }}
       />
     </Tab.Navigator>
