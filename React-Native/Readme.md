@@ -296,3 +296,10 @@ $ npm install react-native-pager-view
 $ npx pod-install
 ```
 
+### Zustand
+
+- [Documentación](https://zustand.surge.sh/): Librería de manejo de estados para React.
+
+```sh
+$ npm install zustand
+```
