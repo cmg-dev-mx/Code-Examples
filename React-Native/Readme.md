@@ -303,3 +303,11 @@ $ npx pod-install
 ```sh
 $ npm install zustand
 ```
+
+### Axios
+
+- [Documentación](https://axios-http.com/docs/intro): Librería de peticiones HTTP para JavaScript.
+
+```sh
+$ npm install axios
+```
