@@ -1,5 +1,5 @@
 import {HttpAdapter} from './http.adapter';
-import axios, {Axios, AxiosInstance, AxiosRequestConfig} from 'axios';
+import axios, {AxiosInstance} from 'axios';
 
 interface Options {
   baseURL: string;
@@ -16,7 +16,10 @@ export class AxiosAdapter implements HttpAdapter {
     });
   }
 
-  async get<T>(url: string, options?: Record<string, unknown>): Promise<T> {
+  async get<T>(
+    url: string,
+    options?: Record<string, unknown> | undefined,
+  ): Promise<T> {
     try {
       const {data} = await this.axiosInstance.get<T>(url, options);
       return data;
