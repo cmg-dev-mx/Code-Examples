@@ -4,6 +4,8 @@ import {movieDBFetcher} from '../../config/adapters/movieDB.adapter';
 
 import * as UseCases from '../../core/use-cases';
 
+let popularPage = 1;
+
 export const useMovies = () => {
   // Se puede utilizar `tanStack query` para manejar las peticiones asíncronas hacia algún endpoint
   const [isLoading, setIsLoading] = useState(true);
@@ -43,5 +45,18 @@ export const useMovies = () => {
     topRated,
     upcoming,
     popular,
+
+    // Métodos
+    popularNextPage: async () => {
+      popularPage++;
+      const popularMovies = await UseCases.moviesPopularUseCase(
+        movieDBFetcher,
+        {
+          page: popularPage,
+        },
+      );
+
+      setPopular(prev => [...popular, ...popularMovies]);
+    },
   };
 };
