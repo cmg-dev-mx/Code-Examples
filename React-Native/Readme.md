@@ -311,3 +311,11 @@ $ npm install zustand
 ```sh
 $ npm install axios
 ```
+
+### Variables de entorno en React Native
+
+- [Documentación](https://www.npmjs.com/package/react-native-dotenv): Librería para manejar variables de entorno en React Native.
+
+```sh
+$ npm install -D react-native-dotenv
+```
