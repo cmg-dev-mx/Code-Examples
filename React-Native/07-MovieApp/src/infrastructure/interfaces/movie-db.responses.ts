@@ -86,3 +86,38 @@ export interface SpokenLanguage {
   iso_639_1: string;
   name: string;
 }
+
+export interface MovieCastResponse {
+  id: number;
+  cast: MovieDBCast[];
+  crew: MovieDBCast[];
+}
+
+export interface MovieDBCast {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: Department;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: null | string;
+  cast_id?: number;
+  character?: string;
+  credit_id: string;
+  order?: number;
+  department?: Department;
+  job?: string;
+}
+
+export enum Department {
+  Acting = 'Acting',
+  Art = 'Art',
+  Camera = 'Camera',
+  Directing = 'Directing',
+  Editing = 'Editing',
+  Production = 'Production',
+  Sound = 'Sound',
+  VisualEffects = 'Visual Effects',
+  Writing = 'Writing',
+}
