@@ -2,12 +2,16 @@ import React from 'react';
 import {FullMovie} from '../../../core/entities/movie.entity';
 import {Text, View, StyleSheet} from 'react-native';
 import {Formatter} from '../../../config/helpers/formatter';
+import {Cast} from '../../../core/entities/cast.entity';
+import {FlatList} from 'react-native-gesture-handler';
+import {CastActor} from '../cast/CastActor';
 
 interface Props {
   movie: FullMovie;
+  cast: Cast[];
 }
 
-export const MovieDetails = ({movie}: Props) => {
+export const MovieDetails = ({movie, cast}: Props) => {
   return (
     <>
       <View
@@ -26,8 +30,15 @@ export const MovieDetails = ({movie}: Props) => {
         </Text>
       </View>
 
-      <View style={{marginTop: 10, marginBottom: 100}}>
+      <View style={{marginTop: 10, marginBottom: 50}}>
         <Text style={{...styles.title, marginHorizontal: 20}}>Actores</Text>
+        <FlatList
+          data={cast}
+          keyExtractor={item => item.id.toString()}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({item}) => <CastActor actor={item} />}
+        />
       </View>
     </>
   );
