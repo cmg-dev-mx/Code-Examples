@@ -16,8 +16,6 @@ export const useMovie = (movieId: number) => {
     const fullMovie = await useCases.getMovieById(movieDBFetcher, movieId);
     setMovie(fullMovie);
     setIsLoading(false);
-
-    console.log(fullMovie);
   };
 
   return {
