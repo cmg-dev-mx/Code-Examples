@@ -36,4 +36,15 @@ void main() {
   activo = !activo;
 
   print(activo);
+
+  // Listas
+
+  List<String> personajes = ['Superman', 'Batman'];
+  personajes.add('Flash');
+  personajes.addAll(['Acuaman', 'Mujer Maravilla']);
+
+  List<String> villanos = new List.filled(3, '');
+  villanos[0] = 'Lex Luthor';
+  villanos[1] = 'Doomsday';
+  villanos[2] = 'Darkseid';
 }
