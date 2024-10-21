@@ -47,4 +47,18 @@ void main() {
   villanos[0] = 'Lex Luthor';
   villanos[1] = 'Doomsday';
   villanos[2] = 'Darkseid';
+
+  // Sets (Los sets no permiten elementos duplicados)
+
+  Set<String> villanos2 = {'Lex Luthor', 'Doomsday', 'Darkseid'};
+  villanos2.add('Flash Reverso');
+
+  List<String> heroes = ['Superman', 'Batman', 'Flash'];
+  heroes.add("Batman");
+  heroes.add("Batman");
+  heroes.add("Batman");
+  heroes.add("Batman");
+
+  var heroesSet = heroes.toSet(); // De esta forma eliminamos los duplicados
+  print(heroesSet.toList());
 }
