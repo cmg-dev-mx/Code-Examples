@@ -11,4 +11,22 @@ void main() {
   double resultado = _a + $b;
 
   print(resultado);
+
+  // Strings
+
+  String nombre = 'Tony';
+  String nombre2 = "Tony";
+  String nombre3 = 'O\'Connor';
+
+  String apellido = 'Stark';
+
+  String nombreCompleto = '$nombre $apellido'; // Interpolación de strings
+
+  String multilinea = '''
+  Hola mundo
+  $nombre2    
+  ¿Cómo están?
+  ''';
+
+  print(nombre2 == nombre);
 }
