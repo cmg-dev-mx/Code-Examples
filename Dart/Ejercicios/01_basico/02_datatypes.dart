@@ -29,4 +29,11 @@ void main() {
   ''';
 
   print(nombre2 == nombre);
+
+  // Booleanos
+
+  bool activo = true;
+  activo = !activo;
+
+  print(activo);
 }
