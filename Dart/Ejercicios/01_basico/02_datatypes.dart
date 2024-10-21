@@ -61,4 +61,13 @@ void main() {
 
   var heroesSet = heroes.toSet(); // De esta forma eliminamos los duplicados
   print(heroesSet.toList());
+
+  // Maps (Diccionarios, objetos literales)
+
+  Map<String, String> ironman = {
+    'nombre': 'Tony Stark',
+    'poder': 'Inteligencia y dinero',
+  };
+
+  print(ironman);
 }
