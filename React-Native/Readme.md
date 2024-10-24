@@ -303,3 +303,19 @@ $ npx pod-install
 ```sh
 $ npm install zustand
 ```
+
+### Axios
+
+- [Documentación](https://axios-http.com/docs/intro): Librería de peticiones HTTP para JavaScript.
+
+```sh
+$ npm install axios
+```
+
+### Variables de entorno en React Native
+
+- [Documentación](https://www.npmjs.com/package/react-native-dotenv): Librería para manejar variables de entorno en React Native.
+
+```sh
+$ npm install -D react-native-dotenv
+```
