@@ -123,12 +123,13 @@ apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 #### Configuración de la librería en iOS
 
-1. Abrir el proyecto de iOS con XCode (MyFirstApp.xcodeproj).
-2. Crear un grupo llamado `Fonts` en la raíz del proyecto.
-3. Desde la carpeta `node_modules/react-native-vector-icons/Fonts`, arrastrar los archivos de fuente requeridas .ttf a la carpeta Fonts en XCode.
-4. En el diálogo desplegado, seleccionar la opción "Copy items if needed" y "Create folder references" y dar click en "Finish".
-5. Cerrar XCode.
-6. Abrir el archivo `Info.plist` de la carpeta ios/MyFirstApp y agregar las siguientes líneas en el archivo, dentro de la etiqueta `<dict>`.
+1. Ejecutar el siguiente comando para sincronizar los iconos con la aplicación.
+
+```sh
+$ npx pod-install
+```
+
+2. Abrir el archivo `Info.plist` de la carpeta ios/MyFirstApp y agregar las siguientes líneas en el archivo, dentro de la etiqueta `<dict>`.
 
 ```xml
 <key>UIAppFonts</key>
@@ -136,12 +137,6 @@ apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
     <!-- Agregar las fuentes requeridas -->
     <string>MaterialIcons.ttf</string>
 </array>
-```
-
-7. Ejecutar el siguiente comando para sincronizar los iconos con la aplicación.
-
-```sh
-$ npx pod-install
 ```
 
 ### React navigation
@@ -208,7 +203,7 @@ $ npm install react-native-gesture-handler
 
 ```js
 // gesture-handler.native.js
-import 'react-native-gesture-handler';
+import "react-native-gesture-handler";
 ```
 
 ```js
@@ -219,7 +214,7 @@ import 'react-native-gesture-handler';
 3. Agregar el componente `createStackNavigator` en el archivo `App.js`.
 
 ```jsx
-import './gesture-handler';
+import "./gesture-handler";
 ```
 
 4. Opcionalmente, se puede instalar la siguiente librería en caso de que se requiere usar las animaciones con estílo UIKit para el encabezado.
@@ -244,7 +239,7 @@ $ npm install react-native-gesture-handler react-native-reanimated
 
 ```js
 // gesture-handler.native.js
-import 'react-native-gesture-handler';
+import "react-native-gesture-handler";
 ```
 
 ```js
@@ -255,15 +250,15 @@ import 'react-native-gesture-handler';
 3. Agregar el componente `createStackNavigator` en el archivo `App.js`.
 
 ```jsx
-import './gesture-handler';
+import "./gesture-handler";
 ```
 
 4. En el archivo babel.config.js, agregar la siguiente configuración.
 
 ```js
 module.exports = {
-  presets: ['module:metro-react-native-babel-preset'],
-  plugins: ['react-native-reanimated/plugin'],
+  presets: ["module:metro-react-native-babel-preset"],
+  plugins: ["react-native-reanimated/plugin"],
 };
 ```
 
@@ -273,3 +268,31 @@ Nota: Si da problemas al ejecutar la aplicación, ejecuta el siguiente comando.
 $ npx pod-install
 $ npx react-native start --reset-cache
 ```
+
+#### Sublibrería: Bottom Tab Navigator
+
+- [Documentación](https://reactnavigation.org/docs/bottom-tab-navigator): Librería de navegación con pestañas inferiores para React Native.
+
+1. Ejecutar las siguientes líneas de comando para instalar la librería.
+
+```sh
+$ npm install @react-navigation/bottom-tabs
+```
+
+#### Sublibrería: Material Top Tab Navigator
+
+- [Documentación](https://reactnavigation.org/docs/material-top-tab-navigator): Librería de navegación con pestañas superiores para React Native.
+
+1. Ejecutar las siguientes líneas de comando para instalar la librería.
+
+```sh
+$ npm install @react-navigation/material-top-tabs react-native-tab-view
+$ npm install react-native-pager-view
+```
+
+2. En caso de que se esté ejecutando en iOS, ejecutar el siguiente comando.
+
+```sh
+$ npx pod-install
+```
+
