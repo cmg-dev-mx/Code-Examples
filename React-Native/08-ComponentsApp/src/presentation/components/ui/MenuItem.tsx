@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text} from 'react-native';
 import {Pressable, View} from 'react-native';
-import {colors} from './src/config/theme/theme';
+import {colors} from '../../../config/theme/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 
