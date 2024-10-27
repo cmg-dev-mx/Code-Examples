@@ -13,6 +13,11 @@ void saludar(String mensaje,
   print('$mensaje $nombre - $edad');
 }
 
+void saludar2(String mensaje, {required String nombre, int veces = 10}) {
+  print('Saludar 2: $mensaje $nombre - $veces');
+}
+
 void main(List<String> args) {
   saludar('Hola', 'Juan', 30);
+  saludar2('Saludos', veces: 20, nombre: 'Tony');
 }
