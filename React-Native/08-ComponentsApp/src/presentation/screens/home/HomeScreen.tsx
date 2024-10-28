@@ -26,7 +26,7 @@ export const menuItems = [
   {
     name: 'Section List',
     icon: 'list-outline',
-    component: 'CVustomSectionListScreen',
+    component: 'CustomSectionListScreen',
   },
   {
     name: 'Modal',
