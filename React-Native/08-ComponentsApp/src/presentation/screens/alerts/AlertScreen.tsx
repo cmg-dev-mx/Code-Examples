@@ -3,6 +3,8 @@ import {CustomView} from '../../components/ui/CustomView';
 import {Title} from '../../components/ui/Title';
 import {globalStyles} from '../../../config/theme/theme';
 import {Button} from '../../components/ui/Button';
+import prompt from 'react-native-prompt-android';
+import {showPrompt} from '../../../config/adapters/prompt.adapter';
 
 export const AlertScreen = () => {
   const createTwoButtonAlert = () =>
@@ -44,18 +46,34 @@ export const AlertScreen = () => {
       },
     );
 
-  /**
-   * Prompt solo funciona en iOS
-   */
-  const showPrompt = () => {
-    Alert.prompt(
-      'Correo electronico',
-      'Ingrese su correo electronico',
-      (text: string) => console.log({text}),
-      'secure-text',
-      'Soy el valor por defecto',
-      'email-address',
-    );
+  const onShowPrompt = () => {
+    // ! Código nativo
+    // Alert.prompt(
+    //   'Correo electronico',
+    //   'Ingrese su correo electronico',
+    //   (text: string) => console.log({text}),
+    //   'secure-text',
+    //   'Soy el valor por defecto',
+    //   'email-address',
+    // );
+
+    showPrompt({
+      title: 'Correo electronico',
+      message: 'Ingrese su correo electronico',
+      buttons: [
+        {
+          text: 'Cancelar',
+          onPress: () => console.log('Cancelar'),
+        },
+        {
+          text: 'Aceptar',
+          onPress: () => console.log('Aceptar'),
+        },
+      ],
+      promptType: 'secure-text',
+      defaultValue: 'Soy el valor por defecto',
+      placeholder: 'email-address',
+    });
   };
 
   return (
@@ -66,7 +84,7 @@ export const AlertScreen = () => {
       <View style={{height: 10}} />
       <Button text="Alerta - 3 Botones" onPress={createThreeButtonAlert} />
       <View style={{height: 10}} />
-      <Button text="Prompt - Input" onPress={showPrompt} />
+      <Button text="Prompt - Input" onPress={onShowPrompt} />
     </CustomView>
   );
 };

@@ -319,3 +319,11 @@ $ npm install axios
 ```sh
 $ npm install -D react-native-dotenv
 ```
+
+### React Native Prompt Android
+
+- [Documentación](https://www.npmjs.com/package/react-native-prompt-android): Librería para mostrar un cuadro de diálogo con promt en Android.
+
+```sh
+$ npm i react-native-prompt-android
+```
