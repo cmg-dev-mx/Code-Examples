@@ -47,4 +47,14 @@ export const globalStyles = StyleSheet.create({
     color: colors.text,
     fontSize: 16,
   },
+
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    borderColor: 'rgba(0,0,0,0.3)',
+    borderRadius: 10,
+    color: colors.text,
+  },
 });
