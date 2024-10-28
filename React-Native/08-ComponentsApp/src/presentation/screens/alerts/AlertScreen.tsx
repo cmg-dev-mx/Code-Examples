@@ -44,6 +44,20 @@ export const AlertScreen = () => {
       },
     );
 
+  /**
+   * Prompt solo funciona en iOS
+   */
+  const showPrompt = () => {
+    Alert.prompt(
+      'Correo electronico',
+      'Ingrese su correo electronico',
+      (text: string) => console.log({text}),
+      'secure-text',
+      'Soy el valor por defecto',
+      'email-address',
+    );
+  };
+
   return (
     <CustomView style={globalStyles.globalMargin}>
       <Title safe text="Alertas" />
@@ -52,7 +66,7 @@ export const AlertScreen = () => {
       <View style={{height: 10}} />
       <Button text="Alerta - 3 Botones" onPress={createThreeButtonAlert} />
       <View style={{height: 10}} />
-      <Button text="Prompt - Input" onPress={() => {}} />
+      <Button text="Prompt - Input" onPress={showPrompt} />
     </CustomView>
   );
 };
