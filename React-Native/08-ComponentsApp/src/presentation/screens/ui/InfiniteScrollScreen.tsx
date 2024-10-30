@@ -1,9 +1,8 @@
 import {useState} from 'react';
-import {ActivityIndicator, Image, Text, View} from 'react-native';
-import {CustomView} from '../../components/ui/CustomView';
-import {Title} from '../../components/ui/Title';
+import {ActivityIndicator, View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {colors} from '../../../config/theme/theme';
+import {FadeInImage} from '../../components/ui/FadeInImage';
 
 export const InfiniteScrollScreen = () => {
   const [numbers, setNumbers] = useState([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
@@ -41,10 +40,9 @@ interface ListItemProps {
 
 const ListItem = ({number}: ListItemProps) => {
   return (
-    <Image
-      source={{uri: `https://picsum.photos/id/${number}/500/400`}}
+    <FadeInImage
+      uri={`https://picsum.photos/id/${number}/500/400`}
       style={{width: '100%', height: 400}}
-      resizeMode="cover"
     />
   );
 };
