@@ -1,7 +1,16 @@
-import {Image, ImageSourcePropType, useWindowDimensions} from 'react-native';
+import {
+  Image,
+  ImageSourcePropType,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  useWindowDimensions,
+} from 'react-native';
 import {Text, View} from 'react-native';
 import {colors, globalStyles} from '../../../config/theme/theme';
 import {FlatList} from 'react-native-gesture-handler';
+import {Button} from '../../components/ui/Button';
+import {useRef, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
 
 interface Slide {
   title: string;
@@ -28,6 +37,24 @@ const items: Slide[] = [
 ];
 
 export const SlidesScreen = () => {
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const flatListRef = useRef<FlatList>(null);
+  const navigation = useNavigation();
+
+  const onScroll = (ev: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const {contentOffset, layoutMeasurement} = ev.nativeEvent;
+    const currentIndex = Math.floor(contentOffset.x / layoutMeasurement.width);
+
+    setCurrentSlideIndex(currentIndex > 0 ? currentIndex : 0);
+  };
+
+  const scrollToSlide = (index: number) => {
+    flatListRef.current?.scrollToIndex({
+      index,
+      animated: true,
+    });
+  };
+
   return (
     <View
       style={{
@@ -35,14 +62,43 @@ export const SlidesScreen = () => {
         backgroundColor: colors.background,
       }}>
       <FlatList
+        ref={flatListRef}
         data={items}
         keyExtractor={item => item.title}
         renderItem={({item}) => <SlideItem item={item} />}
         horizontal
         pagingEnabled
         decelerationRate={'fast'}
+        onScroll={onScroll}
         // scrollEnabled={false}
       />
+      {currentSlideIndex === items.length - 1 ? (
+        <Button
+          text="Finalizar"
+          onPress={() => {
+            navigation.goBack();
+          }}
+          style={{
+            position: 'absolute',
+            bottom: 60,
+            right: 30,
+            width: 100,
+          }}
+        />
+      ) : (
+        <Button
+          text="Siguiente"
+          onPress={() => {
+            scrollToSlide(currentSlideIndex + 1);
+          }}
+          style={{
+            position: 'absolute',
+            bottom: 60,
+            right: 30,
+            width: 100,
+          }}
+        />
+      )}
     </View>
   );
 };
