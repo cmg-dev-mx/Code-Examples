@@ -16,6 +16,22 @@ export const colors: ThemeColors = {
   buttonTextColor: '#FFFFFF',
 };
 
+export const lightColors: ThemeColors = {
+  primary: '#5856D6',
+  text: '#000000',
+  background: '#F3F3F3',
+  cardBackground: '#FFFFFF',
+  buttonTextColor: '#FFFFFF',
+};
+
+export const darkColors: ThemeColors = {
+  primary: '#5856D6',
+  text: '#FFFFFF',
+  background: '#090909',
+  cardBackground: '#2D2D2D',
+  buttonTextColor: '#FFFFFF',
+};
+
 export const globalStyles = StyleSheet.create({
   title: {
     fontSize: 30,
