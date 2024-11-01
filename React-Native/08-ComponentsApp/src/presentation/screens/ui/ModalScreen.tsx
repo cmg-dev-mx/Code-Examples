@@ -3,8 +3,12 @@ import {CustomView} from '../../components/ui/CustomView';
 import {Title} from '../../components/ui/Title';
 import React, {useState} from 'react';
 import {Button} from '../../components/ui/Button';
+import {useContext} from 'react';
+import {ThemeContext} from '../../context/ThemeContext';
 
 export const ModalScreen = () => {
+  const {colors} = useContext(ThemeContext);
+
   const [isVisible, setIsVisible] = useState(false);
   return (
     <CustomView margin>
@@ -21,7 +25,7 @@ export const ModalScreen = () => {
         <View
           style={{
             flex: 1,
-            backgroundColor: 'rgba(0,0,0,0.1)',
+            backgroundColor: colors.backgroundTransparent,
           }}>
           <View
             style={{
