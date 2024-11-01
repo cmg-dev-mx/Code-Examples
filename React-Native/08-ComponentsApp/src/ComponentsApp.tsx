@@ -1,14 +1,11 @@
 import 'react-native-gesture-handler';
-import '../gesture-handler';
-
-import {NavigationContainer} from '@react-navigation/native';
-import {View, Text} from 'react-native';
 import {Navigator} from './presentation/navigator/Navigator';
+import {ThemeProvider} from './presentation/context/ThemeContext';
 
 export const ComponentsApp = () => {
   return (
-    <NavigationContainer>
+    <ThemeProvider>
       <Navigator />
-    </NavigationContainer>
+    </ThemeProvider>
   );
 };
