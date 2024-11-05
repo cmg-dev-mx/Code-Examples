@@ -16,8 +16,7 @@ class Persona {
   set bio(String texto) => _bio = texto;
 
   // Constructores
-  // Persona() {
-  //   // Constructor vacío
+  // Persona() { //* Constructor vacío
   //   print('Constructor');
   // }
 
@@ -26,6 +25,11 @@ class Persona {
   //   this.nombre = nombre;
   // }
   Persona({this.edad = 0, this.nombre = 'Sin nombre'});
+
+  // Constructor con nombre
+  Persona.persona30(this.nombre) {
+    this.edad = 30;
+  }
 
   // Métodos
   @override

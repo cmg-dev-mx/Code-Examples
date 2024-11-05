@@ -15,4 +15,8 @@ main() {
 
   print(persona);
   print(persona.bio);
+
+  Persona persona30 = Persona.persona30('Mario');
+  print(persona30);
+  print(persona30.bio);
 }
