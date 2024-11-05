@@ -6,5 +6,8 @@ main() {
     ..edad = 37;
   // ..bio = 'Nació en la ciudad de México'; // * Privado
 
+  persona.bio = 'Nació en la ciudad de México';
+
   print(persona);
+  print(persona.bio);
 }
