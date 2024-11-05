@@ -2,7 +2,7 @@ class Persona {
   // Campos o propiedades
   String? nombre;
   int? edad;
-  String? bio;
+  String? _bio;
 
   // Get y Set
 
@@ -10,5 +10,5 @@ class Persona {
 
   // Métodos
   @override
-  String toString() => '$nombre tiene $edad años y su biografía es: $bio';
+  String toString() => '$nombre tiene $edad años y su biografía es: $_bio';
 }
