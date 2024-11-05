@@ -1,12 +1,17 @@
 import 'clases/Persona.dart';
 
 main() {
-  Persona persona = Persona()
-    ..nombre = 'Cesar'
-    ..edad = 37;
+  // Persona persona = Persona()
+  //   ..nombre = 'Cesar'
+  //   ..edad = 37;
   // ..bio = 'Nació en la ciudad de México'; // * Privado
 
-  persona.bio = 'Nació en la ciudad de México';
+  Persona persona = Persona(
+    nombre: 'Cesar',
+    edad: 37,
+  );
+
+  // persona.bio = 'Nació en la ciudad de México';
 
   print(persona);
   print(persona.bio);
