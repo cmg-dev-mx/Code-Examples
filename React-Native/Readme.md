@@ -327,3 +327,11 @@ $ npm install -D react-native-dotenv
 ```sh
 $ npm i react-native-prompt-android
 ```
+
+### Axios (Solicitudes HTTP)
+
+- [Documentación](https://axios-http.com/docs/intro): Librería para realizar solicitudes HTTP.
+
+```sh
+$ npm install axios
+```
