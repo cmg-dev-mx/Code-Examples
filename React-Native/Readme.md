@@ -335,3 +335,12 @@ $ npm i react-native-prompt-android
 ```sh
 $ npm install axios
 ```
+
+### TanStack query
+
+- [Documentación](https://tanstack.com/query/latest): Gestor de estados asíncronos para React.
+
+```sh
+$ npm install @tanstack/react-query
+
+```
