@@ -1,12 +1,25 @@
 import {pokeApi} from '../../config/api/pokeApi';
-import {Pokemon} from '../../domain/entities/pokemon';
+import type {Pokemon} from '../../domain/entities/pokemon';
+import type {
+  PokeAPIPaginatedResponse,
+  PokeAPIPokemon,
+} from '../../infrastructure/interfaces/pokeapi.interfaces';
 
-export const getPokemons = async (): Promise<Pokemon[]> => {
+export const getPokemons = async (
+  page: number,
+  limit: number = 20,
+): Promise<Pokemon[]> => {
   try {
-    const url = 'pokemon';
-    const {data} = await pokeApi.get(url);
+    const url = `/pokemon?limit=${limit}&offset=${page * limit}`;
+    const {data} = await pokeApi.get<PokeAPIPaginatedResponse>(url);
 
-    console.log('data', data);
+    const pokemonPromises = data.results.map(info => {
+      return pokeApi.get<PokeAPIPokemon>(info.url);
+    });
+
+    const pokeAPIPokemons = await Promise.all(pokemonPromises);
+
+    console.log('data', pokeAPIPokemons);
 
     return [];
   } catch (error) {
