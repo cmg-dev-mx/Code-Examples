@@ -327,3 +327,28 @@ $ npm install -D react-native-dotenv
 ```sh
 $ npm i react-native-prompt-android
 ```
+
+### Axios (Solicitudes HTTP)
+
+- [Documentación](https://axios-http.com/docs/intro): Librería para realizar solicitudes HTTP.
+
+```sh
+$ npm install axios
+```
+
+### TanStack query
+
+- [Documentación](https://tanstack.com/query/latest): Gestor de estados asíncronos para React.
+
+```sh
+$ npm install @tanstack/react-query
+
+```
+
+### React Native Image Colors
+
+- [Documentación](https://www.npmjs.com/package/react-native-image-colors): Librería para obtener los colores predominantes de una imagen.
+
+```sh
+$ npm install react-native-image-colors@1.5.2
+```
