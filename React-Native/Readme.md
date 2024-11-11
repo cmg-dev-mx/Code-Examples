@@ -344,3 +344,11 @@ $ npm install axios
 $ npm install @tanstack/react-query
 
 ```
+
+### React Native Image Colors
+
+- [Documentación](https://www.npmjs.com/package/react-native-image-colors): Librería para obtener los colores predominantes de una imagen.
+
+```sh
+$ npm install react-native-image-colors@1.5.2
+```
