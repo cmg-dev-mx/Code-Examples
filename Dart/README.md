@@ -11,3 +11,7 @@ Acceder a la página de gestión de paquetes oficial de Dart: [pub.dev](https://
 ```bash
 dart pub add http
 ```
+
+## Herramientas utilizadas
+
+- [Quicktype](https://app.quicktype.io): Herramienta para generar clases a partir de un JSON.
