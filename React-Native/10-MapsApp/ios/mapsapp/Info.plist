@@ -48,10 +48,21 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	
 	<key>UIAppFonts</key>
 	<array>
-    <!-- Agregar las fuentes requeridas -->
-    <string>Ionicons.ttf</string>
-</array>
+    	<string>Ionicons.ttf</string>
+	</array>
+	
+	<key>NSLocationWhenInUseUsageDescription</key>
+  	<string>Necesito tu ubicación para mostrar el mapa</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Necesito tu ubicación para mostrar el mapa</string>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+		<key>YOUR-PURPOSE-KEY</key>
+		<string>Necesito tu ubicación para mostrar el mapa</string>
+  	</dict>
+	
 </dict>
 </plist>
