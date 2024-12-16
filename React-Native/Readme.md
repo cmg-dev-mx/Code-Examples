@@ -545,3 +545,20 @@ $ npx pod-install
 </dict>
 </plist>
 ```
+
+### React Native Maps
+
+- [Documentación](https://github.com/react-native-maps/react-native-maps/blob/master/docs/installation.md): Librería para mostrar mapas en React Native.
+
+```sh
+$ npm install react-native-maps
+$ npx pod-install
+```
+
+### React Native Geolocation
+
+- [Documentación](https://github.com/michalchudziak/react-native-geolocation): Librería para obtener la geolocalización del dispositivo.
+
+```sh
+$ npm install @react-native-community/geolocation --save
+```
