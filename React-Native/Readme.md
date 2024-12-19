@@ -154,7 +154,6 @@ $ npm install react-native-screens react-native-safe-area-context
 3. Envolver la aplicación con el componente `NavigationContainer` en el archivo `App.js`.
 
 ```jsx
-import "react-native-gesture-handler";
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 
