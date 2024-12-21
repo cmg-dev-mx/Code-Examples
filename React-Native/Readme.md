@@ -561,3 +561,19 @@ $ npx pod-install
 ```sh
 $ npm install @react-native-community/geolocation --save
 ```
+
+### UI Kitten
+
+- [Documentación](https://akveo.github.io/react-native-ui-kitten): Librería de componentes para React Native.
+
+```sh
+$ npm install @ui-kitten/components @eva-design/eva react-native-svg
+```
+
+#### Sublibrería: Eva Icons
+
+- [Documentación](https://akveo.github.io/react-native-ui-kitten/docs/guides/icon-packages): Librería de iconos para UI Kitten.
+
+```sh
+$ npm install @ui-kitten/eva-icons react-native-svg
+```

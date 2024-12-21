@@ -1,12 +1,27 @@
+import React from 'react';
 import './gesture-handler';
+
 import {NavigationContainer} from '@react-navigation/native';
-import {Text, View} from 'react-native';
 import {StackNavigator} from './presentation/navigation/StackNavigator';
 
+import * as eva from '@eva-design/eva';
+import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
+import {EvaIconsPack} from '@ui-kitten/eva-icons';
+
+import {useColorScheme} from 'react-native';
+
 export const ProductsApp = () => {
+  const colorScheme = useColorScheme();
+  const theme = colorScheme === 'dark' ? eva.dark : eva.light;
+
   return (
-    <NavigationContainer>
-      <StackNavigator />
-    </NavigationContainer>
+    <>
+      <IconRegistry icons={EvaIconsPack} />
+      <ApplicationProvider {...eva} theme={theme}>
+        <NavigationContainer>
+          <StackNavigator />
+        </NavigationContainer>
+      </ApplicationProvider>
+    </>
   );
 };
