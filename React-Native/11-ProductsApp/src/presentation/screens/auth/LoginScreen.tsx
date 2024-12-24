@@ -9,9 +9,6 @@ import {API_URL, STAGE} from '@env';
 interface Props extends StackScreenProps<RootStackParams, 'LoginScreen'> {}
 
 export const LoginScreen = ({navigation}: Props) => {
-  // TODO Prueba de variables de entorno
-  console.log({api_url: API_URL, stage: STAGE});
-
   const {height} = useWindowDimensions();
 
   return (
