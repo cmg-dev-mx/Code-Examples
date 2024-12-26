@@ -1,15 +1,39 @@
 import {Button, Input, Layout, Text} from '@ui-kitten/components';
-import {useWindowDimensions} from 'react-native';
+import {Alert, useWindowDimensions} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {MyIcon} from '../../components/ui/MyIcon';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParams} from '../../navigation/StackNavigator';
-import {API_URL, STAGE} from '@env';
+import {useState} from 'react';
+import {useAuthStore} from '../../store/auth/useAuthStore';
 
 interface Props extends StackScreenProps<RootStackParams, 'LoginScreen'> {}
 
 export const LoginScreen = ({navigation}: Props) => {
+  const {login} = useAuthStore();
+
+  const [isPosting, setIsPosting] = useState(false);
+
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+  });
+
   const {height} = useWindowDimensions();
+
+  const onLogin = async () => {
+    if (form.email.length === 0 || form.password.length === 0) {
+      return;
+    }
+    setIsPosting(true);
+    const wasSuccessful = await login(form.email, form.password);
+    setIsPosting(false);
+    if (wasSuccessful) {
+      return;
+    }
+
+    Alert.alert('Error', 'Usuario o contraseña incorrectos');
+  };
 
   return (
     <Layout style={{flex: 1}}>
@@ -24,6 +48,8 @@ export const LoginScreen = ({navigation}: Props) => {
             placeholder="Correo electrónico"
             keyboardType="email-address"
             autoCapitalize="none"
+            value={form.email}
+            onChangeText={email => setForm({...form, email})}
             style={{marginBottom: 10}}
             accessoryLeft={<MyIcon name="email-outline" />}
           />
@@ -31,6 +57,8 @@ export const LoginScreen = ({navigation}: Props) => {
             placeholder="Contraseña"
             secureTextEntry
             autoCapitalize="none"
+            value={form.password}
+            onChangeText={password => setForm({...form, password})}
             style={{marginBottom: 10}}
             accessoryLeft={<MyIcon name="lock-outline" />}
           />
@@ -40,8 +68,9 @@ export const LoginScreen = ({navigation}: Props) => {
 
         <Layout>
           <Button
+            disabled={isPosting}
             accessoryRight={<MyIcon name="arrow-forward-outline" white />}
-            onPress={() => {}}>
+            onPress={onLogin}>
             Ingresar
           </Button>
         </Layout>

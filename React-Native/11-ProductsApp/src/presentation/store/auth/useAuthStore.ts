@@ -24,6 +24,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     }
 
     // TODO Guardar el token en un storage seguro
+    console.log({response});
 
     set({
       status: 'authenticated',
