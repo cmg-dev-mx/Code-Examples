@@ -1,14 +1,48 @@
 import {Button, Input, Layout, Text} from '@ui-kitten/components';
-import {useWindowDimensions} from 'react-native';
+import {Alert, useWindowDimensions} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {MyIcon} from '../../components/ui/MyIcon';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParams} from '../../navigation/StackNavigator';
+import {useAuthStore} from '../../store/auth/useAuthStore';
+import {useState} from 'react';
 
 interface Props extends StackScreenProps<RootStackParams, 'RegisterScreen'> {}
 
 export const RegisterScreen = ({navigation}: Props) => {
+  const {register} = useAuthStore();
+
+  const [isPosting, setIsPosting] = useState(false);
+
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+    fullName: '',
+  });
+
   const {height} = useWindowDimensions();
+
+  const onRegister = async () => {
+    if (
+      form.email.length === 0 ||
+      form.password.length === 0 ||
+      form.fullName.length === 0
+    ) {
+      return;
+    }
+    setIsPosting(true);
+    const wasSuccessful = await register(
+      form.email,
+      form.password,
+      form.fullName,
+    );
+    setIsPosting(false);
+    if (wasSuccessful) {
+      return;
+    }
+
+    Alert.alert('Error', 'No se pudo crear la cuenta');
+  };
 
   return (
     <Layout style={{flex: 1}}>
@@ -22,6 +56,8 @@ export const RegisterScreen = ({navigation}: Props) => {
           <Input
             placeholder="Nombre completo"
             autoCapitalize="words"
+            value={form.fullName}
+            onChangeText={fullName => setForm({...form, fullName})}
             style={{marginBottom: 10}}
             accessoryLeft={<MyIcon name="person-outline" />}
           />
@@ -29,6 +65,8 @@ export const RegisterScreen = ({navigation}: Props) => {
             placeholder="Correo electrónico"
             keyboardType="email-address"
             autoCapitalize="none"
+            value={form.email}
+            onChangeText={email => setForm({...form, email})}
             style={{marginBottom: 10}}
             accessoryLeft={<MyIcon name="email-outline" />}
           />
@@ -36,6 +74,8 @@ export const RegisterScreen = ({navigation}: Props) => {
             placeholder="Contraseña"
             secureTextEntry
             autoCapitalize="none"
+            value={form.password}
+            onChangeText={password => setForm({...form, password})}
             style={{marginBottom: 10}}
             accessoryLeft={<MyIcon name="lock-outline" />}
           />
@@ -46,7 +86,7 @@ export const RegisterScreen = ({navigation}: Props) => {
         <Layout>
           <Button
             accessoryRight={<MyIcon name="arrow-forward-outline" white />}
-            onPress={() => {}}>
+            onPress={onRegister}>
             Ingresar
           </Button>
         </Layout>
