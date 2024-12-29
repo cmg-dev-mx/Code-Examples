@@ -154,7 +154,6 @@ $ npm install react-native-screens react-native-safe-area-context
 3. Envolver la aplicación con el componente `NavigationContainer` en el archivo `App.js`.
 
 ```jsx
-import "react-native-gesture-handler";
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -561,4 +560,29 @@ $ npx pod-install
 
 ```sh
 $ npm install @react-native-community/geolocation --save
+```
+
+### UI Kitten
+
+- [Documentación](https://akveo.github.io/react-native-ui-kitten): Librería de componentes para React Native.
+
+```sh
+$ npm install @ui-kitten/components @eva-design/eva react-native-svg
+```
+
+#### Sublibrería: Eva Icons
+
+- [Documentación](https://akveo.github.io/react-native-ui-kitten/docs/guides/icon-packages): Librería de iconos para UI Kitten.
+
+```sh
+$ npm install @ui-kitten/eva-icons react-native-svg
+```
+
+### Async Storage
+
+- [Documentación](https://react-native-async-storage.github.io/async-storage/docs/install): Librería para almacenar datos de forma asíncrona.
+
+```sh
+$ npm install @react-native-async-storage/async-storage
+$ npx pod-install
 ```
