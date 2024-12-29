@@ -577,3 +577,12 @@ $ npm install @ui-kitten/components @eva-design/eva react-native-svg
 ```sh
 $ npm install @ui-kitten/eva-icons react-native-svg
 ```
+
+### Async Storage
+
+- [Documentación](https://react-native-async-storage.github.io/async-storage/docs/install): Librería para almacenar datos de forma asíncrona.
+
+```sh
+$ npm install @react-native-async-storage/async-storage
+$ npx pod-install
+```
