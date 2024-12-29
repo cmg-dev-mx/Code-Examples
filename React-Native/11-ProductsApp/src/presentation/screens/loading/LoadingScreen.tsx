@@ -1,10 +1,9 @@
-import {Button, Icon, Layout, Text} from '@ui-kitten/components';
+import {Button, Icon, Layout, Spinner, Text} from '@ui-kitten/components';
 
 export const LoadingScreen = () => {
   return (
     <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>LoadingScreen</Text>
-      <Button accessoryLeft={<Icon name="facebook" />}>Cerrar sesión</Button>
+      <Spinner status="primary" size="giant" />
     </Layout>
   );
 };
