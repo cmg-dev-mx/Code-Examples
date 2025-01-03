@@ -30,3 +30,4 @@ Ejercicios de ejemplo en el desarrollo de aplicaciones, algoritmos, y diseño de
 - (Compose) [Timer](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/BroadcastTimer)
 - (Compose) [Snackbar](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/ComposeSnackbar)
 - (Compose) [Handled Events](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/HandledEvents) (MVI)
+- (Compose) [Speech to Text](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/SpeechToText)
