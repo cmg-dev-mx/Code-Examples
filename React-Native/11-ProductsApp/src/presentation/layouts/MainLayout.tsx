@@ -11,10 +11,10 @@ import {MyIcon} from '../components/ui/MyIcon';
 
 interface Props {
   title: string;
-  subTitle: string;
+  subTitle?: string;
   rightAction?: () => void;
   rightActionIcon?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export const MainLayout = ({
