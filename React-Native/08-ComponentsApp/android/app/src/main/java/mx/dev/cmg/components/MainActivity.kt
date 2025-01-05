@@ -1,4 +1,4 @@
-package com.components
+package mx.dev.cmg.reactnative.components
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
