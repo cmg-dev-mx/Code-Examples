@@ -594,3 +594,23 @@ $ npx pod-install
 ```sh
 $ npm install formik --save
 ```
+
+### React Native Image Picker
+
+- [Documentación](https://www.npmjs.com/package/react-native-image-picker): Librería para seleccionar imágenes de la galería o la cámara.
+
+```sh
+$ npm install react-native-image-picker
+$ npx pod-install
+```
+
+#### Configuración de la librería en iOS
+
+1. Abrir el archivo `Info.plist` de la carpeta ios/MyFirstApp.
+
+```xml
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Se necesita acceso a la galería de fotos</string>
+<key>NSCameraUsageDescription</key>
+<string>Se necesita acceso a la cámara</string>
+```
