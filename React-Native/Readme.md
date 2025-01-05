@@ -586,3 +586,11 @@ $ npm install @ui-kitten/eva-icons react-native-svg
 $ npm install @react-native-async-storage/async-storage
 $ npx pod-install
 ```
+
+### Formik
+
+- [Documentación](https://formik.org/docs/overview): Librería para manejar formularios en React.
+
+```sh
+$ npm install formik --save
+```
