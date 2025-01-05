@@ -58,7 +58,7 @@ export const ProductScreen = ({route}: Props) => {
             const photos = await CameraAdapter.pickImage();
             setFieldValue('images', [...values.images, ...photos]);
           }}
-          rightActionIcon="camera-outline">
+          rightActionIcon="image-outline">
           <ScrollView style={{flex: 1}}>
             {/* Imágenes del producto */}
             <Layout
