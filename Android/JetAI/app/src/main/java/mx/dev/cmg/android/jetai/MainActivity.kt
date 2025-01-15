@@ -44,4 +44,4 @@ fun GreetingPreview() {
     JetAITheme {
         Greeting("Android")
     }
-}`
+}
