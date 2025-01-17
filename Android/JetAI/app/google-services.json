@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "710564561654",
+    "project_id": "jet-ai-cccfc",
+    "storage_bucket": "jet-ai-cccfc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:710564561654:android:4120722df044a9145462d7",
+        "android_client_info": {
+          "package_name": "mx.dev.cmg.android.jetai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzRNRpO2GyYhfOOWl9K81JUUu07y_Qdg4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
