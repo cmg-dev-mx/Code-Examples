@@ -24,6 +24,7 @@ class MainActivity : ComponentActivity() {
                         name = "Android",
                         modifier = Modifier.padding(innerPadding)
                     )
+                    val apiKey = BuildConfig.GEMINI_API_KEY
                 }
             }
         }
