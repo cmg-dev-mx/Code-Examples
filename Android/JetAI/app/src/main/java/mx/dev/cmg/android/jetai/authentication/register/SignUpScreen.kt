@@ -42,7 +42,7 @@ fun SignUpScreen(
     onNavigateToLoginScreen: (Boolean) -> Unit,
     onBackButtonClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SignUpVieModel = viewModel()
+    viewModel: SignUpViewModel = viewModel()
 ) {
 
     val signUpState = viewModel.signUpState
@@ -60,7 +60,7 @@ fun SignUpScreen(
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(defaultPadding),
@@ -165,38 +165,38 @@ fun SignUpScreen(
                     }
             }
 
-            Spacer(modifier = Modifier.height(defaultPadding + 8.dp))
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {
-                    viewModel.handleEvent(SignUpEvent.OnSignUpClicked)
-                }
-            ) {
-                Text(text = "Sign Up")
+        }
+        Spacer (modifier = Modifier.height(defaultPadding + 8.dp))
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {
+                viewModel.handleEvent(SignUpEvent.OnSignUpClicked)
             }
-            Spacer(modifier = Modifier.height(defaultPadding + 8.dp))
-            val signTxt = "Sign In"
-            val signInAnnotation = buildAnnotatedString {
-                withStyle(SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
-                    append("Already have an account?")
-                }
-                append(" ")
-                withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                    pushStringAnnotation(tag = signTxt, signTxt)
-                    append(signTxt)
-                }
+        ) {
+            Text(text = "Sign Up")
+        }
+        Spacer(modifier = Modifier.height(defaultPadding + 8.dp))
+        val signTxt = "Sign In"
+        val signInAnnotation = buildAnnotatedString {
+            withStyle(SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
+                append("Already have an account?")
             }
-            ClickableText(text = signInAnnotation) { offset ->
-                signInAnnotation.getStringAnnotations(offset, offset)
-                    .forEach {
-                        when (it.tag) {
-                            signTxt -> {
-                                onLoginClick()
-                            }
-                        }
-                    }
+            append(" ")
+            withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                pushStringAnnotation(tag = signTxt, signTxt)
+                append(signTxt)
             }
         }
-        LoadingView(signUpState.isLoading)
+        ClickableText(text = signInAnnotation) { offset ->
+            signInAnnotation.getStringAnnotations(offset, offset)
+                .forEach {
+                    when (it.tag) {
+                        signTxt -> {
+                            onLoginClick()
+                        }
+                    }
+                }
+        }
     }
+    LoadingView(signUpState.isLoading)
 }

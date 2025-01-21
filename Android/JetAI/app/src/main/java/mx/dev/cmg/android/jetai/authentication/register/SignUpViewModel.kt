@@ -10,7 +10,7 @@ import mx.dev.cmg.android.jetai.Graph
 import mx.dev.cmg.android.jetai.data.repository.AuthRepository
 import mx.dev.cmg.android.jetai.utils.ext.collectAndHandle
 
-class SignUpVieModel(
+class SignUpViewModel(
     private val repository: AuthRepository = Graph.authRepository
 ) : ViewModel() {
 
@@ -44,7 +44,7 @@ class SignUpVieModel(
             }
 
             is SignUpEvent.OnSignUpClicked -> {
-                // TODO: Create user
+                createUser()
             }
 
             is SignUpEvent.OnVerificationEmailSent -> {
@@ -78,7 +78,7 @@ class SignUpVieModel(
                     signUpState = signUpState.copy(isLoading = true)
                 }
             ) {
-                signUpState = signUpState.copy(isSuccessLogin = true)
+                signUpState = signUpState.copy(isSuccessLogin = true, isLoading = false)
                 sendVerificationEmail()
             }
         } catch (e: Exception) {
