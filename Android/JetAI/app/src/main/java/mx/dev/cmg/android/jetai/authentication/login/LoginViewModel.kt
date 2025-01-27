@@ -72,10 +72,14 @@ class LoginViewModel(
         }
     }
 
+    fun hasUserVerified() = repository.hasUser() && repository.hasVerifiedUser()
+
+    suspend fun signInWithGoogleIntentSender() = googleAuthClient.signIn()
+
     private fun login() = viewModelScope.launch {
         try {
             loginState = loginState.copy(loginErrorMsg = null)
-            if (validateLoginForm()) {
+            if (!validateLoginForm()) {
                 throw IllegalArgumentException("Password or Email can not be empty")
             }
             if (!isValidEmail(loginState.email)) {

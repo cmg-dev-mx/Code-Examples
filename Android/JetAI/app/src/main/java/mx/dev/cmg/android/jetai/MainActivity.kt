@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import mx.dev.cmg.android.jetai.authentication.register.SignUpScreen
+import mx.dev.cmg.android.jetai.authentication.login.LoginScreen
 import mx.dev.cmg.android.jetai.ui.theme.JetAITheme
 
 class MainActivity : ComponentActivity() {
@@ -18,10 +18,17 @@ class MainActivity : ComponentActivity() {
         setContent {
             JetAITheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    SignUpScreen(
-                        onLoginClick = {},
-                        onNavigateToLoginScreen = {},
-                        onBackButtonClicked = {},
+//                    SignUpScreen(
+//                        onLoginClick = {},
+//                        onNavigateToLoginScreen = {},
+//                        onBackButtonClicked = {},
+//                        modifier = Modifier.padding(innerPadding).fillMaxSize()
+//                    )
+                    LoginScreen(
+                        isVerificationEmailSent = false,
+                        onSignUpClick = {},
+                        onForgotPassword = {},
+                        navigateToHomeScreen = {},
                         modifier = Modifier.padding(innerPadding).fillMaxSize()
                     )
                 }
