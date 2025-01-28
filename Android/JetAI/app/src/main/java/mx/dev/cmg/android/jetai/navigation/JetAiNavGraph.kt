@@ -61,9 +61,10 @@ fun NavGraphBuilder.authGraph(
                     navAction.navigateToForgotPasswordScreen()
                 },
                 navigateToHomeScreen = {
-                    navAction.navigateToHomeGraph()
+//                    navAction.navigateToHomeGraph()
                 },
-                modifier = modifier
+                modifier = modifier,
+                viewModel = loginViewModel
             )
         }
 

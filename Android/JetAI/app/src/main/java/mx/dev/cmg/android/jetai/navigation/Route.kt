@@ -15,7 +15,7 @@ sealed class Route {
 
     data class LoginScreen(
         val route: String = "login",
-        val routeWithArgs: String = "$route/$isEmailSentArg"
+        val routeWithArgs: String = "$route/{$isEmailSentArg}",
     ): Route() {
         fun getRouteWithArgs(isEmailVerified: Boolean = false): String {
             return "$route/$isEmailVerified"

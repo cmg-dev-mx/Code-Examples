@@ -55,7 +55,11 @@ class ForgotPasswordViewModel(
                 }
             }
 
-            is ForgotPasswordEvent.OnEmailChange -> {}
+            is ForgotPasswordEvent.OnEmailChange -> {
+                forgotPasswordState = forgotPasswordState.copy(
+                    email = event.email
+                )
+            }
         }
     }
 }
