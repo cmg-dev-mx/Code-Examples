@@ -1,0 +1,14 @@
+## This file must *NOT* be checked into Version Control Systems,
+# as it contains information specific to your local configuration.
+#
+# Location of the SDK. This is only used by Gradle.
+# For customization when using a Version Control System, please read the
+# header note.
+#Sat Jan 25 19:12:05 MST 2025
+sdk.dir=...
+
+# GEMINI API Key. Se obtiene en https://aistudio.google.com/apikey
+GEMINI_API_KEY=...
+
+# Authentication client ID: Se obtiene en https://console.firebase.google.com/project/<<ID_PROYECTO>>/authentication/providers -> Proveedor Google -> Configuración del SDK web
+CLIENT_ID=...
