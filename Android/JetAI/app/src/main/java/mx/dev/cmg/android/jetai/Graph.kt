@@ -6,12 +6,17 @@ import com.google.ai.client.generativeai.type.generationConfig
 import com.google.android.gms.auth.api.identity.Identity
 import mx.dev.cmg.android.jetai.data.repository.AuthRepository
 import mx.dev.cmg.android.jetai.data.repository.AuthRepositoryImpl
+import mx.dev.cmg.android.jetai.data.repository.ChatRepository
 import mx.dev.cmg.android.jetai.data.repository.GoogleAuthClient
 
 object Graph {
 
     val authRepository: AuthRepository by lazy {
         AuthRepositoryImpl()
+    }
+
+    val chatRepository: ChatRepository by lazy {
+        ChatRepository()
     }
 
     lateinit var googleAuthClient: GoogleAuthClient
