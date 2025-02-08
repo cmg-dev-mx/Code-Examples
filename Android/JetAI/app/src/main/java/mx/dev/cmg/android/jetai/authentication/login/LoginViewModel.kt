@@ -69,6 +69,9 @@ class LoginViewModel(
                         }
                 }
             }
+            is LoginEvents.Logout -> {
+                repository.signOut()
+            }
         }
     }
 
@@ -165,4 +168,5 @@ sealed class LoginEvents {
     data object Login : LoginEvents()
     data object OnResendVerification : LoginEvents()
     data class SignInWithGoogle(val intent: Intent) : LoginEvents()
+    data object Logout: LoginEvents()
 }

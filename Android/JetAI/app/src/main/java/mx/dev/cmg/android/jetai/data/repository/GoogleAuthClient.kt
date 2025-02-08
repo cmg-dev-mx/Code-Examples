@@ -46,6 +46,7 @@ class GoogleAuthClient(
         )
 
         try {
+            trySend(Response.Loading())
             Firebase.auth.signInWithCredential(googleCredentials)
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
@@ -53,7 +54,7 @@ class GoogleAuthClient(
                     } else {
                         trySend(Response.Error(it.exception))
                     }
-                }
+                }.await()
         } catch (e: Exception) {
             trySend(Response.Error(e))
         }

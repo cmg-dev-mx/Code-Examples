@@ -12,6 +12,8 @@ import mx.dev.cmg.android.jetai.authentication.forgotpassword.ForgotPasswordScre
 import mx.dev.cmg.android.jetai.authentication.login.LoginScreen
 import mx.dev.cmg.android.jetai.authentication.login.LoginViewModel
 import mx.dev.cmg.android.jetai.authentication.register.SignUpScreen
+import mx.dev.cmg.android.jetai.chatroom.ChatRoomScreen
+import mx.dev.cmg.android.jetai.chatroom.ChatRoomViewModel
 
 @Composable
 fun JetAiNavGraph(
@@ -19,6 +21,7 @@ fun JetAiNavGraph(
     navController: NavHostController,
     navAction: JetAiNavigationActions,
     loginViewModel: LoginViewModel,
+    chatRoomViewModel: ChatRoomViewModel,
     startDestination: String
 ) {
 
@@ -30,6 +33,12 @@ fun JetAiNavGraph(
             navAction = navAction,
             navController = navController,
             loginViewModel = loginViewModel,
+            modifier = modifier
+        )
+        homeGraph(
+            navAction = navAction,
+            navController = navController,
+            chatRoomViewModel = chatRoomViewModel,
             modifier = modifier
         )
     }
@@ -61,7 +70,7 @@ fun NavGraphBuilder.authGraph(
                     navAction.navigateToForgotPasswordScreen()
                 },
                 navigateToHomeScreen = {
-//                    navAction.navigateToHomeGraph()
+                    navAction.navigateToHomeGraph()
                 },
                 modifier = modifier,
                 viewModel = loginViewModel
@@ -93,6 +102,27 @@ fun NavGraphBuilder.authGraph(
                     navController.navigateUp()
                 }
             )
+        }
+    }
+}
+
+fun NavGraphBuilder.homeGraph(
+    navAction: JetAiNavigationActions,
+    navController: NavHostController,
+    chatRoomViewModel: ChatRoomViewModel,
+    modifier: Modifier = Modifier,
+) {
+    navigation(startDestination = Tabs.Chats.title, route = Route.NESTED_HOME_ROUTE) {
+        composable(route = Tabs.Chats.title) {
+            ChatRoomScreen(
+                modifier = modifier,
+                chatRoomViewModel = chatRoomViewModel
+            ) { id, chatTitle ->
+
+            }
+        }
+        composable(route = Tabs.VisualIq.title) {
+            // TODO: Implement Visual IQ screen
         }
     }
 }
