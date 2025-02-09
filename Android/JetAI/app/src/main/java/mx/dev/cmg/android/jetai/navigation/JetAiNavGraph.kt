@@ -2,6 +2,7 @@ package mx.dev.cmg.android.jetai.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -14,6 +15,10 @@ import mx.dev.cmg.android.jetai.authentication.login.LoginViewModel
 import mx.dev.cmg.android.jetai.authentication.register.SignUpScreen
 import mx.dev.cmg.android.jetai.chatroom.ChatRoomScreen
 import mx.dev.cmg.android.jetai.chatroom.ChatRoomViewModel
+import mx.dev.cmg.android.jetai.chatroom.EMPTY_TITLE
+import mx.dev.cmg.android.jetai.message.MessageScreen
+import mx.dev.cmg.android.jetai.message.MessageViewModel
+import mx.dev.cmg.android.jetai.message.MessageViewModelFactory
 
 @Composable
 fun JetAiNavGraph(
@@ -112,17 +117,39 @@ fun NavGraphBuilder.homeGraph(
     chatRoomViewModel: ChatRoomViewModel,
     modifier: Modifier = Modifier,
 ) {
+    val messageRoute = "${Route.MessageScreen().route}/{chatId}/{chatTitle}"
+
     navigation(startDestination = Tabs.Chats.title, route = Route.NESTED_HOME_ROUTE) {
         composable(route = Tabs.Chats.title) {
             ChatRoomScreen(
                 modifier = modifier,
                 chatRoomViewModel = chatRoomViewModel
             ) { id, chatTitle ->
-                // TODO: Implement navigation to chat screen
+                navController.navigate("${Route.MessageScreen().route}/$id/$chatTitle") {
+                    launchSingleTop = true
+                    popUpTo(Route.MessageScreen().route) { saveState = true }
+                    restoreState = true
+                }
             }
         }
         composable(route = Tabs.VisualIq.title) {
             // TODO: Implement Visual IQ screen
+        }
+        composable(
+            route = messageRoute,
+            arguments = listOf(
+                navArgument("chatId") {},
+                navArgument("chatTitle") {}
+            )
+        ) { navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getString("chatId") ?: ""
+            val title = navBackStackEntry.arguments?.getString("chatTitle") ?: EMPTY_TITLE
+            val viewModel: MessageViewModel = viewModel(factory = MessageViewModelFactory(id, title))
+            MessageScreen(
+                modifier = modifier,
+                messageViewModel = viewModel
+            )
+
         }
     }
 }

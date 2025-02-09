@@ -4,8 +4,8 @@ import com.google.firebase.Timestamp
 import java.util.UUID
 
 enum class ModelName(val modelName: String) {
-    TEXT("gemini-prod-1"),
-    MULTIMODAL("gemini-prod-vision")
+    TEXT("gemini-pro"),
+    MULTIMODAL("gemini-pro-vision")
 }
 
 enum class Participant {

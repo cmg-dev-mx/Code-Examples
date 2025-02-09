@@ -162,7 +162,9 @@ fun ChatBubble(
 
     Column(
         horizontalAlignment = horizontalAlignment,
-        modifier = modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+        modifier = modifier
+            .padding(horizontal = 8.dp, vertical = 4.dp)
+            .fillMaxWidth()
     ) {
         Text(
             text = chatMessage.participant.name,

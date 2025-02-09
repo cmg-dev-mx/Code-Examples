@@ -24,6 +24,7 @@ sealed class Route {
 
     data class SignupScreen(val route: String = "signup"): Route()
     data class ForgotPasswordScreen(val route: String = "forgotPassword"): Route()
+    data class MessageScreen(val route: String = "messasge"): Route()
 }
 
 enum class Tabs(val title: String, val icon: ImageVector) {
