@@ -8,6 +8,7 @@ import mx.dev.cmg.android.jetai.data.repository.AuthRepository
 import mx.dev.cmg.android.jetai.data.repository.AuthRepositoryImpl
 import mx.dev.cmg.android.jetai.data.repository.ChatRepository
 import mx.dev.cmg.android.jetai.data.repository.GoogleAuthClient
+import mx.dev.cmg.android.jetai.data.repository.PhotoReasoningRepository
 
 object Graph {
 
@@ -17,6 +18,10 @@ object Graph {
 
     val chatRepository: ChatRepository by lazy {
         ChatRepository()
+    }
+
+    val photoReasoningRepository: PhotoReasoningRepository by lazy {
+        PhotoReasoningRepository()
     }
 
     lateinit var googleAuthClient: GoogleAuthClient

@@ -1,4 +1,4 @@
-package mx.dev.cmg.android.jetai.photo_reasoning
+package mx.dev.cmg.android.jetai.data.repository
 
 import android.graphics.Bitmap
 import com.google.ai.client.generativeai.GenerativeModel
