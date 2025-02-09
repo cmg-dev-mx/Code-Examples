@@ -51,8 +51,9 @@ class ChatRoomViewModel(
 
     fun newChatRoom() {
         viewModelScope.launch {
+            val chatId = chatRepository.createChatRoom()
             chatRoomState = chatRoomState.copy(
-                newChatId = chatRepository.createChatRoom()
+                newChatId = chatId
             )
         }
     }

@@ -118,7 +118,7 @@ fun NavGraphBuilder.homeGraph(
                 modifier = modifier,
                 chatRoomViewModel = chatRoomViewModel
             ) { id, chatTitle ->
-
+                // TODO: Implement navigation to chat screen
             }
         }
         composable(route = Tabs.VisualIq.title) {
