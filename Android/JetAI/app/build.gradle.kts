@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.play.services)
     implementation(libs.generativeai)
+    implementation(libs.markdown)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -17,6 +17,7 @@ googleServices = "4.4.2"
 playServices = "21.3.0"
 generativeai = "0.9.0"
 secretsGradlePlugin = "2.0.1"
+markdown = "0.4.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -45,6 +46,8 @@ ui-util-compose = { group = "androidx.compose.ui", name = "ui-util" }
 coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 play-services = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServices" }
 generativeai = { group = 'com.google.ai.client.generativeai', name = 'generativeai', version.ref = 'generativeai' }
+markdown = { group = 'com.github.jeziellago', name = 'compose-markdown', version.ref = 'markdown' }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
