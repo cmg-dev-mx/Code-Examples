@@ -1,5 +1,6 @@
 package mx.dev.cmg.android.jetai.photo_reasoning
 
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -57,8 +58,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.ImageLoader
 import coil.request.ImageRequest
+import coil.request.SuccessResult
+import coil.size.Precision
 import coil3.compose.AsyncImage
 import dev.jeziellago.compose.markdowntext.MarkdownText
+import kotlinx.coroutines.launch
 import mx.dev.cmg.android.jetai.R
 import mx.dev.cmg.android.jetai.utils.saveImageToFileAndGetUri
 
@@ -71,6 +75,33 @@ fun PhotoReasoningScreen(
     val coroutineScope = rememberCoroutineScope()
     val imageRequestBuilder = ImageRequest.Builder(LocalContext.current)
     val imageLoader = ImageLoader.Builder(LocalContext.current).build()
+
+    PhotoReasoningScreen(
+        modifier = modifier,
+        uiState = photoReasoningUiState,
+        onReasonClicked = { inputText, selectedItems ->
+            coroutineScope.launch {
+                val bitmaps = selectedItems.mapNotNull {
+                    val imageRequest = imageRequestBuilder
+                        .data(it)
+                        .size(size = 768)
+                        .precision(Precision.EXACT)
+                        .build()
+                    try {
+                        val result = imageLoader.execute(imageRequest)
+                        if (result is SuccessResult) {
+                            return@mapNotNull (result.drawable as BitmapDrawable).bitmap
+                        } else {
+                            return@mapNotNull null
+                        }
+                    } catch (e: Exception) {
+                        return@mapNotNull null
+                    }
+                }
+                viewModel.reason(inputText, bitmaps)
+            }
+        }
+    )
 }
 
 @Composable
@@ -207,7 +238,7 @@ private fun PhotoReasoningScreen(
                 }
             }
 
-            when(uiState) {
+            when (uiState) {
                 is PhotoReasoningUiState.Initial -> {}
                 is PhotoReasoningUiState.Loading -> {
                     Box(
@@ -219,6 +250,7 @@ private fun PhotoReasoningScreen(
                         CircularProgressIndicator()
                     }
                 }
+
                 is PhotoReasoningUiState.Success -> {
                     Card(
                         modifier = Modifier
@@ -228,7 +260,7 @@ private fun PhotoReasoningScreen(
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.surfaceVariant
                         )
-                    ){
+                    ) {
                         MarkdownText(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -240,6 +272,7 @@ private fun PhotoReasoningScreen(
                         )
                     }
                 }
+
                 is PhotoReasoningUiState.Error -> {
                     Card(
                         modifier = Modifier
