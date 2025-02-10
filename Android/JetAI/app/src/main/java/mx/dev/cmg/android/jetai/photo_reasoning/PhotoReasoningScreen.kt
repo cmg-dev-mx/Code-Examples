@@ -181,7 +181,7 @@ private fun PhotoReasoningScreen(
                         .align(Alignment.CenterVertically)
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_photo),
+                        painter = painterResource(id = R.drawable.ic_image),
                         contentDescription = null
                     )
                 }
@@ -195,7 +195,7 @@ private fun PhotoReasoningScreen(
                         .align(Alignment.CenterVertically)
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_image),
+                        painter = painterResource(id = R.drawable.ic_photo),
                         contentDescription = null
                     )
                 }

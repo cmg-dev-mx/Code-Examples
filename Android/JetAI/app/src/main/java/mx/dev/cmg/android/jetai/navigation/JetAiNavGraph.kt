@@ -1,5 +1,7 @@
 package mx.dev.cmg.android.jetai.navigation
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -19,6 +21,7 @@ import mx.dev.cmg.android.jetai.chatroom.EMPTY_TITLE
 import mx.dev.cmg.android.jetai.message.MessageScreen
 import mx.dev.cmg.android.jetai.message.MessageViewModel
 import mx.dev.cmg.android.jetai.message.MessageViewModelFactory
+import mx.dev.cmg.android.jetai.photo_reasoning.PhotoReasoningScreen
 
 @Composable
 fun JetAiNavGraph(
@@ -132,8 +135,14 @@ fun NavGraphBuilder.homeGraph(
                 }
             }
         }
-        composable(route = Tabs.VisualIq.title) {
-            // TODO: Implement Visual IQ screen
+        composable(
+            route = Tabs.VisualIq.title,
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() }
+        ) {
+            PhotoReasoningScreen(
+                modifier = modifier
+            )
         }
         composable(
             route = messageRoute,

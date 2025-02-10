@@ -33,6 +33,7 @@ class PhotoReasoningRepository(
                     emit(Response.Success(outputContent))
                 }
         } catch (e: Exception) {
+            e.printStackTrace()
             emit(Response.Error(e.cause))
         }
     }
