@@ -23,6 +23,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
@@ -47,6 +48,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -56,6 +58,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil3.compose.AsyncImage
+import dev.jeziellago.compose.markdowntext.MarkdownText
 import mx.dev.cmg.android.jetai.R
 import mx.dev.cmg.android.jetai.utils.saveImageToFileAndGetUri
 
@@ -199,6 +202,58 @@ private fun PhotoReasoningScreen(
                                 )
                                 .requiredSize(102.dp)
                                 .clip(RoundedCornerShape(20.dp))
+                        )
+                    }
+                }
+            }
+
+            when(uiState) {
+                is PhotoReasoningUiState.Initial -> {}
+                is PhotoReasoningUiState.Loading -> {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .align(Alignment.CenterHorizontally)
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+                is PhotoReasoningUiState.Success -> {
+                    Card(
+                        modifier = Modifier
+                            .padding(vertical = 16.dp)
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(4.dp, 20.dp, 20.dp, 20.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant
+                        )
+                    ){
+                        MarkdownText(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 16.dp, top = 8.dp, end = 8.dp, bottom = 8.dp),
+                            markdown = uiState.output,
+                            style = TextStyle(
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        )
+                    }
+                }
+                is PhotoReasoningUiState.Error -> {
+                    Card(
+                        modifier = Modifier
+                            .padding(vertical = 16.dp)
+                            .fillMaxWidth(),
+                        shape = MaterialTheme.shapes.large,
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.errorContainer
+                        )
+                    ) {
+                        Text(
+                            text = uiState.errorMsg,
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.padding(16.dp)
                         )
                     }
                 }
