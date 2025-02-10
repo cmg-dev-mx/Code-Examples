@@ -31,3 +31,12 @@ Ejercicios de ejemplo en el desarrollo de aplicaciones, algoritmos, y diseño de
 - (Compose) [Snackbar](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/ComposeSnackbar)
 - (Compose) [Handled Events](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/HandledEvents) (MVI)
 - (Compose) [Speech to Text](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/SpeechToText)
+- (Compose) [JetAi](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/JetAI) (MVI)
+
+### React Native
+
+- [Calculator](https://github.com/cmg-dev-mx/Code-Examples/tree/main/React-Native/04-Calculator)
+- [Movies](https://github.com/cmg-dev-mx/Code-Examples/tree/main/React-Native/07-MovieApp)
+- [Pokedex](https://github.com/cmg-dev-mx/Code-Examples/tree/main/React-Native/09-pokedexApp)
+- [Maps](https://github.com/cmg-dev-mx/Code-Examples/tree/main/React-Native/10-MapsApp)
+- [Products](https://github.com/cmg-dev-mx/Code-Examples/tree/main/React-Native/11-ProductsApp)
