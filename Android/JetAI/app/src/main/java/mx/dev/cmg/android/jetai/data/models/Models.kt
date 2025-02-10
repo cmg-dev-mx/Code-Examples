@@ -5,7 +5,7 @@ import java.util.UUID
 
 enum class ModelName(val modelName: String) {
     TEXT("gemini-pro"),
-    MULTIMODAL("gemini-pro-vision")
+    MULTIMODAL("gemini-1.5-flash")
 }
 
 enum class Participant {
