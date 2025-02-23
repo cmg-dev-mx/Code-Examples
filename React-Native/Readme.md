@@ -29,7 +29,13 @@ $ git checkout -b develop
 1. Inicializamos el proyecto de React-Native con el nombre de la carpeta MyFirstApp.
 
 ```sh
-$ npx react-native@latest init MyFirstApp
+$ npx @react-native-community/cli@latest init MyFirstApp
+```
+
+> Nota: En caso de que se haya instalado una versión anterior global de `react-native-cli`, se tiene que desintalar con el siguiente comando:
+
+```sh
+$ npm uninstall -g react-native-cli @react-native-community/cli
 ```
 
 2. Se te preguntará la versión de React-Native para proceder.
@@ -58,6 +64,8 @@ $ cd ..
 $ git add .
 $ git commit -m "Creación del proyecto"
 ```
+
+
 
 ### Ejecución del proyecto
 
