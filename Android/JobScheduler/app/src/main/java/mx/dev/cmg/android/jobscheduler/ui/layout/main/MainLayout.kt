@@ -1,5 +1,7 @@
 package mx.dev.cmg.android.jobscheduler.ui.layout.main
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,12 +16,16 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import mx.dev.cmg.android.jobscheduler.R
 import mx.dev.cmg.android.jobscheduler.ui.theme.JobSchedulerTheme
 
@@ -33,12 +39,26 @@ private fun MainLayoutPreview() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun MainLayout() {
+    val notificationPermissionState = rememberPermissionState(android.Manifest.permission.POST_NOTIFICATIONS)
 
     val vm = hiltViewModel<MainViewModel>()
     val loginState = vm.loginState.value
     val isLoadingState = vm.isLoadingState.value
+
+    LaunchedEffect(null) {
+        if (!notificationPermissionState.status.isGranted) {
+            notificationPermissionState.launchPermissionRequest()
+        } else {
+            vm.showWelcomeNotification(
+                title = "Job Scheduler",
+                content = "Welcome message on app init."
+            )
+        }
+    }
 
     MainLayoutScreen(
         isLoadingState = isLoadingState,
