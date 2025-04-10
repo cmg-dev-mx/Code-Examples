@@ -3,37 +3,64 @@ package mx.dev.cmg.android.jobscheduler.ui.layout.main
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import mx.dev.cmg.android.jobscheduler.R
 import mx.dev.cmg.android.jobscheduler.ui.theme.JobSchedulerTheme
 
 @Preview
 @Composable
 private fun MainLayoutPreview() {
     JobSchedulerTheme {
-        MainLayoutScreen()
+        MainLayoutScreen(
+             isLoadingState = true
+        )
     }
 }
 
 @Composable
 fun MainLayout() {
 
-    MainLayoutScreen()
+    val vm = hiltViewModel<MainViewModel>()
+    val loginState = vm.loginState.value
+    val isLoadingState = vm.isLoadingState.value
+
+    MainLayoutScreen(
+        isLoadingState = isLoadingState,
+        isLogged = loginState,
+        onLogin = {
+            vm.login()
+        }
+    )
 }
 
 @Composable
 private fun MainLayoutScreen(
+    isLoadingState: Boolean = false,
+    isLogged: Boolean = false,
     onLogin: () -> Unit = {},
 ) {
+    val loginStatus = if (isLogged) {
+        stringResource(R.string.user_logged_in)
+    } else {
+        stringResource(R.string.not_logged_yet)
+    }
+
     Column(
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.surface)
@@ -42,13 +69,30 @@ private fun MainLayoutScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("Job Scheduler", style = MaterialTheme.typography.headlineMedium)
+        Text(stringResource(R.string.job_scheduler), style = MaterialTheme.typography.headlineMedium)
+
+        Text(stringResource(R.string.login_status, loginStatus))
 
         Button(
             modifier = Modifier.wrapContentWidth(),
             onClick = onLogin,
         ) {
-            Text("Login")
+            Row(
+                modifier = Modifier.wrapContentWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("Login")
+
+                if (isLoadingState) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(28.dp),
+                        color = MaterialTheme.colorScheme.onPrimary
+
+                    )
+                }
+            }
+
         }
     }
 }

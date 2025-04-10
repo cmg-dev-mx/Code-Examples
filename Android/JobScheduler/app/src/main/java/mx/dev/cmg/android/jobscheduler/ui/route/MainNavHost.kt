@@ -11,9 +11,7 @@ import mx.dev.cmg.android.jobscheduler.ui.layout.main.MainLayout
 fun MainNavHost() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Main) {
-        composable<Main> {
-            MainLayout()
-        }
+        composable<Main> { MainLayout() }
     }
 }
 
