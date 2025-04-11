@@ -1,4 +1,4 @@
-package mx.dev.cmg.android.jobscheduler.ui.layout.main
+package mx.dev.cmg.android.jobscheduler.ui.screen.main.layout
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -27,6 +27,8 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import mx.dev.cmg.android.jobscheduler.R
+import mx.dev.cmg.android.jobscheduler.ui.screen.main.state.MainEvent
+import mx.dev.cmg.android.jobscheduler.ui.screen.main.vm.MainViewModel
 import mx.dev.cmg.android.jobscheduler.ui.theme.JobSchedulerTheme
 
 @Preview
@@ -46,8 +48,7 @@ fun MainLayout() {
     val notificationPermissionState = rememberPermissionState(android.Manifest.permission.POST_NOTIFICATIONS)
 
     val vm = hiltViewModel<MainViewModel>()
-    val loginState = vm.loginState.value
-    val isLoadingState = vm.isLoadingState.value
+    val state = vm.layoutState.value
 
     LaunchedEffect(null) {
         if (!notificationPermissionState.status.isGranted) {
@@ -61,10 +62,11 @@ fun MainLayout() {
     }
 
     MainLayoutScreen(
-        isLoadingState = isLoadingState,
-        isLogged = loginState,
+        isLoadingState = state.isLoading,
+        isLogged = state.isUserLoggedIn,
+        isButtonEnabled = state.isLoginButtonEnabled,
         onLogin = {
-            vm.login()
+            vm.onEvent(MainEvent.OnLoginButtonClick)
         }
     )
 }
@@ -73,6 +75,7 @@ fun MainLayout() {
 private fun MainLayoutScreen(
     isLoadingState: Boolean = false,
     isLogged: Boolean = false,
+    isButtonEnabled: Boolean = true,
     onLogin: () -> Unit = {},
 ) {
     val loginStatus = if (isLogged) {
@@ -95,6 +98,7 @@ private fun MainLayoutScreen(
 
         Button(
             modifier = Modifier.wrapContentWidth(),
+            enabled = isButtonEnabled,
             onClick = onLogin,
         ) {
             Row(

@@ -1,4 +1,4 @@
-package mx.dev.cmg.android.jobscheduler.ui.layout.main
+package mx.dev.cmg.android.jobscheduler.ui.screen.main.vm
 
 import android.content.Context
 import androidx.compose.runtime.mutableStateOf
@@ -8,6 +8,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import mx.dev.cmg.android.jobscheduler.ui.screen.main.state.MainEvent
+import mx.dev.cmg.android.jobscheduler.ui.screen.main.state.MainLayoutState
 import mx.dev.cmg.android.jobscheduler.utils.notifications.createNotification
 import javax.inject.Inject
 
@@ -16,18 +18,31 @@ class MainViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ): ViewModel() {
 
-    var isLoadingState = mutableStateOf(false)
+    var layoutState = mutableStateOf(MainLayoutState())
         private set
 
-    var loginState = mutableStateOf(false)
-        private set
+    fun onEvent(event: MainEvent) {
+        when (event) {
+            is MainEvent.OnLoginButtonClick -> {
+                login()
+            }
+        }
+    }
 
-    fun login() {
+    private fun login() {
         viewModelScope.launch {
-            isLoadingState.value = true
+            layoutState.value = MainLayoutState(
+                isLoginButtonEnabled = false,
+                isLoading = true
+            )
+
             delay(2000)
-            loginState.value = true
-            isLoadingState.value = false
+
+            layoutState.value = MainLayoutState(
+                isLoginButtonEnabled = false,
+                isLoading = false,
+                isUserLoggedIn = true
+            )
         }
     }
 
