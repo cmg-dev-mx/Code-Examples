@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,6 +31,7 @@ import mx.dev.cmg.android.jobscheduler.R
 import mx.dev.cmg.android.jobscheduler.ui.screen.main.state.MainEvent
 import mx.dev.cmg.android.jobscheduler.ui.screen.main.vm.MainViewModel
 import mx.dev.cmg.android.jobscheduler.ui.theme.JobSchedulerTheme
+import mx.dev.cmg.android.jobscheduler.utils.notifications.createNotification
 
 @Preview
 @Composable
@@ -45,19 +47,27 @@ private fun MainLayoutPreview() {
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun MainLayout() {
+    val context = LocalContext.current
     val notificationPermissionState = rememberPermissionState(android.Manifest.permission.POST_NOTIFICATIONS)
 
     val vm = hiltViewModel<MainViewModel>()
     val state = vm.layoutState.value
+    val notificationState = vm.notificationState.value
+
+    LaunchedEffect(notificationState) {
+        if (notificationState.showWelcomeNotification) {
+            context.createNotification(
+                title = "Job Scheduler",
+                content = "Welcome message on app init.",
+            )
+        }
+    }
 
     LaunchedEffect(null) {
         if (!notificationPermissionState.status.isGranted) {
             notificationPermissionState.launchPermissionRequest()
         } else {
-            vm.showWelcomeNotification(
-                title = "Job Scheduler",
-                content = "Welcome message on app init."
-            )
+            vm.validateWelcomeNotification()
         }
     }
 

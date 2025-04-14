@@ -1,24 +1,26 @@
 package mx.dev.cmg.android.jobscheduler.ui.screen.main.vm
 
-import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import mx.dev.cmg.android.jobscheduler.core.usecase.welcome.WelcomeNotificationUseCase
 import mx.dev.cmg.android.jobscheduler.ui.screen.main.state.MainEvent
 import mx.dev.cmg.android.jobscheduler.ui.screen.main.state.MainLayoutState
-import mx.dev.cmg.android.jobscheduler.utils.notifications.createNotification
+import mx.dev.cmg.android.jobscheduler.ui.screen.main.state.NotificationState
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    @ApplicationContext private val context: Context
+    private val useCase: WelcomeNotificationUseCase,
 ): ViewModel() {
 
     var layoutState = mutableStateOf(MainLayoutState())
+        private set
+
+    var notificationState = mutableStateOf(NotificationState())
         private set
 
     fun onEvent(event: MainEvent) {
@@ -46,12 +48,15 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun showWelcomeNotification(title: String, content: String) {
+    fun validateWelcomeNotification() {
         viewModelScope.launch {
-            context.createNotification(
-                title = title,
-                 content = content
-            )
+            useCase.validateWelcomeNotification().collect { alreadyShown ->
+                if (alreadyShown) return@collect
+
+                notificationState.value = NotificationState(
+                    showWelcomeNotification = true
+                )
+            }
         }
     }
 }

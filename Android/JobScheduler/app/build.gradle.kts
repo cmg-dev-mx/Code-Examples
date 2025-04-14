@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.navigation)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.hilt)
+    implementation(libs.datastore.prefrerences)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation)
     implementation(libs.accompanist.permissions)
