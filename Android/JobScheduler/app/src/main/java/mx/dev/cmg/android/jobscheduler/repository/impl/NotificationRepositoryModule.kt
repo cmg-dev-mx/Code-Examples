@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import mx.dev.cmg.android.jobscheduler.core.repository.NotificationRepository
+import mx.dev.cmg.android.jobscheduler.repository.impl.notification.NotificationRepositoryImpl
 
 @Module
 @InstallIn(SingletonComponent::class)

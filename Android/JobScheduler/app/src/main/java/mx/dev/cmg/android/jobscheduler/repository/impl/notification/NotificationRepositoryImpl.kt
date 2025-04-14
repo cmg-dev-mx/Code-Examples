@@ -1,4 +1,4 @@
-package mx.dev.cmg.android.jobscheduler.repository.impl
+package mx.dev.cmg.android.jobscheduler.repository.impl.notification
 
 import mx.dev.cmg.android.jobscheduler.core.repository.NotificationRepository
 import mx.dev.cmg.android.jobscheduler.repository.source.DataStoreSource

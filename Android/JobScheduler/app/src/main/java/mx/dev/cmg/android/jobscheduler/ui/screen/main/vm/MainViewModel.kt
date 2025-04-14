@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import mx.dev.cmg.android.jobscheduler.core.usecase.login.LoginSessionUseCase
+import mx.dev.cmg.android.jobscheduler.core.usecase.login.LoginUseCase
 import mx.dev.cmg.android.jobscheduler.core.usecase.welcome.WelcomeNotificationUseCase
 import mx.dev.cmg.android.jobscheduler.ui.screen.main.state.MainEvent
 import mx.dev.cmg.android.jobscheduler.ui.screen.main.state.MainLayoutState
@@ -14,7 +16,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val useCase: WelcomeNotificationUseCase,
+    private val welcomeNotificationUseCase: WelcomeNotificationUseCase,
+    private val loginUseCase: LoginUseCase,
+    private val loginSessionUseCase: LoginSessionUseCase
 ): ViewModel() {
 
     var layoutState = mutableStateOf(MainLayoutState())
@@ -31,6 +35,34 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun validateWelcomeNotification() {
+        viewModelScope.launch {
+            welcomeNotificationUseCase.validateWelcomeNotification().collect { alreadyShown ->
+                if (alreadyShown) return@collect
+
+                notificationState.value = NotificationState(
+                    showWelcomeNotification = true
+                )
+            }
+        }
+    }
+
+    fun validateOneDayLoginNotification() {
+        viewModelScope.launch {
+            // TODO: Implement this
+        }
+    }
+
+    fun validateLoginSession() {
+        viewModelScope.launch {
+            loginSessionUseCase.isLoggedIn().collect { logged ->
+                layoutState.value = MainLayoutState(
+                    isUserLoggedIn = logged
+                )
+            }
+        }
+    }
+
     private fun login() {
         viewModelScope.launch {
             layoutState.value = MainLayoutState(
@@ -39,23 +71,20 @@ class MainViewModel @Inject constructor(
             )
 
             delay(2000)
-
-            layoutState.value = MainLayoutState(
-                isLoginButtonEnabled = false,
-                isLoading = false,
-                isUserLoggedIn = true
-            )
-        }
-    }
-
-    fun validateWelcomeNotification() {
-        viewModelScope.launch {
-            useCase.validateWelcomeNotification().collect { alreadyShown ->
-                if (alreadyShown) return@collect
-
-                notificationState.value = NotificationState(
-                    showWelcomeNotification = true
-                )
+            loginUseCase.login().collect { logged ->
+                if (logged) {
+                    layoutState.value = MainLayoutState(
+                        isLoginButtonEnabled = false,
+                        isLoading = false,
+                        isUserLoggedIn = true
+                    )
+                } else {
+                    layoutState.value = MainLayoutState(
+                        isLoginButtonEnabled = true,
+                        isLoading = false,
+                        isUserLoggedIn = false
+                    )
+                }
             }
         }
     }

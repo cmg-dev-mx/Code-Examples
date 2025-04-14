@@ -67,7 +67,9 @@ fun MainLayout() {
         if (!notificationPermissionState.status.isGranted) {
             notificationPermissionState.launchPermissionRequest()
         } else {
+            vm.validateLoginSession()
             vm.validateWelcomeNotification()
+            vm.validateOneDayLoginNotification()
         }
     }
 
