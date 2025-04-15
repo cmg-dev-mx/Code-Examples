@@ -79,6 +79,9 @@ fun MainLayout() {
         isButtonEnabled = state.isLoginButtonEnabled,
         onLogin = {
             vm.onEvent(MainEvent.OnLoginButtonClick)
+        },
+        onStopJob = {
+            vm.onEvent(MainEvent.OnStopJobButtonClick)
         }
     )
 }
@@ -89,6 +92,7 @@ private fun MainLayoutScreen(
     isLogged: Boolean = false,
     isButtonEnabled: Boolean = true,
     onLogin: () -> Unit = {},
+    onStopJob: () -> Unit = {},
 ) {
     val loginStatus = if (isLogged) {
         stringResource(R.string.user_logged_in)
@@ -128,7 +132,15 @@ private fun MainLayoutScreen(
                     )
                 }
             }
+        }
 
+        Button(
+            modifier = Modifier.wrapContentWidth(),
+            onClick = {
+                onStopJob()
+            }
+        ) {
+            Text("Stop Job")
         }
     }
 }

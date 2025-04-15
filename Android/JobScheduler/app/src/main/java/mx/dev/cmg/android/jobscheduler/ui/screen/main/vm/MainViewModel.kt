@@ -8,6 +8,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import mx.dev.cmg.android.jobscheduler.core.usecase.login.LoginSessionUseCase
 import mx.dev.cmg.android.jobscheduler.core.usecase.login.LoginUseCase
+import mx.dev.cmg.android.jobscheduler.core.usecase.onedaylogin.OneDayWithoutLoginUseCase
 import mx.dev.cmg.android.jobscheduler.core.usecase.welcome.WelcomeNotificationUseCase
 import mx.dev.cmg.android.jobscheduler.ui.screen.main.state.MainEvent
 import mx.dev.cmg.android.jobscheduler.ui.screen.main.state.MainLayoutState
@@ -17,9 +18,10 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val welcomeNotificationUseCase: WelcomeNotificationUseCase,
+    private val oneDayWithoutLoginUseCase: OneDayWithoutLoginUseCase,
     private val loginUseCase: LoginUseCase,
     private val loginSessionUseCase: LoginSessionUseCase
-): ViewModel() {
+) : ViewModel() {
 
     var layoutState = mutableStateOf(MainLayoutState())
         private set
@@ -31,6 +33,10 @@ class MainViewModel @Inject constructor(
         when (event) {
             is MainEvent.OnLoginButtonClick -> {
                 login()
+            }
+
+            is MainEvent.OnStopJobButtonClick -> {
+                stopJob()
             }
         }
     }
@@ -49,7 +55,9 @@ class MainViewModel @Inject constructor(
 
     fun validateOneDayLoginNotification() {
         viewModelScope.launch {
-            // TODO: Implement this
+            oneDayWithoutLoginUseCase.validateOneDayWithoutLoginNotification().collect { loggedIn ->
+                return@collect
+            }
         }
     }
 
@@ -85,6 +93,14 @@ class MainViewModel @Inject constructor(
                         isUserLoggedIn = false
                     )
                 }
+            }
+        }
+    }
+
+    private fun stopJob() {
+        viewModelScope.launch {
+            oneDayWithoutLoginUseCase.stopJob().collect { stopped ->
+                return@collect
             }
         }
     }

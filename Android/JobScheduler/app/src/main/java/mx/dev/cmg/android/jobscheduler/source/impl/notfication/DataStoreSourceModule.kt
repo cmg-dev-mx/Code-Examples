@@ -5,7 +5,6 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import mx.dev.cmg.android.jobscheduler.repository.source.DataStoreSource
-import mx.dev.cmg.android.jobscheduler.source.impl.DataStoreSourceImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
