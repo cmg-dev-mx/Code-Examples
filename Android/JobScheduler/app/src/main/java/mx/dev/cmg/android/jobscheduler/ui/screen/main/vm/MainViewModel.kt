@@ -1,5 +1,6 @@
 package mx.dev.cmg.android.jobscheduler.ui.screen.main.vm
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,19 +32,18 @@ class MainViewModel @Inject constructor(
 
     fun onEvent(event: MainEvent) {
         when (event) {
-            is MainEvent.OnLoginButtonClick -> {
-                login()
-            }
-
-            is MainEvent.OnStopJobButtonClick -> {
-                stopJob()
-            }
+            is MainEvent.OnLoginButtonClick -> login()
+            is MainEvent.OnStopJobButtonClick -> stopJob()
+            MainEvent.ValidateLoginSession -> validateLoginSession()
+            MainEvent.ValidateNotificationOneDayLogin -> validateOneDayLoginNotification()
+            MainEvent.ValidateNotificationWelcome -> validateWelcomeNotification()
         }
     }
 
-    fun validateWelcomeNotification() {
+    private fun validateWelcomeNotification() {
         viewModelScope.launch {
             welcomeNotificationUseCase.validateWelcomeNotification().collect { alreadyShown ->
+                Log.d("MOGC", "validateWelcomeNotification: $alreadyShown")
                 if (alreadyShown) return@collect
 
                 notificationState.value = NotificationState(
@@ -53,15 +53,16 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun validateOneDayLoginNotification() {
+    private fun validateOneDayLoginNotification() {
         viewModelScope.launch {
+            Log.d("MOGC", "validateOneDayLoginNotification")
             oneDayWithoutLoginUseCase.validateOneDayWithoutLoginNotification().collect { loggedIn ->
                 return@collect
             }
         }
     }
 
-    fun validateLoginSession() {
+    private fun validateLoginSession() {
         viewModelScope.launch {
             loginSessionUseCase.isLoggedIn().collect { logged ->
                 layoutState.value = MainLayoutState(

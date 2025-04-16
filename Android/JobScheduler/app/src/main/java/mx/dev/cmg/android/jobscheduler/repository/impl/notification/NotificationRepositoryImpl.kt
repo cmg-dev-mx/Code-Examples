@@ -30,4 +30,12 @@ class NotificationRepositoryImpl @Inject constructor(
             emit(true)
         }
     }
+
+    override suspend fun setOneDayNotificationShown() {
+        dataStoreSource.setOneDayNotificationShown()
+    }
+
+    override suspend fun isOneDayWithoutLoginNotificationAlreadyShown(): Flow<Boolean> {
+        return dataStoreSource.oneDayNotificationShown()
+    }
 }

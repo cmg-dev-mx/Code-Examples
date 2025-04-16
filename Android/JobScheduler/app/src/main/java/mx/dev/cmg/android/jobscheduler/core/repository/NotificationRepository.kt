@@ -7,4 +7,6 @@ interface NotificationRepository {
     suspend fun setWelcomeNotificationShown()
     suspend fun setupOneDayNotification(): Flow<Boolean>
     suspend fun stopJob(): Flow<Boolean>
+    suspend fun setOneDayNotificationShown()
+    suspend fun isOneDayWithoutLoginNotificationAlreadyShown(): Flow<Boolean>
 }

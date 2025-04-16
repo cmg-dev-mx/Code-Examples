@@ -7,4 +7,6 @@ interface DataStoreSource {
     suspend fun setWelcomeNotificationShown()
     suspend fun setLogin(logged: Boolean): Flow<Boolean>
     suspend fun isLoggedIn(): Flow<Boolean>
+    suspend fun setOneDayNotificationShown()
+    suspend fun oneDayNotificationShown(): Flow<Boolean>
 }

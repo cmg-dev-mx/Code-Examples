@@ -2,24 +2,33 @@ package mx.dev.cmg.android.jobscheduler.source.impl.jobscheduler
 
 import android.app.job.JobParameters
 import android.app.job.JobService
-import android.os.Handler
-import android.os.HandlerThread
+import android.util.Log
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import mx.dev.cmg.android.jobscheduler.repository.source.DataStoreSource
+import mx.dev.cmg.android.jobscheduler.source.impl.notfication.DataStoreSourceImpl
 import mx.dev.cmg.android.jobscheduler.utils.notifications.createNotification
+import javax.inject.Inject
 
-class MyJobService: JobService() {
+class MyJobService @Inject constructor(): JobService() {
+
+    private val dataStoreSource: DataStoreSource by lazy {
+        DataStoreSourceImpl(context = applicationContext)
+    }
 
     override fun onStartJob(params: JobParameters?): Boolean {
-        val handlerThread = HandlerThread("JobThread")
-        handlerThread.start()
+        applicationContext.createNotification(
+            title = "Job Service",
+            content = "Job is running",
+        )
 
-        val handler = Handler(handlerThread.looper)
-        handler.post {
-            applicationContext.createNotification(
-                title = "Job Service",
-                content = "Job is running",
-            )
-            jobFinished(params, true)
+        CoroutineScope(Dispatchers.IO).launch {
+            dataStoreSource.setOneDayNotificationShown()
+            Log.d("MOGC", "Job finished")
         }
+
+        jobFinished(params, false)
 
         return true
     }

@@ -19,6 +19,7 @@ class DataStoreSourceImpl @Inject constructor(
 ) : DataStoreSource {
 
     private val WELCOME_ALREADY_SHOWN = booleanPreferencesKey("welcome_notification_shown")
+    private val ONE_DAY_NOTIFICATION_SHOWN = booleanPreferencesKey("one_day_notification_shown")
     private val LOGIN = booleanPreferencesKey("login")
 
     override suspend fun welcomeNotificationShown() =
@@ -45,6 +46,18 @@ class DataStoreSourceImpl @Inject constructor(
     override suspend fun isLoggedIn(): Flow<Boolean> {
         return context.dataStore.data.map { preferences ->
             preferences[LOGIN] ?: false
+        }
+    }
+
+    override suspend fun setOneDayNotificationShown() {
+        context.dataStore.edit { notifications ->
+            notifications[ONE_DAY_NOTIFICATION_SHOWN] = true
+        }
+    }
+
+    override suspend fun oneDayNotificationShown(): Flow<Boolean> {
+        return context.dataStore.data.map { preferences ->
+            preferences[ONE_DAY_NOTIFICATION_SHOWN] ?: false
         }
     }
 }
