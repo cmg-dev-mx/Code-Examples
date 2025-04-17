@@ -6,4 +6,6 @@ sealed class MainEvent {
     data object ValidateNotificationWelcome: MainEvent()
     data object ValidateNotificationOneDayLogin: MainEvent()
     data object ValidateLoginSession: MainEvent()
+    data object StartEngagementNotifications: MainEvent()
+    data object StopEngagementNotifications: MainEvent()
 }

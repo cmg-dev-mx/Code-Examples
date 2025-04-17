@@ -15,22 +15,23 @@ class MyJobSchedulerImpl @Inject constructor(
 
     private val jobScheduler = context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
 
-    override suspend fun scheduleJob(scheduleId: Int): Boolean {
-        val name = ComponentName(context, MyJobService::class.java)
-        val result = jobScheduler.schedule(getJobInfo(scheduleId, name))
+    override suspend fun scheduleJob(scheduleId: Int, dayInterval: Long, service: MyJobService): Boolean {
+        val name = ComponentName(context, service::class.java)
+        val result = jobScheduler.schedule(getJobInfo(scheduleId, dayInterval, name))
         return result != JobScheduler.RESULT_FAILURE
     }
 
-    override suspend fun stopJob(scheduleId: Int): Boolean {
-        jobScheduler.cancel(scheduleId)
+    override suspend fun stopJob(id: Int): Boolean {
+        jobScheduler.cancel(id)
         return true
     }
 
     private fun getJobInfo(
         id: Int,
+        intervalInDays: Long,
         name: ComponentName
     ): JobInfo {
-        val interval = TimeUnit.MINUTES.toMillis(1)
+        val interval = TimeUnit.MINUTES.toMillis(intervalInDays)
         val isPersistent = true
 
         val jobInfo = JobInfo.Builder(id, name)

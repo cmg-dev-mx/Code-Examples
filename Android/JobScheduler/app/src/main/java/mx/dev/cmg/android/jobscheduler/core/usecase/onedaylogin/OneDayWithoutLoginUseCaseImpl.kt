@@ -37,7 +37,7 @@ class OneDayWithoutLoginUseCaseImpl @Inject constructor(
     }
 
     override suspend fun stopJob() = flow {
-        val result = notificationRepository.stopJob().last()
+        val result = notificationRepository.stopJob(1).last()
         emit(result)
     }
 }

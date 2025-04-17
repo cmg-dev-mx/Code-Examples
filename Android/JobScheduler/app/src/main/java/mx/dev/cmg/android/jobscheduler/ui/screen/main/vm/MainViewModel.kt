@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import mx.dev.cmg.android.jobscheduler.core.usecase.engagenotification.EngagementNotificationsUseCase
 import mx.dev.cmg.android.jobscheduler.core.usecase.login.LoginSessionUseCase
 import mx.dev.cmg.android.jobscheduler.core.usecase.login.LoginUseCase
 import mx.dev.cmg.android.jobscheduler.core.usecase.onedaylogin.OneDayWithoutLoginUseCase
@@ -21,7 +22,8 @@ class MainViewModel @Inject constructor(
     private val welcomeNotificationUseCase: WelcomeNotificationUseCase,
     private val oneDayWithoutLoginUseCase: OneDayWithoutLoginUseCase,
     private val loginUseCase: LoginUseCase,
-    private val loginSessionUseCase: LoginSessionUseCase
+    private val loginSessionUseCase: LoginSessionUseCase,
+    private val engageNotificationsUseCase: EngagementNotificationsUseCase
 ) : ViewModel() {
 
     var layoutState = mutableStateOf(MainLayoutState())
@@ -37,6 +39,8 @@ class MainViewModel @Inject constructor(
             MainEvent.ValidateLoginSession -> validateLoginSession()
             MainEvent.ValidateNotificationOneDayLogin -> validateOneDayLoginNotification()
             MainEvent.ValidateNotificationWelcome -> validateWelcomeNotification()
+            MainEvent.StartEngagementNotifications -> startEngagementNotifications()
+            MainEvent.StopEngagementNotifications -> stopEngagementNotifications()
         }
     }
 
@@ -103,6 +107,18 @@ class MainViewModel @Inject constructor(
             oneDayWithoutLoginUseCase.stopJob().collect { stopped ->
                 return@collect
             }
+        }
+    }
+
+    private fun startEngagementNotifications() {
+        viewModelScope.launch {
+            engageNotificationsUseCase.startEngagementNotifications()
+        }
+    }
+
+    private fun stopEngagementNotifications() {
+        viewModelScope.launch {
+            engageNotificationsUseCase.stopEngagementNotifications()
         }
     }
 }

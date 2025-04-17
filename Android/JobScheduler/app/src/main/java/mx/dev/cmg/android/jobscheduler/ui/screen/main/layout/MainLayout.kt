@@ -25,6 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -49,18 +51,21 @@ private fun MainLayoutPreview() {
 @Composable
 fun MainLayout() {
     val context = LocalContext.current
+
     val vm = hiltViewModel<MainViewModel>()
     val state = vm.layoutState.value
     val notificationState = vm.notificationState.value
 
     val notificationPermissionState =
         rememberPermissionState(android.Manifest.permission.POST_NOTIFICATIONS) {
-//            vm.validateWelcomeNotification()
             vm.onEvent(MainEvent.ValidateNotificationWelcome)
         }
 
     LaunchedEffect(notificationState) {
-        Log.d("MOGC", "MainLayout show welcome notification: ${notificationState.showWelcomeNotification}")
+        Log.d(
+            "MOGC",
+            "MainLayout show welcome notification: ${notificationState.showWelcomeNotification}"
+        )
         if (notificationState.showWelcomeNotification) {
             context.createNotification(
                 title = "Job Scheduler",
@@ -75,6 +80,16 @@ fun MainLayout() {
         if (!notificationPermissionState.status.isGranted) {
             notificationPermissionState.launchPermissionRequest()
         }
+    }
+
+    LifecycleEventEffect(Lifecycle.Event.ON_START) {
+        Log.d("MOGC", "MainLayout: ON_START")
+        vm.onEvent(MainEvent.StopEngagementNotifications)
+    }
+
+    LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
+        Log.d("MOGC", "MainLayout: ON_STOP")
+        vm.onEvent(MainEvent.StartEngagementNotifications)
     }
 
     MainLayoutScreen(

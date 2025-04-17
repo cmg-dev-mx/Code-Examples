@@ -14,7 +14,7 @@ class LoginUseCaseImpl @Inject constructor(
     override suspend fun login(): Flow<Boolean> {
         return loginRepository.login().map { loginSuccess ->
             if (loginSuccess) {
-                notificationRepository.stopJob()
+                notificationRepository.stopJob(1)
                 notificationRepository.setOneDayNotificationShown()
             }
             true
