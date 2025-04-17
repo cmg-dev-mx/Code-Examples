@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Job Scheduler</string>
+    <string name="job_scheduler">Job Scheduler</string>
+    <string name="login_status">Login status: %1$s</string>
+    <string name="not_logged_yet">Not logged yet</string>
+    <string name="user_logged_in">User logged in</string>
+</resources>
