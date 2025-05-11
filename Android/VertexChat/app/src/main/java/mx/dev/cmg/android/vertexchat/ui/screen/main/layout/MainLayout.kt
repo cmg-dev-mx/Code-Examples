@@ -52,12 +52,14 @@ import mx.dev.cmg.android.vertexchat.ui.theme.VertexChatTheme
 @Composable
 private fun MainLayoutPreview() {
     VertexChatTheme {
-        MainLayout()
+        MainLayout(
+            modifier = Modifier.fillMaxSize()
+        )
     }
 }
 
 @Composable
-fun MainLayout() {
+fun MainLayout(modifier: Modifier = Modifier) {
 
     val coroutineScope = rememberCoroutineScope()
     val listState = rememberLazyListState()
@@ -73,8 +75,7 @@ fun MainLayout() {
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = modifier
             .background(MaterialTheme.colorScheme.background)
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(
