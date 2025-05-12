@@ -1,16 +1,22 @@
 package mx.dev.cmg.android.vertexchat.ui.screen.main.vm
 
+import android.R.attr.prompt
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import mx.dev.cmg.android.vertexchat.core.model.MessageItem
+import mx.dev.cmg.android.vertexchat.core.usecase.QueryPromptUseCase
 import javax.inject.Inject
 
 
 @HiltViewModel
-class MainViewModel @Inject constructor(): ViewModel() {
+class MainViewModel @Inject constructor(
+    private val useCase: QueryPromptUseCase
+) : ViewModel() {
 
     var uiState by mutableStateOf(MainUiState())
         private set
@@ -44,21 +50,37 @@ class MainViewModel @Inject constructor(): ViewModel() {
 
     private fun queryPrompt() {
         if (uiState.text.isNotBlank()) {
+            viewModelScope.launch {
+                uiState = uiState.copy(
+                    listeningState = InputSate.LOADING
+                )
 
-            uiState = uiState.copy(
-                listeningState = InputSate.LOADING
-            )
+                val prompt = uiState.text
+                val newMessage = MessageItem(
+                    timeStamp = System.currentTimeMillis(),
+                    message = prompt,
+                    isUser = true
+                )
 
-            val newMessage = MessageItem(
-                timeStamp = System.currentTimeMillis(),
-                message = uiState.text,
-                isUser = true
-            )
-            uiState = uiState.copy(
-                conversation = uiState.conversation + newMessage,
-                text = "",
-                listeningState = InputSate.IDLE
-            )
+                uiState = uiState.copy(
+                    conversation = uiState.conversation + newMessage,
+                    text = "",
+                )
+
+                useCase.invoke(prompt).collect {
+                    val response = it
+                    val newMessage = MessageItem(
+                        timeStamp = System.currentTimeMillis(),
+                        message = response,
+                        isUser = false
+                    )
+
+                    uiState = uiState.copy(
+                        conversation = uiState.conversation + newMessage,
+                        listeningState = InputSate.IDLE,
+                    )
+                }
+            }
         }
     }
 
@@ -82,10 +104,10 @@ data class MainUiState(
 )
 
 sealed class UiEvent {
-    data class OnTextChange(val text: String): UiEvent()
-    object OnSendClick: UiEvent()
-    object OnStartListening: UiEvent()
-    object OnStopListening: UiEvent()
+    data class OnTextChange(val text: String) : UiEvent()
+    object OnSendClick : UiEvent()
+    object OnStartListening : UiEvent()
+    object OnStopListening : UiEvent()
 }
 
 enum class InputSate {
