@@ -42,10 +42,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import mx.dev.cmg.android.vertexchat.R
 import mx.dev.cmg.android.vertexchat.core.model.MessageItem
+import mx.dev.cmg.android.vertexchat.ui.screen.main.vm.InputSate
+import mx.dev.cmg.android.vertexchat.ui.screen.main.vm.MainViewModel
+import mx.dev.cmg.android.vertexchat.ui.screen.main.vm.UiEvent
 import mx.dev.cmg.android.vertexchat.ui.theme.VertexChatTheme
 
 @Preview
@@ -58,15 +62,19 @@ private fun MainLayoutPreview() {
     }
 }
 
+
+
 @Composable
 fun MainLayout(modifier: Modifier = Modifier) {
 
     val coroutineScope = rememberCoroutineScope()
     val listState = rememberLazyListState()
 
-    val conversation = remember { mutableListOf<MessageItem>() }
-    val text = remember { mutableStateOf("") }
-    val listenState = remember { mutableStateOf(InputSate.SPEECH) }
+    val viewModel = hiltViewModel<MainViewModel>()
+
+    val conversation = viewModel.uiState.conversation
+    val text = viewModel.uiState.text
+    val listenState = viewModel.uiState.listeningState
 
     LaunchedEffect(conversation.size) {
         coroutineScope.launch {
@@ -103,37 +111,12 @@ fun MainLayout(modifier: Modifier = Modifier) {
 
         ChatInputLayout(
             modifier = Modifier.fillMaxWidth(),
-            text = text.value,
-            onTextChange = { text.value = it },
-            onTextNext = {
-                if (text.value.isNotEmpty()) {
-                    coroutineScope.launch {
-                        listenState.value = InputSate.LOADING
-                        delay(1000)
-                        listenState.value = InputSate.SPEECH
-
-                        conversation.add(
-                            MessageItem(
-                                timeStamp = System.currentTimeMillis(),
-                                message = text.value,
-                                isUser = true
-                            )
-                        )
-                        text.value = ""
-                    }
-                }
-            },
-            onListen = {
-                listenState.value = InputSate.LISTENING
-            },
-            onStopListening = {
-                coroutineScope.launch {
-                    listenState.value = InputSate.LOADING
-                    delay(1000)
-                    listenState.value = InputSate.SPEECH
-                }
-            },
-            inputStatus = listenState.value
+            text = text,
+            onTextChange = { viewModel.onEvent(UiEvent.OnTextChange(it)) },
+            onTextNext = { viewModel.onEvent(UiEvent.OnSendClick) },
+            onListen = { viewModel.onEvent(UiEvent.OnStartListening) },
+            onStopListening = { viewModel.onEvent(UiEvent.OnStopListening) },
+            inputStatus = listenState
         )
     }
 }
@@ -207,7 +190,7 @@ private fun ChatInputPreview() {
         text.value = it
     }
 
-    val listenState = remember { mutableStateOf(InputSate.SPEECH) }
+    val listenState = remember { mutableStateOf(InputSate.IDLE) }
 
     VertexChatTheme {
         Box(
@@ -225,7 +208,7 @@ private fun ChatInputPreview() {
                     listenState.value = InputSate.LISTENING
                 },
                 onStopListening = {
-                    listenState.value = InputSate.SPEECH
+                    listenState.value = InputSate.IDLE
                 },
                 inputStatus = listenState.value,
             )
@@ -241,7 +224,7 @@ fun ChatInputLayout(
     onTextNext: () -> Unit = {},
     onListen: () -> Unit = {},
     onStopListening: () -> Unit = {},
-    inputStatus: InputSate = InputSate.SPEECH
+    inputStatus: InputSate = InputSate.IDLE
 ) {
     TextField(
         value = text,
@@ -267,7 +250,7 @@ fun ChatInputLayout(
         ),
         trailingIcon = {
             when (inputStatus) {
-                InputSate.SPEECH -> Icon(
+                InputSate.IDLE -> Icon(
                     modifier = Modifier.clickable { onListen() },
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_mic),
                     contentDescription = "Search"
@@ -282,6 +265,11 @@ fun ChatInputLayout(
                 InputSate.LOADING -> CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
                     color = MaterialTheme.colorScheme.primary
+                )
+                InputSate.SEND -> Icon(
+                    modifier = Modifier.clickable { onTextNext() },
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_send),
+                    contentDescription = "Search"
                 )
             }
         },
@@ -302,10 +290,4 @@ fun ChatInputLayout(
             onSearch = { onTextNext() }
         )
     )
-}
-
-enum class InputSate {
-    SPEECH,
-    LISTENING,
-    LOADING
 }
