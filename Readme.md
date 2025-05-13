@@ -32,6 +32,7 @@ Ejercicios de ejemplo en el desarrollo de aplicaciones, algoritmos, y diseño de
 - (Compose) [Handled Events](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/HandledEvents) (MVI)
 - (Compose) [Speech to Text](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/SpeechToText)
 - (Compose) [JetAi](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/JetAI) (MVI)
+- (Compose) [Vertex AI Chat](https://github.com/cmg-dev-mx/Code-Examples/tree/main/Android/VertexChat) (MVI)
 
 ### React Native
 
