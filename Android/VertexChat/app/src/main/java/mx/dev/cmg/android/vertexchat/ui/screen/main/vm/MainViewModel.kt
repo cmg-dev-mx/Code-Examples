@@ -1,16 +1,20 @@
 package mx.dev.cmg.android.vertexchat.ui.screen.main.vm
 
 import android.R.attr.prompt
+import android.R.id.message
+import androidx.compose.material3.Snackbar
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import mx.dev.cmg.android.vertexchat.core.model.MessageItem
 import mx.dev.cmg.android.vertexchat.core.usecase.QueryPromptUseCase
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 
 @HiltViewModel
@@ -69,16 +73,36 @@ class MainViewModel @Inject constructor(
 
                 useCase.invoke(prompt).collect {
                     val response = it
-                    val newMessage = MessageItem(
-                        timeStamp = System.currentTimeMillis(),
-                        message = response,
-                        isUser = false
-                    )
 
-                    uiState = uiState.copy(
-                        conversation = uiState.conversation + newMessage,
-                        listeningState = InputSate.IDLE,
-                    )
+                    if (response.startsWith("DATA:")) {
+                        val data = response.substringAfter("DATA:")
+                        uiState = uiState.copy(
+                            confirmation = data,
+                            conversation = emptyList(),
+                            listeningState = InputSate.IDLE
+                        )
+
+                        delay(10.seconds)
+
+                        uiState = uiState.copy(
+                            confirmation = ""
+                        )
+
+                    } else {
+
+                        val newMessage = MessageItem(
+                            timeStamp = System.currentTimeMillis(),
+                            message = response,
+                            isUser = false
+                        )
+
+                        uiState = uiState.copy(
+                            conversation = uiState.conversation + newMessage,
+                            listeningState = InputSate.IDLE,
+                        )
+                    }
+
+
                 }
             }
         }
@@ -100,7 +124,8 @@ class MainViewModel @Inject constructor(
 data class MainUiState(
     val listeningState: InputSate = InputSate.IDLE,
     val text: String = "",
-    val conversation: List<MessageItem> = emptyList()
+    val conversation: List<MessageItem> = emptyList(),
+    val confirmation: String = "",
 )
 
 sealed class UiEvent {

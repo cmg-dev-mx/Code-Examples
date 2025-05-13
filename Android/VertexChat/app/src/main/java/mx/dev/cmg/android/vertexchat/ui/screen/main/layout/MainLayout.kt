@@ -23,6 +23,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -63,18 +67,19 @@ private fun MainLayoutPreview() {
 }
 
 
-
 @Composable
 fun MainLayout(modifier: Modifier = Modifier) {
 
     val coroutineScope = rememberCoroutineScope()
     val listState = rememberLazyListState()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val viewModel = hiltViewModel<MainViewModel>()
 
     val conversation = viewModel.uiState.conversation
     val text = viewModel.uiState.text
     val listenState = viewModel.uiState.listeningState
+    val confirmationState = viewModel.uiState.confirmation
 
     LaunchedEffect(conversation.size) {
         coroutineScope.launch {
@@ -82,42 +87,58 @@ fun MainLayout(modifier: Modifier = Modifier) {
         }
     }
 
-    Column(
+    LaunchedEffect(confirmationState) {
+        if (confirmationState.isNotBlank()) {
+            snackbarHostState.showSnackbar(
+                message = confirmationState,
+                duration = SnackbarDuration.Long
+            )
+        }
+    }
+
+    Scaffold(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(
-            space = 8.dp,
-            alignment = Alignment.Bottom
-        )
-    ) {
-        LazyColumn(
+            .background(MaterialTheme.colorScheme.background),
+        snackbarHost = { SnackbarHost(snackbarHostState) }
+    ) { innerPadding ->
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            state = rememberLazyListState(),
+                .padding(innerPadding)
+                .fillMaxSize()
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(
                 space = 8.dp,
                 alignment = Alignment.Bottom
-            ),
+            )
         ) {
-            items(conversation) {
-                ChatBubble(
-                    modifier = Modifier.fillMaxWidth(),
-                    it
-                )
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                state = rememberLazyListState(),
+                verticalArrangement = Arrangement.spacedBy(
+                    space = 8.dp,
+                    alignment = Alignment.Bottom
+                ),
+            ) {
+                items(conversation) {
+                    ChatBubble(
+                        modifier = Modifier.fillMaxWidth(),
+                        it
+                    )
+                }
             }
-        }
 
-        ChatInputLayout(
-            modifier = Modifier.fillMaxWidth(),
-            text = text,
-            onTextChange = { viewModel.onEvent(UiEvent.OnTextChange(it)) },
-            onTextNext = { viewModel.onEvent(UiEvent.OnSendClick) },
-            onListen = { viewModel.onEvent(UiEvent.OnStartListening) },
-            onStopListening = { viewModel.onEvent(UiEvent.OnStopListening) },
-            inputStatus = listenState
-        )
+            ChatInputLayout(
+                modifier = Modifier.fillMaxWidth(),
+                text = text,
+                onTextChange = { viewModel.onEvent(UiEvent.OnTextChange(it)) },
+                onTextNext = { viewModel.onEvent(UiEvent.OnSendClick) },
+                onListen = { viewModel.onEvent(UiEvent.OnStartListening) },
+                onStopListening = { viewModel.onEvent(UiEvent.OnStopListening) },
+                inputStatus = listenState
+            )
+        }
     }
 }
 
@@ -266,6 +287,7 @@ fun ChatInputLayout(
                     modifier = Modifier.size(24.dp),
                     color = MaterialTheme.colorScheme.primary
                 )
+
                 InputSate.SEND -> Icon(
                     modifier = Modifier.clickable { onTextNext() },
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_send),
