@@ -1,5 +1,8 @@
 package mx.dev.cmg.android.geminiai.ui.screen.main.layout
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,9 +14,12 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -23,19 +29,20 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import mx.dev.cmg.android.geminiai.R
 import mx.dev.cmg.android.geminiai.model.MessageItem
+import mx.dev.cmg.android.geminiai.ui.screen.main.viewmodel.MainEvent
+import mx.dev.cmg.android.geminiai.ui.screen.main.viewmodel.MainViewModel
 import mx.dev.cmg.android.geminiai.ui.theme.GeminiAITheme
 
 @Preview
@@ -56,16 +63,18 @@ private fun MainLayoutPreview() {
 @Composable
 fun MainLayout() {
 
-    var value by remember { mutableStateOf("") }
-    var conversation by remember { mutableStateOf<List<MessageItem>>(emptyList()) }
-    var isLoading by remember { mutableStateOf(false) }
+    val vm = hiltViewModel<MainViewModel>()
+    val state = vm.uiState.value
 
     MainContainer(
         modifier = Modifier.fillMaxSize(),
-        value = value,
-        onValueChange = { value = it },
-        conversation = conversation,
-        isLoading = isLoading
+        value = state.text,
+        conversation = state.conversation,
+        isLoading = state.isLoading,
+        isListening = state.isListening,
+        onValueChange = { vm.handleEvent(MainEvent.OnInputValueChanged(it)) },
+        onSendInfo = { vm.handleEvent(MainEvent.OnSendEvent) },
+        onClickMic = { vm.handleEvent(MainEvent.OnListenEvent) }
     )
 }
 
@@ -73,13 +82,16 @@ fun MainLayout() {
 fun MainContainer(
     modifier: Modifier = Modifier,
     value: String = "",
-    onValueChange: (String) -> Unit = {},
     conversation: List<MessageItem> = emptyList(),
     isLoading: Boolean = false,
+    isListening: Boolean = false,
+    onValueChange: (String) -> Unit = {},
+    onSendInfo: () -> Unit = {},
+    onClickMic: () -> Unit = {},
 ) {
     Scaffold(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.secondary)
+            .background(MaterialTheme.colorScheme.surface)
             .systemBarsPadding()
             .imePadding()
             .fillMaxSize(),
@@ -96,11 +108,13 @@ fun MainContainer(
                     .fillMaxWidth()
                     .padding(16.dp),
                 value = value,
-                onValueChange = onValueChange
+                onValueChange = onValueChange,
+                isListening = isListening,
+                onSendInfo = onSendInfo,
+                onClickMic = onClickMic
             )
         },
         containerColor = Color.Transparent,
-        contentColor = MaterialTheme.colorScheme.onSecondary
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -117,11 +131,13 @@ fun MainContainer(
                 )
             }
 
-            if (isLoading) {
+            if(isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(40.dp)
                 )
             }
+
+
         }
     }
 }
@@ -129,7 +145,7 @@ fun MainContainer(
 @Composable
 fun CustomTopBar(modifier: Modifier = Modifier) {
     Row(modifier = modifier) {
-
+        // TODO Not implemented
     }
 }
 
@@ -137,20 +153,43 @@ fun CustomTopBar(modifier: Modifier = Modifier) {
 fun CustomBottomBar(
     modifier: Modifier = Modifier,
     value: String = "",
+    isListening: Boolean = false,
     onValueChange: (String) -> Unit = {},
     onClickMic: () -> Unit = {},
-    isListening: Boolean = false
+    onSendInfo: () -> Unit = {}
 ) {
+    val icon = if (isListening) {
+        R.drawable.ic_stop
+    } else {
+        R.drawable.ic_mic
+    }
+
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(
+            16.dp,
+            alignment = Alignment.CenterHorizontally
+        ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (!isListening) {
+
+        AnimatedVisibility(!isListening) {
             TextField(
+                modifier = Modifier
+                    .weight(1f)
+                    .animateEnterExit(
+                        enter = expandHorizontally(),
+                        exit = shrinkHorizontally()
+                    ),
                 value = value,
                 onValueChange = onValueChange,
-                modifier = Modifier.weight(1f)
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Sentences,
+                    imeAction = ImeAction.Send
+                ),
+                keyboardActions = KeyboardActions(
+                    onSend = { onSendInfo() }
+                )
             )
         }
 
@@ -158,11 +197,12 @@ fun CustomBottomBar(
             modifier = Modifier
                 .size(56.dp)
                 .background(MaterialTheme.colorScheme.primary, shape = CircleShape),
-            onClick = onClickMic
+            onClick = onClickMic,
         ) {
             Icon(
                 modifier = Modifier.size(24.dp),
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_mic),
+                imageVector = ImageVector.vectorResource(icon),
+                tint = MaterialTheme.colorScheme.onPrimary,
                 contentDescription = null,
             )
         }
@@ -192,10 +232,12 @@ fun ChatItem(
     }
 
     Row(
-        modifier = modifier
+        modifier = modifier,
+        horizontalArrangement = if (message.isUser) Arrangement.End else Arrangement.Start,
     ) {
         Text(
             modifier = Modifier
+                .wrapContentWidth()
                 .padding(padding)
                 .background(
                     MaterialTheme.colorScheme.surfaceVariant,
