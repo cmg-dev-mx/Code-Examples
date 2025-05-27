@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaults>
+    <entry>
+        <key>ai_model</key>
+        <value>gemini-2.0.flash</value>
+    </entry>
+</defaults>
