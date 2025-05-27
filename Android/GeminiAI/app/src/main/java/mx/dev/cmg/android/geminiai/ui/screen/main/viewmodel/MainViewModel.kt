@@ -5,14 +5,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import mx.dev.cmg.android.geminiai.model.MessageItem
+import mx.dev.cmg.android.geminiai.source.ai.AISource
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
-class MainViewModel @Inject constructor() : ViewModel() {
+class MainViewModel @Inject constructor(
+    private val source: AISource
+) : ViewModel() {
 
     private val _uiState = mutableStateOf(MainUIState())
     val uiState: State<MainUIState> = _uiState
@@ -41,9 +42,11 @@ class MainViewModel @Inject constructor() : ViewModel() {
 
     private fun askConversation() {
         viewModelScope.launch {
+            val message = _uiState.value.text.trim()
+
             val chatItem = MessageItem(
                 id = System.currentTimeMillis(),
-                message = _uiState.value.text,
+                message = message,
                 isUser = true
             )
 
@@ -53,11 +56,11 @@ class MainViewModel @Inject constructor() : ViewModel() {
                 text = ""
             )
 
-            delay(2.seconds)
+            val response = source.askQuestion(message)
 
             val responseItem = MessageItem(
                 id = System.currentTimeMillis(),
-                message = "This is a simulated response to: ${chatItem.message}",
+                message = response,
                 isUser = false
             )
 
