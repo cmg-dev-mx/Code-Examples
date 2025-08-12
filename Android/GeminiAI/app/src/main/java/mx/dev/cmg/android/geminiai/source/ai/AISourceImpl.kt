@@ -11,7 +11,7 @@ class AISourceImpl @Inject constructor() : AISource {
 
     private val model = remoteConfig.getString("ai_model")
 
-    val systemInstruction = """
+    private val systemInstruction = """
         
         Eres un asistente llamada Chi. Ayudas a los usuarios a realizar la agenda de actividades del día,
         responder preguntas sobre la agenda, y proporcionar información útil relacionada con las actividades diarias.
@@ -30,7 +30,7 @@ class AISourceImpl @Inject constructor() : AISource {
             text(systemInstruction)
         })
 
-    val chat = generativeModel.startChat()
+    private val chat = generativeModel.startChat()
 
     override suspend fun askQuestion(question: String): String {
         val response = chat.sendMessage(question)

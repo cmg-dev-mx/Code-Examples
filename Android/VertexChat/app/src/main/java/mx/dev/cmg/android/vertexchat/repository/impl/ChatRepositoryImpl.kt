@@ -10,9 +10,9 @@ class ChatRepositoryImpl @Inject constructor(
     private val aiAgentDataSource: AiAgentDataSource
 ) : ChatRepository {
 
-    override suspend fun queryPrompt(string: String): Flow<String> {
+    override suspend fun queryPrompt(prompt: String): Flow<String> {
         return flow {
-            emit(aiAgentDataSource.queryPrompt(string))
+            emit(aiAgentDataSource.queryPrompt(prompt))
         }
     }
 }
