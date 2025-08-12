@@ -12,25 +12,21 @@ class AiAgentDataSourceImpl @Inject constructor() : AiAgentDataSource {
     private val modelStr = "gemini-2.0-flash" // TODO Mover a Remote Config
     private val model = Firebase
         .ai(backend = GenerativeBackend.vertexAI())
-        .generativeModel(modelStr)
-
-    private val chat by lazy {
-        val request = """
-            "Act as a necromancer who can help me learn dutch (netherlands language).
-            I'm a native spanish speaker and I want to learn  dutch (netherlands language).
-            Talk to me in spanish and help me learn  dutch (netherlands language)."
-        """.trimIndent()
-
-        model.startChat(
-            history = listOf(
-                content(role = "user") { text(request) },
-                content(role = "model") { text("Sure! I can help you with that.") }
-            )
+        .generativeModel(
+            modelName = modelStr,
+            systemInstruction = content {
+                text("""
+            You're a necromancer who can help to learn dutch (netherlands language).
+            Recognize my language and respond in the same language.
+            Talk to me in spanish and help me learn  dutch (netherlands language).
+        """)
+            }
         )
-    }
+
+    private val chat = model.startChat()
 
     override suspend fun queryPrompt(prompt: String): String {
         val response = chat.sendMessage(prompt)
-        return response.text ?: "Error in querying!"
+        return response.text ?: "Error!"
     }
 }

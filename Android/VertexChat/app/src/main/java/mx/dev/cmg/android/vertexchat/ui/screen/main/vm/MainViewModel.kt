@@ -1,8 +1,5 @@
 package mx.dev.cmg.android.vertexchat.ui.screen.main.vm
 
-import android.R.attr.prompt
-import android.R.id.message
-import androidx.compose.material3.Snackbar
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue

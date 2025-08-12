@@ -1,5 +1,11 @@
 package mx.dev.cmg.android.vertexchat.ui.screen.main.layout
 
+import android.R.attr.text
+import android.content.Intent
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -39,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -47,7 +54,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.coroutines.delay
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionStatus
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.launch
 import mx.dev.cmg.android.vertexchat.R
 import mx.dev.cmg.android.vertexchat.core.model.MessageItem
@@ -55,6 +66,7 @@ import mx.dev.cmg.android.vertexchat.ui.screen.main.vm.InputSate
 import mx.dev.cmg.android.vertexchat.ui.screen.main.vm.MainViewModel
 import mx.dev.cmg.android.vertexchat.ui.screen.main.vm.UiEvent
 import mx.dev.cmg.android.vertexchat.ui.theme.VertexChatTheme
+import java.util.Locale
 
 @Preview
 @Composable
@@ -67,12 +79,14 @@ private fun MainLayoutPreview() {
 }
 
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun MainLayout(modifier: Modifier = Modifier) {
 
     val coroutineScope = rememberCoroutineScope()
     val listState = rememberLazyListState()
     val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
 
     val viewModel = hiltViewModel<MainViewModel>()
 
@@ -80,6 +94,58 @@ fun MainLayout(modifier: Modifier = Modifier) {
     val text = viewModel.uiState.text
     val listenState = viewModel.uiState.listeningState
     val confirmationState = viewModel.uiState.confirmation
+
+    val recordAudioPermissionState =
+        rememberPermissionState(android.Manifest.permission.RECORD_AUDIO)
+    val requestPermissionLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (!isGranted) {
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar("Permission denied")
+                }
+            }
+        }
+
+    val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context)
+    val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+    intent.putExtra(
+        RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+    )
+    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+
+    speechRecognizer.setRecognitionListener(object : android.speech.RecognitionListener {
+        override fun onReadyForSpeech(params: android.os.Bundle?) {}
+
+        override fun onBeginningOfSpeech() {}
+
+        override fun onRmsChanged(rmsdB: Float) {}
+
+        override fun onBufferReceived(buffer: ByteArray?) {}
+
+        override fun onEndOfSpeech() {
+        }
+
+        override fun onError(error: Int) {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("Error: $error")
+            }
+        }
+
+        override fun onResults(results: android.os.Bundle?) {
+            val data = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+            data?.get(0)?.let {
+                viewModel.onEvent(UiEvent.OnTextChange(it))
+                viewModel.onEvent(UiEvent.OnSendClick)
+            } ?: coroutineScope.launch {
+                snackbarHostState.showSnackbar("No data received")
+            }
+        }
+
+        override fun onPartialResults(partialResults: android.os.Bundle?) {}
+
+        override fun onEvent(eventType: Int, params: android.os.Bundle?) {}
+    })
 
     LaunchedEffect(conversation.size) {
         coroutineScope.launch {
@@ -134,8 +200,18 @@ fun MainLayout(modifier: Modifier = Modifier) {
                 text = text,
                 onTextChange = { viewModel.onEvent(UiEvent.OnTextChange(it)) },
                 onTextNext = { viewModel.onEvent(UiEvent.OnSendClick) },
-                onListen = { viewModel.onEvent(UiEvent.OnStartListening) },
-                onStopListening = { viewModel.onEvent(UiEvent.OnStopListening) },
+                onListen = {
+                    if (recordAudioPermissionState.status.isGranted) {
+                        viewModel.onEvent(UiEvent.OnStartListening)
+                        speechRecognizer.startListening(intent)
+                    } else {
+                        requestPermissionLauncher.launch(android.Manifest.permission.RECORD_AUDIO)
+                    }
+                },
+                onStopListening = {
+                    viewModel.onEvent(UiEvent.OnStopListening)
+                    speechRecognizer.stopListening()
+                },
                 inputStatus = listenState
             )
         }

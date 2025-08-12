@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.vertexai)
     implementation(libs.hilt)
+    implementation(libs.accompanist.permissions)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation)
     testImplementation(libs.junit)
