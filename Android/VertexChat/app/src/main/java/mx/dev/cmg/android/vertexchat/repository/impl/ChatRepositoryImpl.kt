@@ -15,4 +15,12 @@ class ChatRepositoryImpl @Inject constructor(
             emit(aiAgentDataSource.queryPrompt(prompt))
         }
     }
+
+    override suspend fun startChat() {
+        aiAgentDataSource.startChat()
+    }
+
+    override suspend fun stopChat() {
+        aiAgentDataSource.stopChat()
+    }
 }

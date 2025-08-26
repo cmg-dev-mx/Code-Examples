@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import mx.dev.cmg.android.vertexchat.core.model.MessageItem
+import mx.dev.cmg.android.vertexchat.core.usecase.ChatUseCase
 import mx.dev.cmg.android.vertexchat.core.usecase.QueryPromptUseCase
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
@@ -16,8 +17,13 @@ import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val useCase: QueryPromptUseCase
+    private val useCase: QueryPromptUseCase,
+    private val chatUseCase: ChatUseCase
 ) : ViewModel() {
+
+    companion object {
+        private const val TAG = "MainViewModel"
+    }
 
     var uiState by mutableStateOf(MainUiState())
         private set
@@ -35,6 +41,36 @@ class MainViewModel @Inject constructor(
             UiEvent.OnStopListening -> {
                 stopListening()
             }
+
+            UiEvent.OnStartChat -> {
+                startChat()
+            }
+
+            UiEvent.OnStopChat -> {
+                stopChat()
+            }
+        }
+    }
+
+    private fun startChat() {
+        viewModelScope.launch {
+            chatUseCase.startChat()
+            uiState = uiState.copy(
+                listeningState = InputSate.IDLE,
+                chatting = true
+            )
+        }
+    }
+
+    private fun stopChat() {
+        viewModelScope.launch {
+            chatUseCase.stopChat()
+            uiState = uiState.copy(
+                conversation = emptyList(),
+                confirmation = "",
+                listeningState = InputSate.IDLE,
+                chatting = false
+            )
         }
     }
 
@@ -98,8 +134,6 @@ class MainViewModel @Inject constructor(
                             listeningState = InputSate.IDLE,
                         )
                     }
-
-
                 }
             }
         }
@@ -107,7 +141,8 @@ class MainViewModel @Inject constructor(
 
     private fun startListening() {
         uiState = uiState.copy(
-            listeningState = InputSate.LISTENING
+            listeningState = InputSate.LISTENING,
+            chatting = false
         )
     }
 
@@ -123,6 +158,7 @@ data class MainUiState(
     val text: String = "",
     val conversation: List<MessageItem> = emptyList(),
     val confirmation: String = "",
+    val chatting: Boolean = false
 )
 
 sealed class UiEvent {
@@ -130,6 +166,8 @@ sealed class UiEvent {
     object OnSendClick : UiEvent()
     object OnStartListening : UiEvent()
     object OnStopListening : UiEvent()
+    object OnStartChat : UiEvent()
+    object OnStopChat : UiEvent()
 }
 
 enum class InputSate {

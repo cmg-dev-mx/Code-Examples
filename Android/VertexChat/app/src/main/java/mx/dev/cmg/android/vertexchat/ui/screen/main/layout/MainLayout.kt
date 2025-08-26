@@ -1,6 +1,5 @@
 package mx.dev.cmg.android.vertexchat.ui.screen.main.layout
 
-import android.R.attr.text
 import android.content.Intent
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
@@ -23,11 +22,14 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -54,9 +56,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.launch
@@ -94,6 +94,7 @@ fun MainLayout(modifier: Modifier = Modifier) {
     val text = viewModel.uiState.text
     val listenState = viewModel.uiState.listeningState
     val confirmationState = viewModel.uiState.confirmation
+    val chatting = viewModel.uiState.chatting
 
     val recordAudioPermissionState =
         rememberPermissionState(android.Manifest.permission.RECORD_AUDIO)
@@ -164,7 +165,14 @@ fun MainLayout(modifier: Modifier = Modifier) {
 
     Scaffold(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.background),
+            .background(MaterialTheme.colorScheme.background)
+            .border(
+                width = if (chatting) 5.dp else 0.dp,
+                color = MaterialTheme.colorScheme.primary.copy(
+                    alpha = 0.5f
+                )
+            )
+        ,
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(
@@ -195,25 +203,80 @@ fun MainLayout(modifier: Modifier = Modifier) {
                 }
             }
 
-            ChatInputLayout(
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                text = text,
-                onTextChange = { viewModel.onEvent(UiEvent.OnTextChange(it)) },
-                onTextNext = { viewModel.onEvent(UiEvent.OnSendClick) },
-                onListen = {
-                    if (recordAudioPermissionState.status.isGranted) {
-                        viewModel.onEvent(UiEvent.OnStartListening)
-                        speechRecognizer.startListening(intent)
-                    } else {
-                        requestPermissionLauncher.launch(android.Manifest.permission.RECORD_AUDIO)
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                ChatInputLayout(
+                    modifier = Modifier
+                        .wrapContentHeight()
+                        .weight(1f),
+                    text = text,
+                    onTextChange = { viewModel.onEvent(UiEvent.OnTextChange(it)) },
+                    onTextNext = { viewModel.onEvent(UiEvent.OnSendClick) },
+                    onListen = {
+                        if (recordAudioPermissionState.status.isGranted) {
+                            viewModel.onEvent(UiEvent.OnStartListening)
+                            speechRecognizer.startListening(intent)
+                        } else {
+                            requestPermissionLauncher.launch(android.Manifest.permission.RECORD_AUDIO)
+                        }
+                    },
+                    onStopListening = {
+                        viewModel.onEvent(UiEvent.OnStopListening)
+                        speechRecognizer.stopListening()
+                    },
+                    inputStatus = listenState
+                )
+
+                if (chatting) {
+                    IconButton(
+                        modifier = Modifier
+                            .size(48.dp)
+                            .background(
+                                color = MaterialTheme.colorScheme.primary,
+                                shape = CircleShape
+                            ),
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        ),
+                        onClick = {
+                            viewModel.onEvent(UiEvent.OnStopChat)
+                        }
+                    ) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_stop),
+                            contentDescription = "Stop",
+                        )
                     }
-                },
-                onStopListening = {
-                    viewModel.onEvent(UiEvent.OnStopListening)
-                    speechRecognizer.stopListening()
-                },
-                inputStatus = listenState
-            )
+                } else {
+                    IconButton(
+                        modifier = Modifier
+                            .size(48.dp)
+                            .background(
+                                color = MaterialTheme.colorScheme.primary,
+                                shape = CircleShape
+                            ),
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        ),
+                        onClick = {
+                            if (recordAudioPermissionState.status.isGranted) {
+                                viewModel.onEvent(UiEvent.OnStartChat)
+                            } else {
+                                requestPermissionLauncher.launch(android.Manifest.permission.RECORD_AUDIO)
+                            }
+                        }
+                    ) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_bot),
+                            contentDescription = "Bot",
+                        )
+                    }
+                }
+            }
         }
     }
 }
